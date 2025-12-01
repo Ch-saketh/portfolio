@@ -143,11 +143,11 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </>
           )}
           
-          {/* Contact link (always shown as anchor) */}
-          <a
-            href="#contact"
+          {/* Contact link - React Router Link */}
+          <Link
+            to="/contact"
             style={{
-              color: theme.textSecondary,
+              color: isActive('/contact') ? theme.accent : theme.textSecondary,
               textDecoration: 'none',
               fontSize: '0.9rem',
               fontWeight: 500,
@@ -155,11 +155,15 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
               cursor: 'pointer',
               letterSpacing: '0.02em'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
-            onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
+            onMouseEnter={(e) => {
+              if (!isActive('/contact')) e.currentTarget.style.color = theme.accent;
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive('/contact')) e.currentTarget.style.color = theme.textSecondary;
+            }}
           >
             Contact
-          </a>
+          </Link>
         </div>
       </nav>
     </header>
