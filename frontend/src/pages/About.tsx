@@ -284,66 +284,9 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             position: 'relative',
             zIndex: 20  // Higher z-index for buttons
           }}>
-            <a
-              href="#contact"
-              style={{
-                padding: '0.8rem 1.5rem',
-                borderRadius: '8px',
-                backgroundColor: theme.accent,
-                color: '#ffffff',
-                textDecoration: 'none',
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                cursor: 'pointer',
-                border: '2px solid ' + theme.accent,
-                boxShadow: '0 4px 20px ' + theme.accent + '40',
-                position: 'relative'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = theme.accent;
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 30px ' + theme.accent + '50';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = theme.accent;
-                e.currentTarget.style.color = '#ffffff';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 20px ' + theme.accent + '40';
-              }}
-            >
-              Start a Project
-            </a>
             
-            <a
-              href="#work"
-              style={{
-                padding: '0.8rem 1.5rem',
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                color: theme.text,
-                textDecoration: 'none',
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                cursor: 'pointer',
-                border: '2px solid ' + theme.border,
-                position: 'relative'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = theme.border + '40';
-                e.currentTarget.style.borderColor = theme.accent;
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.borderColor = theme.border;
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              View My Work
-            </a>
+            
+            
           </div>
         </div>
 

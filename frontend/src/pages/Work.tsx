@@ -1,10 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface WorkProps {
   theme: any;
 }
 
 const Work: React.FC<WorkProps> = ({ theme }) => {
+  const navigate = useNavigate();
+  const [showAll, setShowAll] = useState(false);
+  
+  // UI Library Projects for the Netflix-style row
+  const uiLibraryProjects = [
+    {
+      id: 1,
+      title: "Quantum Dashboard",
+      description: "A futuristic dashboard with quantum computing visualizations",
+      thumbnail: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=225&fit=crop",
+      category: "UI Design",
+      color: "#6366f1"
+    },
+    {
+      id: 2,
+      title: "Data Visualization Suite",
+      description: "Interactive charts and graphs for complex datasets",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop",
+      category: "UI Components",
+      color: "#10b981"
+    },
+    {
+      id: 3,
+      title: "Neumorphic Calculator",
+      description: "Modern calculator with soft UI design principles",
+      thumbnail: "https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=400&h=225&fit=crop",
+      category: "UI Component",
+      color: "#f59e0b"
+    },
+    {
+      id: 4,
+      title: "Animated Navigation",
+      description: "Smooth animated navigation system with micro-interactions",
+      thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=225&fit=crop",
+      category: "UI Navigation",
+      color: "#8b5cf6"
+    },
+    {
+      id: 5,
+      title: "Dark Mode Toggle",
+      description: "Beautiful dark/light mode toggle with transitions",
+      thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=225&fit=crop",
+      category: "UI Component",
+      color: "#ec4899"
+    },
+    {
+      id: 6,
+      title: "Form Component Library",
+      description: "Complete set of accessible form components",
+      thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=225&fit=crop",
+      category: "UI Library",
+      color: "#3b82f6"
+    }
+  ];
+
   const projects = [
     {
       id: 1,
@@ -78,11 +135,19 @@ const Work: React.FC<WorkProps> = ({ theme }) => {
     }
   ];
 
+  const handleViewMore = () => {
+    navigate('/ui-library');
+  };
+
+  const handleCardClick = (projectId: number) => {
+    console.log('Clicked UI project:', projectId);
+  };
+
   return (
     <section 
       id="work" 
       style={{
-        padding: '100px 2rem',
+        padding: '120px 2rem 60px',
         backgroundColor: theme.bg,
         minHeight: '100vh',
         position: 'relative'
@@ -100,11 +165,306 @@ const Work: React.FC<WorkProps> = ({ theme }) => {
       }}></div>
 
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '1400px',
         margin: '0 auto',
         position: 'relative',
         zIndex: 1
       }}>
+        {/* Netflix-style UI Library Section */}
+        <div style={{ marginBottom: '6rem' }}>
+          {/* Section Header */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '2rem',
+            padding: '0 0.5rem'
+          }}>
+            <h2 style={{
+              fontSize: '1.8rem',
+              fontWeight: 700,
+              color: theme.text,
+              margin: 0
+            }}>
+              UI Component Library
+            </h2>
+            <button
+              onClick={handleViewMore}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: 'transparent',
+                border: `2px solid ${theme.accent}`,
+                borderRadius: '8px',
+                color: theme.accent,
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `${theme.accent}15`;
+                e.currentTarget.style.transform = 'translateX(4px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.transform = 'translateX(0)';
+              }}
+            >
+              View All
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Netflix-style Horizontal Scrolling Row */}
+          <div style={{
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {/* Scroll Container */}
+            <div style={{
+              display: 'flex',
+              gap: '1.5rem',
+              overflowX: 'auto',
+              padding: '1rem 0.5rem',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'thin',
+              scrollbarColor: `${theme.accent} ${theme.border}`
+            }} className="hide-scrollbar">
+              {uiLibraryProjects.map((project) => (
+                <motion.div
+                  key={project.id}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleCardClick(project.id)}
+                  style={{
+                    flex: '0 0 auto',
+                    width: '280px',
+                    background: theme.cardBg,
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    transition: 'all 0.3s ease',
+                    border: `1px solid ${theme.border}`
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = `0 20px 40px rgba(0, 0, 0, 0.3)`;
+                    e.currentTarget.style.borderColor = project.color;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = theme.border;
+                  }}
+                >
+                  {/* Thumbnail */}
+                  <div style={{
+                    width: '100%',
+                    height: '160px',
+                    background: `linear-gradient(135deg, ${project.color}20, ${project.color}40)`,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <img 
+                      src={project.thumbnail} 
+                      alt={project.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
+                    />
+                    {/* Category Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      padding: '0.25rem 0.75rem',
+                      background: `${project.color}dd`,
+                      color: 'white',
+                      borderRadius: '20px',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      backdropFilter: 'blur(4px)'
+                    }}>
+                      {project.category}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div style={{ padding: '1.25rem' }}>
+                    <h3 style={{
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      color: theme.text,
+                      marginBottom: '0.5rem',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
+                      {project.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '0.85rem',
+                      color: theme.textSecondary,
+                      lineHeight: 1.4,
+                      marginBottom: '1rem',
+                      height: '2.8rem',
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical'
+                    }}>
+                      {project.description}
+                    </p>
+                    
+                    {/* Preview Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCardClick(project.id);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem',
+                        background: `${project.color}15`,
+                        border: `1px solid ${project.color}30`,
+                        borderRadius: '8px',
+                        color: project.color,
+                        fontSize: '0.85rem',
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = `${project.color}25`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = `${project.color}15`;
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                      </svg>
+                      Preview Component
+                    </button>
+                  </div>
+
+                  {/* Hover Gradient Effect */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: `linear-gradient(to top, ${project.color}10, transparent 60%)`,
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none'
+                  }} className="hover-gradient"></div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Scroll Indicators */}
+            <button
+              onClick={() => {
+                const container = document.querySelector('.hide-scrollbar');
+                if (container) container.scrollLeft -= 300;
+              }}
+              style={{
+                position: 'absolute',
+                left: '0',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: theme.cardBg,
+                border: `1px solid ${theme.border}`,
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                opacity: 0.7,
+                zIndex: 2
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.background = theme.accent;
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '0.7';
+                e.currentTarget.style.background = theme.cardBg;
+                e.currentTarget.style.color = theme.text;
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => {
+                const container = document.querySelector('.hide-scrollbar');
+                if (container) container.scrollLeft += 300;
+              }}
+              style={{
+                position: 'absolute',
+                right: '0',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: theme.cardBg,
+                border: `1px solid ${theme.border}`,
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                opacity: 0.7,
+                zIndex: 2
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.background = theme.accent;
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '0.7';
+                e.currentTarget.style.background = theme.cardBg;
+                e.currentTarget.style.color = theme.text;
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* YOUR ORIGINAL PROJECTS SECTION */}
         {/* Header */}
         <div style={{
           textAlign: 'center',
@@ -317,58 +677,7 @@ const Work: React.FC<WorkProps> = ({ theme }) => {
           ))}
         </div>
 
-        {/* Stats Section */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '2rem',
-          marginBottom: '4rem'
-        }}>
-          {[
-            { label: 'Total Projects', value: '4', color: '#3b82f6' },
-            { label: 'Ongoing Projects', value: '3', color: '#10b981' },
-            { label: 'Hackathon Wins', value: '1', color: '#ec4899' },
-            { label: 'Technologies Used', value: '20+', color: '#8b5cf6' }
-          ].map((stat, index) => (
-            <div
-              key={index}
-              style={{
-                background: theme.cardBg,
-                borderRadius: '12px',
-                padding: '1.5rem',
-                border: `1px solid ${theme.border}`,
-                textAlign: 'center',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.borderColor = stat.color;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.borderColor = theme.border;
-              }}
-            >
-              <div style={{
-                fontSize: '2.5rem',
-                fontWeight: 700,
-                color: stat.color,
-                marginBottom: '0.5rem'
-              }}>
-                {stat.value}
-              </div>
-              <div style={{
-                color: theme.textSecondary,
-                fontSize: '0.9rem',
-                fontWeight: 500
-              }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Call to Action */}
+        {/* Call to Action (No Stats Section in between) */}
         <div style={{
           textAlign: 'center',
           padding: '3rem',
@@ -437,6 +746,50 @@ const Work: React.FC<WorkProps> = ({ theme }) => {
           </button>
         </div>
       </div>
+
+      <style>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .hover-gradient {
+          pointer-events: none;
+        }
+        
+        .hide-scrollbar > div:hover .hover-gradient {
+          opacity: 1;
+        }
+        
+        /* Responsive adjustments for Netflix-style row */
+        @media (max-width: 768px) {
+          .hide-scrollbar {
+            padding: 0.5rem;
+          }
+          
+          .hide-scrollbar > div {
+            width: 220px;
+          }
+          
+          .hide-scrollbar > div > div:first-child {
+            height: 120px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .hide-scrollbar {
+            gap: 1rem;
+          }
+          
+          .hide-scrollbar > div {
+            width: 200px;
+          }
+        }
+      `}</style>
     </section>
   );
 };

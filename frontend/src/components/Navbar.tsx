@@ -24,7 +24,10 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)',
       borderBottom: `1px solid ${theme.border}`,
-      transition: 'all 0.3s ease'
+      transition: 'all 0.3s ease',
+      fontFamily: 'system-ui, -apple-system, sans-serif', // Add this
+      textRendering: 'optimizeLegibility', // Add this
+      WebkitFontSmoothing: 'antialiased', // Add this
     }}>
       <nav style={{
         maxWidth: '1200px',
@@ -34,18 +37,18 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        {/* Logo/Home Link */}
+        {/* Logo/Home Link - FIXED: removed letterSpacing */}
         <Link 
           to="/" 
           style={{
             fontSize: '1.25rem',
             fontWeight: 700,
-            letterSpacing: '0.02em',
             color: theme.text,
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            textDecoration: 'none'
+            textDecoration: 'none',
+            fontFeatureSettings: '"liga" 1, "calt" 1', // Add this
           }}
         >
           <div style={{
@@ -73,7 +76,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
                 fontWeight: 500,
                 transition: 'color 0.2s ease',
                 cursor: 'pointer',
-                letterSpacing: '0.02em'
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
               onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
@@ -82,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </Link>
           )}
           
-          {/* Show Work link - highlight when active */}
+          {/* Work link */}
           <Link
             to="/work"
             style={{
@@ -92,7 +94,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
               fontWeight: 500,
               transition: 'color 0.2s ease',
               cursor: 'pointer',
-              letterSpacing: '0.02em'
             }}
             onMouseEnter={(e) => {
               if (!isActive('/work')) e.currentTarget.style.color = theme.accent;
@@ -102,6 +103,27 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             }}
           >
             Work
+          </Link>
+          
+          {/* UI Library link */}
+          <Link
+            to="/ui-library"
+            style={{
+              color: isActive('/ui-library') ? theme.accent : theme.textSecondary,
+              textDecoration: 'none',
+              fontSize: '0.9rem',
+              fontWeight: 500,
+              transition: 'color 0.2s ease',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive('/ui-library')) e.currentTarget.style.color = theme.accent;
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive('/ui-library')) e.currentTarget.style.color = theme.textSecondary;
+            }}
+          >
+            UI Library
           </Link>
           
           {/* Show About and Skills only on home page (as anchor links) */}
@@ -116,7 +138,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
                   fontWeight: 500,
                   transition: 'color 0.2s ease',
                   cursor: 'pointer',
-                  letterSpacing: '0.02em'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
                 onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
@@ -133,7 +154,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
                   fontWeight: 500,
                   transition: 'color 0.2s ease',
                   cursor: 'pointer',
-                  letterSpacing: '0.02em'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
                 onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
@@ -143,7 +163,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </>
           )}
           
-          {/* Contact link - React Router Link */}
+          {/* Contact link */}
           <Link
             to="/contact"
             style={{
@@ -153,7 +173,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
               fontWeight: 500,
               transition: 'color 0.2s ease',
               cursor: 'pointer',
-              letterSpacing: '0.02em'
             }}
             onMouseEnter={(e) => {
               if (!isActive('/contact')) e.currentTarget.style.color = theme.accent;
