@@ -21,11 +21,6 @@ interface ProfileCardProps {
   contactText?: string;
   showUserInfo?: boolean;
   onContactClick?: () => void;
-  showSocialLinks?: boolean;
-  onCvClick?: () => void;
-  onGithubClick?: () => void;
-  onInstagramClick?: () => void;
-  onWhatsappClick?: () => void;
 }
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
@@ -44,9 +39,9 @@ const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: numbe
   round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = '',
-  iconUrl = '',
-  grainUrl = '',
+  avatarUrl = '<Placeholder for avatar URL>',
+  iconUrl = '<Placeholder for icon URL>',
+  grainUrl = '<Placeholder for grain URL>',
   innerGradient,
   behindGlowEnabled = true,
   behindGlowColor,
@@ -56,18 +51,13 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   enableMobileTilt = false,
   mobileTiltSensitivity = 5,
   miniAvatarUrl,
-  name = 'Chokkapu Saketh',
-  title = 'AI/ML Engineer and Web Developer',
-  handle = 'ch-saketh',
+  name = 'Javi A. Torres',
+  title = '',
+  handle = 'javicodes',
   status = 'Online',
-  contactText = 'Contact Me',
+  contactText = 'Contact',
   showUserInfo = true,
-  showSocialLinks = true,
-  onContactClick,
-  onCvClick,
-  onGithubClick,
-  onInstagramClick,
-  onWhatsappClick
+  onContactClick
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -328,8 +318,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         '--icon': iconUrl ? `url(${iconUrl})` : 'none',
         '--grain': grainUrl ? `url(${grainUrl})` : 'none',
         '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
-        '--behind-glow-color': behindGlowColor ?? 'rgba(59, 130, 246, 0.4)',
-        '--behind-glow-size': behindGlowSize ?? '35%',
+        '--behind-glow-color': behindGlowColor ?? 'rgba(125, 190, 255, 0.67)',
+        '--behind-glow-size': behindGlowSize ?? '50%'
       }) as React.CSSProperties,
     [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]
   );
@@ -339,11 +329,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   }, [onContactClick]);
 
   return (
-    <div 
-      ref={wrapRef} 
-      className={`pc-card-wrapper ${className}`.trim()} 
-      style={cardStyle}
-    >
+    <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
       {behindGlowEnabled && <div className="pc-behind" />}
       <div ref={shellRef} className="pc-card-shell">
         <section className="pc-card">
@@ -351,35 +337,30 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             <div className="pc-shine" />
             <div className="pc-glare" />
             <div className="pc-content pc-avatar-content">
-              {avatarUrl && (
-                <img
-                  className="avatar"
-                  src={avatarUrl}
-                  alt={`${name} avatar`}
-                  loading="lazy"
-                  onError={e => {
-                    const t = e.target as HTMLImageElement;
-                    console.error('Failed to load avatar image:', avatarUrl);
-                    t.style.display = 'none';
-                  }}
-                />
-              )}
+              <img
+                className="avatar"
+                src={avatarUrl}
+                alt={`${name || 'User'} avatar`}
+                loading="lazy"
+                onError={e => {
+                  const t = e.target as HTMLImageElement;
+                  t.style.display = 'none';
+                }}
+              />
               {showUserInfo && (
                 <div className="pc-user-info">
                   <div className="pc-user-details">
                     <div className="pc-mini-avatar">
-                      {(miniAvatarUrl || avatarUrl) && (
-                        <img
-                          src={miniAvatarUrl || avatarUrl}
-                          alt={`${name} mini avatar`}
-                          loading="lazy"
-                          onError={e => {
-                            const t = e.target as HTMLImageElement;
-                            console.error('Failed to load mini avatar:', miniAvatarUrl || avatarUrl);
-                            t.style.opacity = '0.3';
-                          }}
-                        />
-                      )}
+                      <img
+                        src={miniAvatarUrl || avatarUrl}
+                        alt={`${name || 'User'} mini avatar`}
+                        loading="lazy"
+                        onError={e => {
+                          const t = e.target as HTMLImageElement;
+                          t.style.opacity = '0.5';
+                          t.src = avatarUrl;
+                        }}
+                      />
                     </div>
                     <div className="pc-user-text">
                       <div className="pc-handle">@{handle}</div>
@@ -389,57 +370,24 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   <button
                     className="pc-contact-btn"
                     onClick={handleContactClick}
+                    style={{ pointerEvents: 'auto' }}
                     type="button"
-                    aria-label={`Contact ${name}`}
+                    aria-label={`Contact ${name || 'user'}`}
                   >
                     {contactText}
                   </button>
                 </div>
               )}
             </div>
-            {/* THIS SECTION IS CHANGED TO ALIGN LEFT */}
             <div className="pc-content">
-              <div className="pc-details" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
-                <h3 style={{ textAlign: 'left' }}>{name}</h3>
+              <div className="pc-details">
+                <h3>{name}</h3>
+                <p>{title}</p>
               </div>
             </div>
           </div>
         </section>
       </div>
-      
-      {/* Social Links Section */}
-      {showSocialLinks && (
-        <div className="pc-social-links">
-          <button 
-            className="pc-social-btn pc-cv-btn"
-            onClick={onCvClick}
-            aria-label="Download CV"
-          >
-            Get CV
-          </button>
-          <button 
-            className="pc-social-btn pc-github-btn"
-            onClick={onGithubClick}
-            aria-label="GitHub Profile"
-          >
-            Github
-          </button>
-          <button 
-            className="pc-social-btn pc-instagram-btn"
-            onClick={onInstagramClick}
-            aria-label="Instagram Profile"
-          >
-            Instagram
-          </button>
-          <button 
-            className="pc-social-btn pc-whatsapp-btn"
-            onClick={onWhatsappClick}
-            aria-label="Contact on WhatsApp"
-          >
-            Whatsapp
-          </button>
-        </div>
-      )}
     </div>
   );
 };
