@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './home/Home';
+import About from './pages/About'; // ADDED THIS
 import Work from './pages/Work';
 import Contact from './pages/contact';
 import UILibrary from './pages/UILibrary';
@@ -10,7 +11,7 @@ import Navigation from './components/Navbar';
 
 function App() {
   useEffect(() => {
-    document.title = 'CS22';
+    document.title = 'Saketh | Portfolio';
   }, []);
 
   const theme = {
@@ -30,7 +31,8 @@ function App() {
         <Navigation theme={theme} />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home theme={theme} />} />
+          <Route path="/about" element={<About theme={theme} />} /> 
           <Route path="/work" element={<Work theme={theme} />} />
           <Route path="/contact" element={<Contact theme={theme} />} />
           <Route path="/ui-library" element={<UILibrary theme={theme} />} />
