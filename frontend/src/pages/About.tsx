@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
-import profileImage from '../assets/profile-photo.png';
+// CHANGED FROM .jpg TO .png
+import profileImage from '../assets/saketh-photo.png'; 
 import resumeFile from '../assets/saketh_resume.pdf'; 
 
 interface AboutProps {
@@ -16,7 +17,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   return (
     <section id="about" style={styles.section}>
       <div style={styles.mainContainer}>
-        {/* LEFT COLUMN: IDENTITY & SKILLS */}
+        {/* LEFT COLUMN: IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left">
           <div style={{ ...styles.badge, borderColor: theme.border }}>
             <div className="status-orb" style={{ background: theme.accent }} />
@@ -73,7 +74,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
               avatarUrl={profileImage}
               enableTilt={true}
               behindGlowEnabled={false}
-              showSocialLinks={false} 
               handle="ch-saketh"
             />
           </div>
@@ -105,12 +105,9 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* INTERNAL CARD POSITIONING */
-        
-        /* THE FIX: Tiny raise (14px) and perfect centering */
+        /* Centering the name precisely below the photo */
         .pc-details {
-          margin-top: 14px !important; /* Slightly raised from 20px */
-          padding-left: 0 !important;
+          margin-top: 14px !important; 
           text-align: center !important;
           width: 100% !important;
           display: flex !important;
@@ -124,10 +121,9 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           font-size: 1.6rem !important;
           font-weight: 700;
           color: #fff;
-          letter-spacing: -0.01em;
         }
 
-        /* Glass footer bar containment */
+        /* Glass footer containment fix */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
