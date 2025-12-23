@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { allComponents, categories } from "../components/componentsData"; // Matches renamed export
-import { Search, Grid, Cpu, Layout, Box, Sparkles, Terminal } from "lucide-react";
+import { allComponents, categories } from "../components/componentsData";
+import { Search, Grid, Cpu, Layout, Box, Microscope, Terminal } from "lucide-react"; // Replaced Sparkles with Microscope
 
 interface UILibraryProps {
   theme: {
@@ -25,11 +25,11 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
 
   return (
     <div style={{ ...styles.container, backgroundColor: theme.bg, color: theme.text }}>
-      {/* SIDEBAR */}
+      {/* SIDEBAR - CLEAN VERSION */}
       <aside style={{ ...styles.sidebar, borderRight: `1px solid ${theme.border}` }}>
         <div style={styles.sidebarHeader}>
-          <Sparkles size={18} color={theme.accent} />
-          <h2 style={styles.sidebarTitle}>LABORATORY</h2>
+          <Microscope size={18} color={theme.accent} /> {/* Changed symbol */}
+          <h2 style={styles.sidebarTitle}>COMPONENT LAB</h2> {/* Renamed title */}
         </div>
         
         <nav style={styles.navStack}>
@@ -87,7 +87,6 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
               <div style={styles.cardInfo}>
                 <div style={styles.cardHeader}>
                   <h3 style={styles.cardTitle}>{comp.title}</h3>
-                  {comp.isNew && <span style={{ ...styles.newBadge, background: theme.accent }}>NEW</span>}
                 </div>
                 <p style={{ ...styles.cardDesc, color: theme.textSecondary }}>{comp.description}</p>
                 <div style={styles.tagList}>
@@ -109,8 +108,7 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
           transition: all 0.4s ease;
         }
         .component-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+          transform: translateY(-8px);
           border-color: ${theme.accent} !important;
         }
         @keyframes revealCard { to { opacity: 1; transform: translateY(0); } }
@@ -138,7 +136,6 @@ const styles = {
   cardInfo: { padding: "1.8rem" },
   cardHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" },
   cardTitle: { fontSize: "18px", fontWeight: 700, margin: 0 },
-  newBadge: { fontSize: "9px", padding: "3px 8px", borderRadius: "6px", fontWeight: 900, color: "#fff" },
   cardDesc: { fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0", opacity: 0.7 },
   tagList: { display: "flex", flexWrap: "wrap" as const, gap: "8px" },
   tag: { fontSize: "10px", padding: "4px 10px", borderRadius: "8px", border: "1px solid", opacity: 0.5, fontWeight: 600 },
