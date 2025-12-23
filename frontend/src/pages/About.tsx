@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
-// CHANGED FROM .jpg TO .png
+// Ensure file is named exactly saketh-photo.png in src/assets/
 import profileImage from '../assets/saketh-photo.png'; 
 import resumeFile from '../assets/saketh_resume.pdf'; 
 
+// THE FIX: Interface must match the object passed from App.tsx
 interface AboutProps {
   theme: {
-    accent: string;
+    bg: string;
+    text: string;
+    textSecondary: string;
+    cardBg: string;
     border: string;
+    headerBg: string;
+    accent: string;
+    accentLight: string;
   };
 }
 
@@ -105,7 +112,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Centering the name precisely below the photo */
+        /* POSITIONING: Perfect centering and slight raise */
         .pc-details {
           margin-top: 14px !important; 
           text-align: center !important;
@@ -121,9 +128,10 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           font-size: 1.6rem !important;
           font-weight: 700;
           color: #fff;
+          letter-spacing: -0.01em;
         }
 
-        /* Glass footer containment fix */
+        /* Footer glass bar containment */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
