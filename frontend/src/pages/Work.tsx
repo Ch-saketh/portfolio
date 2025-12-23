@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Theme } from '../types/theme';
 
 const Work: React.FC<{ theme: any }> = ({ theme }) => {
   const [sel, setSel] = useState<any>(null);

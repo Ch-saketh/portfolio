@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Theme } from '../types/theme';
 
 interface ContactProps {
   theme: any;

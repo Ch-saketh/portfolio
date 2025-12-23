@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { allComponents, ComponentItem } from "../components/componentsData";
+import { Theme } from '../types/theme';
 
 // Define the standard professional theme based on your App.tsx
 const defaultTheme = {

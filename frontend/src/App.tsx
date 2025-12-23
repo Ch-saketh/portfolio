@@ -25,7 +25,7 @@ function App() {
   }, []);
 
   /* ---------------- THEME OBJECT ---------------- */
-  const theme: Theme = {
+   const theme: Theme = {
     bg: '#0f0f15',
     text: '#ffffff',
     textSecondary: '#a0a0a0',
@@ -35,7 +35,6 @@ function App() {
     accent: '#3b82f6',
     accentLight: '#60a5fa',
   };
-
   /* ---------------- TYPE-SAFE COMPONENT CASTING ---------------- */
   const NavigationWithTheme = Navigation as React.FC<{ theme: Theme }>;
   const WorkWithTheme = Work as React.FC<{ theme: Theme }>;

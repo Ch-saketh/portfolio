@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Theme } from '../types/theme';
 
 interface SkillsProps {
   theme: any;

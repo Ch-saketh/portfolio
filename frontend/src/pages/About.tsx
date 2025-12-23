@@ -3,6 +3,7 @@ import ProfileCard from '../components/ProfileCard';
 // Use the PNG file name exactly as it appears in your assets folder
 import profileImage from '../assets/saketh-photo.png'; 
 import resumeFile from '../assets/saketh_resume.pdf'; 
+import { Theme } from '../types/theme';
 
 // THE FIX: This interface now matches the exact theme object structure from App.tsx
 interface AboutProps {
