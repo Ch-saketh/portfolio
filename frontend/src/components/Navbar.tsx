@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
@@ -7,8 +7,17 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ theme }) => {
   const location = useLocation();
-  
-  // Check if current path is active
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Logic: Only activate background if scrolled more than 10px
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -20,24 +29,28 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
       left: 0,
       right: 0,
       zIndex: 1000,
-      backgroundColor: theme.headerBg,
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      borderBottom: `1px solid ${theme.border}`,
-      transition: 'all 0.3s ease',
-      fontFamily: 'system-ui, -apple-system, sans-serif', // Add this
-      textRendering: 'optimizeLegibility', // Add this
-      WebkitFontSmoothing: 'antialiased', // Add this
+      // FULL TRANSPARENCY: Removes the black patch entirely at the top
+      backgroundColor: isScrolled ? theme.headerBg : 'transparent',
+      
+      // BLUR REMOVAL: Blur also creates a "darkening" effect; we remove it at top
+      backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      
+      // BORDER REMOVAL: Removes the line cutting through your LightRays
+      borderBottom: isScrolled ? `1px solid ${theme.border}` : '1px solid transparent',
+      
+      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
     }}>
       <nav style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '1.5rem 2rem',
+        padding: isScrolled ? '1rem 2rem' : '1.5rem 2rem', 
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        transition: 'padding 0.4s ease',
       }}>
-        {/* Logo/Home Link - FIXED: removed letterSpacing */}
         <Link 
           to="/" 
           style={{
@@ -48,7 +61,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             alignItems: 'center',
             gap: '0.5rem',
             textDecoration: 'none',
-            fontFeatureSettings: '"liga" 1, "calt" 1', // Add this
           }}
         >
           <div style={{
@@ -65,18 +77,10 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
           alignItems: 'center',
           gap: '2.5rem'
         }}>
-          {/* Show Home link only when NOT on home page */}
           {location.pathname !== '/' && (
             <Link
               to="/"
-              style={{
-                color: theme.textSecondary,
-                textDecoration: 'none',
-                fontSize: '0.9rem',
-                fontWeight: 500,
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-              }}
+              style={navLinkStyle(false, theme)}
               onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
               onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
             >
@@ -84,61 +88,20 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </Link>
           )}
           
-          {/* Work link */}
-          <Link
-            to="/work"
-            style={{
-              color: isActive('/work') ? theme.accent : theme.textSecondary,
-              textDecoration: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 500,
-              transition: 'color 0.2s ease',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive('/work')) e.currentTarget.style.color = theme.accent;
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive('/work')) e.currentTarget.style.color = theme.textSecondary;
-            }}
-          >
-            Work
-          </Link>
-          
-          {/* UI Library link */}
           <Link
             to="/ui-library"
-            style={{
-              color: isActive('/ui-library') ? theme.accent : theme.textSecondary,
-              textDecoration: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 500,
-              transition: 'color 0.2s ease',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive('/ui-library')) e.currentTarget.style.color = theme.accent;
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive('/ui-library')) e.currentTarget.style.color = theme.textSecondary;
-            }}
+            style={navLinkStyle(isActive('/ui-library'), theme)}
+            onMouseEnter={(e) => !isActive('/ui-library') && (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => !isActive('/ui-library') && (e.currentTarget.style.color = theme.textSecondary)}
           >
             UI Library
           </Link>
           
-          {/* Show About and Skills only on home page (as anchor links) */}
           {location.pathname === '/' && (
             <>
               <a
                 href="#about"
-                style={{
-                  color: theme.textSecondary,
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  transition: 'color 0.2s ease',
-                  cursor: 'pointer',
-                }}
+                style={navLinkStyle(false, theme)}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
                 onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
               >
@@ -147,14 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
               
               <a
                 href="#skills"
-                style={{
-                  color: theme.textSecondary,
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  transition: 'color 0.2s ease',
-                  cursor: 'pointer',
-                }}
+                style={navLinkStyle(false, theme)}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
                 onMouseLeave={(e) => e.currentTarget.style.color = theme.textSecondary}
               >
@@ -163,23 +119,11 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </>
           )}
           
-          {/* Contact link */}
           <Link
             to="/contact"
-            style={{
-              color: isActive('/contact') ? theme.accent : theme.textSecondary,
-              textDecoration: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 500,
-              transition: 'color 0.2s ease',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive('/contact')) e.currentTarget.style.color = theme.accent;
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive('/contact')) e.currentTarget.style.color = theme.textSecondary;
-            }}
+            style={navLinkStyle(isActive('/contact'), theme)}
+            onMouseEnter={(e) => !isActive('/contact') && (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => !isActive('/contact') && (e.currentTarget.style.color = theme.textSecondary)}
           >
             Contact
           </Link>
@@ -188,5 +132,14 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
     </header>
   );
 };
+
+const navLinkStyle = (active: boolean, theme: any) => ({
+  color: active ? theme.accent : theme.textSecondary,
+  textDecoration: 'none',
+  fontSize: '0.9rem',
+  fontWeight: 500,
+  transition: 'color 0.2s ease',
+  cursor: 'pointer',
+});
 
 export default Navbar;

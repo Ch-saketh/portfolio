@@ -58,7 +58,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   miniAvatarUrl,
   name = 'Chokkapu Saketh',
   title = 'AI/ML Engineer and Web Developer',
-  handle = 'javicodes',
+  handle = 'ch-saketh',
   status = 'Online',
   contactText = 'Contact Me',
   showUserInfo = true,
@@ -397,9 +397,10 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 </div>
               )}
             </div>
+            {/* THIS SECTION IS CHANGED TO ALIGN LEFT */}
             <div className="pc-content">
-              <div className="pc-details">
-                <h3>{name}</h3>
+              <div className="pc-details" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+                <h3 style={{ textAlign: 'left' }}>{name}</h3>
               </div>
             </div>
           </div>
