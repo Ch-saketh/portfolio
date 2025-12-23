@@ -1,238 +1,147 @@
-import React, { useState, useEffect } from "react";
-import { allComponents, ComponentItem } from "../components/componentsData";
-import { Theme } from '../types/theme';
+import React, { useState } from "react";
+import { allComponents, categories } from "../components/componentsData"; // Matches renamed export
+import { Search, Grid, Cpu, Layout, Box, Sparkles, Terminal } from "lucide-react";
 
-// Define the standard professional theme based on your App.tsx
-const defaultTheme = {
-  bg: '#0f0f15',          // From your App.tsx
-  surface: '#161620',     // Slightly lighter for depth
-  panel: '#1a1a25',       // From your cardBg in App.tsx
-  border: 'rgba(255, 255, 255, 0.08)', 
-  text: '#ffffff',
-  textMuted: '#a0a0a0',   // From your textSecondary in App.tsx
-  accent: '#3b82f6',      // From your accent in App.tsx
-  codeBg: '#050505',
-};
+interface UILibraryProps {
+  theme: {
+    bg: string;
+    text: string;
+    textSecondary: string;
+    cardBg: string;
+    border: string;
+    accent: string;
+  };
+}
 
-type CodeLanguage = 'typescript' | 'javascript' | 'tailwind';
+const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-/**
- * COMPONENT PREVIEW (The Stage)
- * This is the "God-tier" view area with a grid background and floating glass tabs.
- */
-const ComponentPreview: React.FC<{ component: ComponentItem; theme: typeof defaultTheme }> = ({ component, theme }) => {
-  const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
-  const [activeLang, setActiveLang] = useState<CodeLanguage>('typescript');
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-      
-      {/* 1. THE STAGE: High-end visual area */}
-      <div style={{
-        position: 'relative',
-        background: `radial-gradient(circle at 50% 50%, ${theme.surface} 0%, ${theme.bg} 100%)`,
-        borderRadius: '24px',
-        border: `1px solid ${theme.border}`,
-        minHeight: '500px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        boxShadow: '0 30px 60px -12px rgba(0,0,0,0.5)'
-      }}>
-        {/* Designer Grid Overlay */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)`,
-          backgroundSize: '32px 32px',
-          maskImage: 'radial-gradient(ellipse at center, black, transparent 80%)'
-        }} />
-
-        {/* Floating Glass Tab Switcher */}
-        <div style={{
-          position: 'absolute',
-          top: '24px',
-          display: 'flex',
-          background: 'rgba(255,255,255,0.03)',
-          backdropFilter: 'blur(12px)',
-          padding: '4px',
-          borderRadius: '12px',
-          border: `1px solid ${theme.border}`,
-          zIndex: 10
-        }}>
-          {['preview', 'code'].map((t) => (
-            <button
-              key={t}
-              onClick={() => setActiveTab(t as any)}
-              style={{
-                padding: '8px 24px',
-                borderRadius: '8px',
-                border: 'none',
-                background: activeTab === t ? theme.accent : 'transparent',
-                color: '#fff',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: '0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-              }}
-            >
-              {t.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
-        {/* Preview / Code Content */}
-        <div style={{ position: 'relative', zIndex: 1, width: '100%', padding: '40px' }}>
-          {activeTab === 'preview' ? (
-            <div style={{ textAlign: 'center' }}>
-               {/* Replace with actual component rendering */}
-               <h2 style={{ fontSize: '4rem', fontWeight: 900, letterSpacing: '-3px' }}>{component.title}</h2>
-               <p style={{ color: theme.textMuted }}>Interactive Preview coming soon...</p>
-            </div>
-          ) : (
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-                {['typescript', 'javascript', 'tailwind'].map((l) => (
-                  <button 
-                    key={l}
-                    onClick={() => setActiveLang(l as any)}
-                    style={{
-                      background: activeLang === l ? 'rgba(255,255,255,0.1)' : 'transparent',
-                      border: `1px solid ${activeLang === l ? theme.accent : 'transparent'}`,
-                      color: activeLang === l ? '#fff' : theme.textMuted,
-                      padding: '4px 12px',
-                      borderRadius: '6px',
-                      fontSize: '11px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {l.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-              <pre style={{ 
-                background: '#050505', 
-                padding: '24px', 
-                borderRadius: '16px', 
-                border: `1px solid ${theme.border}`,
-                fontFamily: 'Fira Code, monospace',
-                fontSize: '13px',
-                lineHeight: 1.6,
-                overflowX: 'auto'
-              }}>
-                <code>{(component as any)[activeLang] || '// Component code here'}</code>
-              </pre>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 2. PROPS REFERENCE: Clean, minimalist table */}
-      <section>
-        <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '20px' }}>Properties</h3>
-        <div style={{ border: `1px solid ${theme.border}`, borderRadius: '16px', overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
-            <thead style={{ background: 'rgba(255,255,255,0.02)', borderBottom: `1px solid ${theme.border}` }}>
-              <tr>
-                <th style={{ padding: '16px' }}>Property</th>
-                <th style={{ padding: '16px' }}>Type</th>
-                <th style={{ padding: '16px' }}>Default</th>
-              </tr>
-            </thead>
-            <tbody>
-              {component.props.map((prop, i) => (
-                <tr key={i} style={{ borderBottom: `1px solid ${theme.border}` }}>
-                  <td style={{ padding: '16px', color: theme.accent, fontFamily: 'monospace' }}>{prop.name}</td>
-                  <td style={{ padding: '16px', color: theme.textMuted }}>{prop.type}</td>
-                  <td style={{ padding: '16px', opacity: 0.8 }}>{prop.default}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-/**
- * UI LIBRARY MAIN DASHBOARD
- * Features a fixed glass sidebar and high-end typography.
- */
-const UILibrary: React.FC = () => {
-  const [selected, setSelected] = useState<ComponentItem>(allComponents[0]);
-  const theme = defaultTheme;
+  const filtered = allComponents.filter((comp) => {
+    const matchesCategory = activeCategory === "All" || comp.category === activeCategory;
+    const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div style={{ minHeight: '100vh', background: theme.bg, color: theme.text, display: 'flex' }}>
-      
-      {/* LEFT SIDEBAR */}
-      <aside style={{
-        width: '300px',
-        height: '100vh',
-        position: 'fixed',
-        borderRight: `1px solid ${theme.border}`,
-        padding: '40px 24px',
-        overflowY: 'auto',
-        background: 'rgba(15, 15, 21, 0.5)',
-        backdropFilter: 'blur(20px)'
-      }}>
-        <div style={{ marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '32px', height: '32px', background: theme.accent, borderRadius: '8px' }} />
-          <span style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-1px' }}>REACT BITS</span>
+    <div style={{ ...styles.container, backgroundColor: theme.bg, color: theme.text }}>
+      {/* SIDEBAR */}
+      <aside style={{ ...styles.sidebar, borderRight: `1px solid ${theme.border}` }}>
+        <div style={styles.sidebarHeader}>
+          <Sparkles size={18} color={theme.accent} />
+          <h2 style={styles.sidebarTitle}>LABORATORY</h2>
         </div>
-
-        <nav>
-          <p style={{ fontSize: '10px', fontWeight: 800, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Components</p>
-          {allComponents.map(item => (
+        
+        <nav style={styles.navStack}>
+          {["All", ...categories].map((cat) => (
             <button
-              key={item.id}
-              onClick={() => setSelected(item)}
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
               style={{
-                display: 'block',
-                width: '100%',
-                textAlign: 'left',
-                padding: '10px 16px',
-                marginBottom: '4px',
-                background: selected.id === item.id ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-                color: selected.id === item.id ? theme.accent : theme.textMuted,
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: '0.2s'
+                ...styles.navItem,
+                color: activeCategory === cat ? theme.accent : theme.textSecondary,
+                backgroundColor: activeCategory === cat ? `${theme.accent}10` : "transparent",
               }}
             >
-              {item.title}
+              {cat === "All" && <Grid size={16} />}
+              {cat === "Animations" && <Cpu size={16} />}
+              {cat === "Layouts" && <Layout size={16} />}
+              {cat === "Components" && <Box size={16} />}
+              <span style={{ marginLeft: "12px" }}>{cat}</span>
             </button>
           ))}
         </nav>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
-      <main style={{ marginLeft: '300px', flex: 1, padding: '80px 60px' }}>
-        <header style={{ marginBottom: '60px', maxWidth: '800px' }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '16px', letterSpacing: '-3px' }}>
-            {selected.title}
-          </h1>
-          <p style={{ fontSize: '1.1rem', color: theme.textMuted, lineHeight: 1.6 }}>
-            {selected.description}
-          </p>
+      {/* MAIN VIEWPORT */}
+      <main style={styles.mainContent}>
+        <header style={styles.header}>
+          <div style={styles.searchWrapper}>
+            <Search size={18} style={styles.searchIcon} color={theme.textSecondary} />
+            <input 
+              type="text" 
+              placeholder="Search components..." 
+              style={{ ...styles.searchInput, borderColor: theme.border, color: theme.text }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </header>
 
-        <ComponentPreview component={selected} theme={theme} />
+        <div style={styles.grid}>
+          {filtered.map((comp, index) => (
+            <div 
+              key={comp.id} 
+              className="component-card"
+              style={{ 
+                ...styles.card, 
+                backgroundColor: theme.cardBg, 
+                borderColor: theme.border,
+                animationDelay: `${index * 0.08}s`
+              }}
+            >
+              <div style={styles.previewArea}>
+                <div style={{ ...styles.accentGlow, background: theme.accent }} />
+                <Terminal size={40} color={theme.accent} style={{ opacity: 0.2 }} />
+              </div>
+              
+              <div style={styles.cardInfo}>
+                <div style={styles.cardHeader}>
+                  <h3 style={styles.cardTitle}>{comp.title}</h3>
+                  {comp.isNew && <span style={{ ...styles.newBadge, background: theme.accent }}>NEW</span>}
+                </div>
+                <p style={{ ...styles.cardDesc, color: theme.textSecondary }}>{comp.description}</p>
+                <div style={styles.tagList}>
+                  {comp.tags.map(tag => (
+                    <span key={tag} style={{ ...styles.tag, borderColor: theme.border }}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
 
       <style>{`
-        body { margin: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: ${theme.border}; border-radius: 10px; }
-        button:hover { opacity: 0.8; }
+        .component-card {
+          animation: revealCard 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.4s ease;
+        }
+        .component-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+          border-color: ${theme.accent} !important;
+        }
+        @keyframes revealCard { to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
+};
+
+const styles = {
+  container: { display: "flex", minHeight: "100vh", paddingTop: "80px" },
+  sidebar: { width: "260px", padding: "2rem", position: "fixed" as const, height: "calc(100vh - 80px)" },
+  sidebarHeader: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "2.5rem" },
+  sidebarTitle: { fontSize: "12px", fontWeight: 800, letterSpacing: "3px", margin: 0, opacity: 0.8 },
+  navStack: { display: "flex", flexDirection: "column" as const, gap: "10px" },
+  navItem: { display: "flex", alignItems: "center", padding: "14px 18px", borderRadius: "12px", border: "none", cursor: "pointer", transition: "0.3s", fontWeight: 600, fontSize: "14px", textAlign: "left" as const },
+  mainContent: { flex: 1, marginLeft: "260px", padding: "3rem 5rem" },
+  header: { marginBottom: "4rem" },
+  searchWrapper: { position: "relative" as const, maxWidth: "600px" },
+  searchIcon: { position: "absolute" as const, left: "20px", top: "50%", transform: "translateY(-50%)" },
+  searchInput: { width: "100%", padding: "16px 20px 16px 56px", borderRadius: "14px", background: "rgba(255,255,255,0.03)", border: "1px solid", outline: "none", fontSize: "15px" },
+  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "2.5rem" },
+  card: { borderRadius: "20px", border: "1px solid", overflow: "hidden", cursor: "pointer" },
+  previewArea: { height: "200px", background: "linear-gradient(180deg, #000 0%, #050505 100%)", position: "relative" as const, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" },
+  accentGlow: { position: "absolute" as const, width: "120px", height: "120px", borderRadius: "50%", filter: "blur(70px)", opacity: 0.12 },
+  cardInfo: { padding: "1.8rem" },
+  cardHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" },
+  cardTitle: { fontSize: "18px", fontWeight: 700, margin: 0 },
+  newBadge: { fontSize: "9px", padding: "3px 8px", borderRadius: "6px", fontWeight: 900, color: "#fff" },
+  cardDesc: { fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0", opacity: 0.7 },
+  tagList: { display: "flex", flexWrap: "wrap" as const, gap: "8px" },
+  tag: { fontSize: "10px", padding: "4px 10px", borderRadius: "8px", border: "1px solid", opacity: 0.5, fontWeight: 600 },
 };
 
 export default UILibrary;
