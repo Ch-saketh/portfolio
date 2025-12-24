@@ -3,10 +3,11 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './home/Home';
-import About from './pages/About'; // ADDED THIS
+import About from './pages/About';
 import Work from './pages/Work';
 import Contact from './pages/contact';
 import UILibrary from './pages/UILibrary';
+import ComponentDetailPage from './components/ComponentDetailPage'; // ADD THIS IMPORT
 import Navigation from './components/Navbar';
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
           <Route path="/work" element={<Work theme={theme} />} />
           <Route path="/contact" element={<Contact theme={theme} />} />
           <Route path="/ui-library" element={<UILibrary theme={theme} />} />
+          {/* ADD THIS ROUTE FOR COMPONENT DETAIL PAGE */}
+          <Route path="/component/:componentId" element={<ComponentDetailPage theme={theme} />} />
         </Routes>
       </div>
     </Router>

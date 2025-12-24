@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { allComponents, categories } from "../components/componentsData";
+import { Link } from "react-router-dom";
 import { Search, Grid, Box, Microscope, Layers, Sparkles, Zap, ChevronRight } from "lucide-react";
+import { allComponentDetails, getAllCategories } from "../components/componentData";
 
-// --- TYPES & INTERFACES ---
 interface Theme {
   bg: string;
   text: string;
@@ -19,6 +19,7 @@ interface ComponentData {
   description: string;
   category: string;
   tags: string[];
+  isNew?: boolean;
 }
 
 interface UILibraryProps {
@@ -30,10 +31,13 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const categories = ["All", ...getAllCategories()];
+
   const filtered = useMemo(() => {
-    return allComponents.filter((comp: ComponentData) => {
+    return allComponentDetails.filter((comp: ComponentData) => {
       const matchesCategory = activeCategory === "All" || comp.category === activeCategory;
-      const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          comp.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
@@ -59,22 +63,30 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
         </div>
 
         <nav className="space-y-1.5">
-          <SidebarLink 
-            icon={<Grid size={18} />} 
-            label="All Assets" 
-            active={activeCategory === "All"} 
-            onClick={() => setActiveCategory("All")}
-            accent={theme.accent}
-          />
-          {categories.map((cat) => (
-            <SidebarLink 
+          {categories.map((cat: string) => (
+            <button 
               key={cat}
-              icon={cat.toLowerCase().includes("anim") ? <Zap size={18} /> : <Box size={18} />} 
-              label={cat} 
-              active={activeCategory === cat} 
               onClick={() => setActiveCategory(cat)}
-              accent={theme.accent}
-            />
+              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-500
+                         ${activeCategory === cat ? 'translate-x-1' : 'hover:bg-black/5 dark:hover:bg-white/5 opacity-50 hover:opacity-100'}`}
+              style={{ 
+                backgroundColor: activeCategory === cat ? `${theme.accent}15` : 'transparent',
+                color: activeCategory === cat ? theme.accent : 'inherit'
+              }}
+            >
+              <span className={activeCategory === cat ? "scale-110 transition-transform" : ""}>
+                {cat === "All" ? <Grid size={18} /> : 
+                 cat.toLowerCase().includes("anim") ? <Zap size={18} /> : <Box size={18} />}
+              </span>
+              <span className="tracking-tight">{cat}</span>
+              {activeCategory === cat && (
+                <motion.div 
+                  layoutId="active-pill" 
+                  className="ml-auto w-1 h-4 rounded-full" 
+                  style={{ backgroundColor: theme.accent }} 
+                />
+              )}
+            </button>
           ))}
         </nav>
       </aside>
@@ -101,7 +113,7 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
 
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
           <AnimatePresence mode="popLayout">
-            {filtered.map((comp) => (
+            {filtered.map((comp: ComponentData) => (
               <ComponentCard key={comp.id} comp={comp} theme={theme} />
             ))}
           </AnimatePresence>
@@ -111,87 +123,68 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
   );
 };
 
-// --- SIDEBAR LINK HELPER ---
-interface SidebarLinkProps {
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-  accent: string;
-}
-
-const SidebarLink: React.FC<SidebarLinkProps> = ({ icon, label, active, onClick, accent }) => (
-  <button 
-    onClick={onClick}
-    className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-500
-               ${active ? 'translate-x-1' : 'hover:bg-black/5 dark:hover:bg-white/5 opacity-50 hover:opacity-100'}`}
-    style={{ 
-      backgroundColor: active ? `${accent}15` : 'transparent',
-      color: active ? accent : 'inherit'
-    }}
-  >
-    <span className={active ? "scale-110 transition-transform" : ""}>{icon}</span>
-    <span className="tracking-tight">{label}</span>
-    {active && (
-      <motion.div 
-        layoutId="active-pill" 
-        className="ml-auto w-1 h-4 rounded-full" 
-        style={{ backgroundColor: accent }} 
-      />
-    )}
-  </button>
-);
-
 // --- COMPONENT CARD HELPER ---
 interface ComponentCardProps {
   comp: ComponentData;
   theme: Theme;
 }
 
-const ComponentCard: React.FC<ComponentCardProps> = ({ comp, theme }) => (
-  <motion.div 
-    layout
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, scale: 0.95 }}
-    whileHover={{ y: -10 }}
-    transition={{ type: "spring", stiffness: 260, damping: 20 }}
-    className="group relative flex flex-col rounded-[38px] overflow-hidden 
-               bg-white dark:bg-[#0A0A0A] border border-black/[0.03] dark:border-white/[0.03]
-               shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-shadow"
-  >
-    {/* Preview Area with Glass Reflection */}
-    <div className="h-60 bg-[#FBFBFD] dark:bg-[#111] flex items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000
-                      bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
-      <div className="w-32 h-32 rounded-full blur-[80px] opacity-10 absolute" style={{ backgroundColor: theme.accent }} />
-      <Layers size={54} className="opacity-10 group-hover:opacity-40 transition-all duration-700 group-hover:scale-110" style={{ color: theme.accent }} />
-    </div>
-    
-    <div className="p-10">
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-2xl font-bold tracking-tight">{comp.title}</h3>
-        <Sparkles size={18} style={{ color: theme.accent }} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-      </div>
-      <p className="text-sm leading-relaxed opacity-40 group-hover:opacity-60 transition-opacity mb-10 line-clamp-2">
-        {comp.description}
-      </p>
-      
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
-          {comp.tags.slice(0, 2).map(tag => (
-            <span key={tag} className="text-[9px] font-black px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 uppercase tracking-widest opacity-60">
-              {tag}
-            </span>
-          ))}
+const ComponentCard: React.FC<ComponentCardProps> = ({ comp, theme }) => {
+  if (!comp.id) return null;
+
+  return (
+    <Link to={`/component/${comp.id}`} className="block no-underline">
+      <motion.div 
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        whileHover={{ y: -10 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        className="group relative flex flex-col rounded-[38px] overflow-hidden 
+                   bg-white dark:bg-[#0A0A0A] border border-black/[0.03] dark:border-white/[0.03]
+                   shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-shadow
+                   cursor-pointer"
+      >
+        {/* Preview Area with Glass Reflection */}
+        <div className="h-60 bg-[#FBFBFD] dark:bg-[#111] flex items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000
+                          bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
+          <div className="w-32 h-32 rounded-full blur-[80px] opacity-10 absolute" style={{ backgroundColor: theme.accent }} />
+          <Layers size={54} className="opacity-10 group-hover:opacity-40 transition-all duration-700 group-hover:scale-110" style={{ color: theme.accent }} />
         </div>
-        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center 
-                        opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-           <ChevronRight size={18} style={{ color: theme.accent }} />
+        
+        <div className="p-10">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-2xl font-bold tracking-tight">{comp.title}</h3>
+            <Sparkles size={18} style={{ color: theme.accent }} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+            {comp.isNew && (
+              <span className="px-2 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: theme.accent, color: 'white' }}>
+                NEW
+              </span>
+            )}
+          </div>
+          <p className="text-sm leading-relaxed opacity-40 group-hover:opacity-60 transition-opacity mb-10 line-clamp-2">
+            {comp.description}
+          </p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              {comp.tags.slice(0, 2).map((tag: string) => (
+                <span key={tag} className="text-[9px] font-black px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 uppercase tracking-widest opacity-60">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center 
+                            opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+              <ChevronRight size={18} style={{ color: theme.accent }} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </motion.div>
-);
+      </motion.div>
+    </Link>
+  );
+};
 
 export default UILibrary;
