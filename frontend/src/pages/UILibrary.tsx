@@ -1,176 +1,197 @@
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { allComponents, categories } from "../components/componentsData";
-import { Search, Grid, Cpu, Layout, Box, Microscope, Terminal, Layers, Sparkles, Zap } from "lucide-react";
+import { Search, Grid, Box, Microscope, Layers, Sparkles, Zap, ChevronRight } from "lucide-react";
 
-interface UILibraryProps {
-  theme: {
-    bg: string;
-    text: string;
-    textSecondary: string;
-    cardBg: string;
-    border: string;
-    accent: string;
-  };
+// --- TYPES & INTERFACES ---
+interface Theme {
+  bg: string;
+  text: string;
+  textSecondary: string;
+  cardBg: string;
+  border: string;
+  accent: string;
 }
 
+interface ComponentData {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+}
+
+interface UILibraryProps {
+  theme: Theme;
+}
+
+// --- MAIN COMPONENT ---
 const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = useMemo(() => {
-    return allComponents.filter((comp) => {
+    return allComponents.filter((comp: ComponentData) => {
       const matchesCategory = activeCategory === "All" || comp.category === activeCategory;
-      const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           comp.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
 
   return (
-    <div style={{ ...styles.container, backgroundColor: theme.bg, color: theme.text }}>
-      {/* FIXED SIDEBAR NAVIGATION */}
-      <aside style={{ ...styles.sidebar, borderRight: `1px solid ${theme.border}`, backgroundColor: theme.bg }}>
-        <div style={styles.sidebarHeader}>
-          <div style={{ ...styles.labIcon, background: theme.accent }}>
-            <Microscope size={14} color="#fff" />
-          </div>
-          <h2 style={styles.sidebarTitle}>COMPONENT LAB</h2>
-        </div>
-        
-        <nav style={styles.navStack}>
-          <button
-            onClick={() => setActiveCategory("All")}
-            style={{
-              ...styles.navItem,
-              color: activeCategory === "All" ? theme.accent : theme.textSecondary,
-              backgroundColor: activeCategory === "All" ? `${theme.accent}15` : "transparent",
-            }}
+    <div className="flex min-h-screen pt-20 transition-all duration-700 font-sans" style={{ backgroundColor: theme.bg, color: theme.text }}>
+      
+      {/* 1. APPLE SIDEBAR: Frosted Glass & Vibrancy */}
+      <aside className="fixed left-0 top-20 h-[calc(100vh-80px)] w-72 p-8 z-40 
+                        bg-white/80 dark:bg-black/60 backdrop-blur-3xl 
+                        border-r border-black/5 dark:border-white/10">
+        <div className="flex items-center gap-3 mb-12 px-2">
+          <motion.div 
+            whileHover={{ rotate: 15 }}
+            className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg" 
+            style={{ backgroundColor: theme.accent }}
           >
-            <Grid size={16} />
-            <span style={{ marginLeft: "12px" }}>All Assets</span>
-          </button>
-          
+            <Microscope size={18} className="text-white" />
+          </motion.div>
+          <h2 className="text-[10px] font-black tracking-[0.3em] uppercase opacity-60">
+            Design Lab
+          </h2>
+        </div>
+
+        <nav className="space-y-1.5">
+          <SidebarLink 
+            icon={<Grid size={18} />} 
+            label="All Assets" 
+            active={activeCategory === "All"} 
+            onClick={() => setActiveCategory("All")}
+            accent={theme.accent}
+          />
           {categories.map((cat) => (
-            <button
+            <SidebarLink 
               key={cat}
+              icon={cat.toLowerCase().includes("anim") ? <Zap size={18} /> : <Box size={18} />} 
+              label={cat} 
+              active={activeCategory === cat} 
               onClick={() => setActiveCategory(cat)}
-              style={{
-                ...styles.navItem,
-                color: activeCategory === cat ? theme.accent : theme.textSecondary,
-                backgroundColor: activeCategory === cat ? `${theme.accent}15` : "transparent",
-              }}
-            >
-              {cat.toLowerCase().includes("animation") ? <Zap size={16} /> : 
-               cat.toLowerCase().includes("layout") ? <Layout size={16} /> : 
-               cat.toLowerCase().includes("component") ? <Box size={16} /> : <Layers size={16} />}
-              <span style={{ marginLeft: "12px" }}>{cat}</span>
-            </button>
+              accent={theme.accent}
+            />
           ))}
         </nav>
       </aside>
 
-      {/* SCROLLABLE MAIN CONTENT */}
-      <main style={styles.mainContent}>
-        <header style={styles.header}>
-          <div style={styles.searchWrapper}>
-            <Search size={18} style={styles.searchIcon} color={theme.textSecondary} />
+      {/* 2. MAIN CONTENT: Adaptive Bento Grid */}
+      <main className="flex-1 ml-72 p-10 lg:p-20 max-w-[1700px]">
+        <header className="mb-20 space-y-10">
+          <div className="relative max-w-2xl group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 opacity-20 group-focus-within:opacity-100 transition-opacity" size={20} />
             <input 
               type="text" 
-              placeholder="Search assets (e.g. GSAP, Split, Motion)..." 
-              style={{ ...styles.searchInput, borderColor: theme.border, color: theme.text }}
-              value={searchQuery}
+              placeholder="Search the library..." 
+              className="w-full pl-16 pr-8 py-5 rounded-[22px] bg-black/5 dark:bg-white/5 
+                         border border-transparent focus:border-black/10 dark:focus:border-white/10
+                         outline-none transition-all text-lg font-medium"
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div style={{ fontSize: '11px', opacity: 0.4, marginTop: '12px', letterSpacing: '1px' }}>
-            REGISTRY_COUNT: {filtered.length} UNITS
+          <div className="flex items-center gap-3 text-[11px] font-bold tracking-widest opacity-30 uppercase">
+            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: theme.accent }} />
+            {filtered.length} Components in Registry
           </div>
         </header>
 
-        {/* COMPONENT GRID */}
-        <div style={styles.grid}>
-          {filtered.map((comp, index) => (
-            <div 
-              key={comp.id} 
-              className="lab-card"
-              style={{ 
-                ...styles.card, 
-                backgroundColor: theme.cardBg, 
-                borderColor: theme.border,
-                animationDelay: `${index * 0.05}s`
-              }}
-            >
-              <div style={styles.previewArea}>
-                <div className="glow-orb" style={{ background: theme.accent }} />
-                <Terminal size={32} color={theme.accent} style={{ opacity: 0.2 }} />
-                <div style={styles.previewLabel}>UID::{comp.id.toUpperCase().replace(/-/g, '_')}</div>
-              </div>
-              
-              <div style={styles.cardInfo}>
-                <div style={styles.cardHeader}>
-                  <h3 style={styles.cardTitle}>{comp.title}</h3>
-                  <Sparkles size={14} color={theme.accent} style={{ opacity: 0.8 }} />
-                </div>
-                <p style={{ ...styles.cardDesc, color: theme.textSecondary }}>{comp.description}</p>
-                <div style={styles.tagList}>
-                  {comp.tags.slice(0, 3).map(tag => (
-                    <span key={tag} style={{ ...styles.tag, borderColor: theme.border }}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((comp) => (
+              <ComponentCard key={comp.id} comp={comp} theme={theme} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </main>
-
-      <style>{`
-        .lab-card {
-          animation: cardReveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-          opacity: 0;
-          transform: translateY(40px);
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .lab-card:hover {
-          transform: translateY(-12px);
-          border-color: ${theme.accent} !important;
-          box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
-        }
-        .glow-orb {
-          position: absolute;
-          width: 150px; height: 150px;
-          border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.12;
-        }
-        @keyframes cardReveal { to { opacity: 1; transform: translateY(0); } }
-      `}</style>
     </div>
   );
 };
 
-const styles = {
-  container: { display: "flex", minHeight: "100vh", paddingTop: "80px" },
-  sidebar: { width: "280px", padding: "2.5rem 2rem", position: "fixed" as const, height: "calc(100vh - 80px)", zIndex: 10 },
-  sidebarHeader: { display: "flex", alignItems: "center", gap: "12px", marginBottom: "3rem" },
-  labIcon: { width: "28px", height: "28px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" },
-  sidebarTitle: { fontSize: "11px", fontWeight: 900, letterSpacing: "3px", margin: 0 },
-  navStack: { display: "flex", flexDirection: "column" as const, gap: "10px" },
-  navItem: { display: "flex", alignItems: "center", padding: "14px 16px", borderRadius: "14px", border: "none", cursor: "pointer", transition: "0.2s", fontWeight: 700, fontSize: "13px", textAlign: "left" as const },
-  mainContent: { flex: 1, marginLeft: "280px", padding: "4rem 6rem" },
-  header: { marginBottom: "4rem" },
-  searchWrapper: { position: "relative" as const, maxWidth: "650px" },
-  searchIcon: { position: "absolute" as const, left: "20px", top: "50%", transform: "translateY(-50%)" },
-  searchInput: { width: "100%", padding: "18px 24px 18px 60px", borderRadius: "16px", background: "rgba(255,255,255,0.03)", border: "1px solid", outline: "none", fontSize: "15px" },
-  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "3rem" },
-  card: { borderRadius: "24px", border: "1px solid", overflow: "hidden", cursor: "pointer", position: 'relative' as const },
-  previewArea: { height: "220px", background: "#050505", position: "relative" as const, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" },
-  previewLabel: { position: "absolute" as const, bottom: "16px", right: "20px", fontSize: "8px", opacity: 0.2, letterSpacing: "2px", fontFamily: 'monospace' },
-  cardInfo: { padding: "2.2rem" },
-  cardHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" },
-  cardTitle: { fontSize: "19px", fontWeight: 800, margin: 0, letterSpacing: '-0.02em' },
-  cardDesc: { fontSize: "14px", lineHeight: "1.6", margin: "0 0 24px 0", opacity: 0.5 },
-  tagList: { display: "flex", flexWrap: "wrap" as const, gap: "8px" },
-  tag: { fontSize: "9px", padding: "4px 12px", borderRadius: "8px", border: "1px solid", opacity: 0.4, fontWeight: 700, textTransform: "uppercase" as const },
-};
+// --- SIDEBAR LINK HELPER ---
+interface SidebarLinkProps {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  accent: string;
+}
+
+const SidebarLink: React.FC<SidebarLinkProps> = ({ icon, label, active, onClick, accent }) => (
+  <button 
+    onClick={onClick}
+    className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-500
+               ${active ? 'translate-x-1' : 'hover:bg-black/5 dark:hover:bg-white/5 opacity-50 hover:opacity-100'}`}
+    style={{ 
+      backgroundColor: active ? `${accent}15` : 'transparent',
+      color: active ? accent : 'inherit'
+    }}
+  >
+    <span className={active ? "scale-110 transition-transform" : ""}>{icon}</span>
+    <span className="tracking-tight">{label}</span>
+    {active && (
+      <motion.div 
+        layoutId="active-pill" 
+        className="ml-auto w-1 h-4 rounded-full" 
+        style={{ backgroundColor: accent }} 
+      />
+    )}
+  </button>
+);
+
+// --- COMPONENT CARD HELPER ---
+interface ComponentCardProps {
+  comp: ComponentData;
+  theme: Theme;
+}
+
+const ComponentCard: React.FC<ComponentCardProps> = ({ comp, theme }) => (
+  <motion.div 
+    layout
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, scale: 0.95 }}
+    whileHover={{ y: -10 }}
+    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+    className="group relative flex flex-col rounded-[38px] overflow-hidden 
+               bg-white dark:bg-[#0A0A0A] border border-black/[0.03] dark:border-white/[0.03]
+               shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-shadow"
+  >
+    {/* Preview Area with Glass Reflection */}
+    <div className="h-60 bg-[#FBFBFD] dark:bg-[#111] flex items-center justify-center relative overflow-hidden">
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000
+                      bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
+      <div className="w-32 h-32 rounded-full blur-[80px] opacity-10 absolute" style={{ backgroundColor: theme.accent }} />
+      <Layers size={54} className="opacity-10 group-hover:opacity-40 transition-all duration-700 group-hover:scale-110" style={{ color: theme.accent }} />
+    </div>
+    
+    <div className="p-10">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-2xl font-bold tracking-tight">{comp.title}</h3>
+        <Sparkles size={18} style={{ color: theme.accent }} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+      </div>
+      <p className="text-sm leading-relaxed opacity-40 group-hover:opacity-60 transition-opacity mb-10 line-clamp-2">
+        {comp.description}
+      </p>
+      
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          {comp.tags.slice(0, 2).map(tag => (
+            <span key={tag} className="text-[9px] font-black px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 uppercase tracking-widest opacity-60">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center 
+                        opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+           <ChevronRight size={18} style={{ color: theme.accent }} />
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
 
 export default UILibrary;
