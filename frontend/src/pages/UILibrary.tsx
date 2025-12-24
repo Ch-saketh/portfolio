@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Search, Grid, Box, Microscope, Layers, Sparkles, Zap, ChevronRight } from "lucide-react";
-import { allComponentDetails, getAllCategories } from "../components/componentData";
+import { allComponents, getAllCategories } from "../components/componentsData";
 
 interface Theme {
   bg: string;
@@ -34,7 +34,7 @@ const UILibrary: React.FC<UILibraryProps> = ({ theme }) => {
   const categories = ["All", ...getAllCategories()];
 
   const filtered = useMemo(() => {
-    return allComponentDetails.filter((comp: ComponentData) => {
+    return allComponents.filter((comp: ComponentData) => { // CHANGED: allComponentDetails → allComponents
       const matchesCategory = activeCategory === "All" || comp.category === activeCategory;
       const matchesSearch = comp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           comp.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
