@@ -1,4 +1,4 @@
-
+@import "tailwindcss"; /* <--- YOU MUST HAVE THIS LINE AT THE TOP */
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
