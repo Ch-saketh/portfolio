@@ -34,9 +34,7 @@ function App() {
           <Route path="/about" element={<About theme={theme} />} /> 
           <Route path="/work" element={<Work theme={theme} />} />
           <Route path="/contact" element={<Contact theme={theme} />} />
-          <Route path="/ui-library" element={<UILibrary theme={theme} />} />
           {/* ADD THIS ROUTE FOR COMPONENT DETAIL PAGE */}
-          <Route path="/component/:componentId" element={<ComponentDetailPage theme={theme} />} />
         </Routes>
       </div>
     </Router>
