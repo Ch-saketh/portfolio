@@ -82,18 +82,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </Link>
           )}
 
-          <Link
-            to="/ui-library"
-            style={navLinkStyle(isActive('/ui-library'), theme)}
-            onMouseEnter={(e) =>
-              !isActive('/ui-library') && (e.currentTarget.style.color = theme.accent)
-            }
-            onMouseLeave={(e) =>
-              !isActive('/ui-library') && (e.currentTarget.style.color = theme.textSecondary)
-            }
-          >
-            UI Library
-          </Link>
+          
 
           {location.pathname === '/' && (
             <>

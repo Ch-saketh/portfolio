@@ -6,8 +6,6 @@ import Home from './home/Home';
 import About from './pages/About';
 import Work from './pages/Work';
 import Contact from './pages/contact';
-import UILibrary from './pages/UILibrary';
-import ComponentDetailPage from './components/ComponentDetailPage'; // ADD THIS IMPORT
 import Navigation from './components/Navbar';
 
 function App() {
