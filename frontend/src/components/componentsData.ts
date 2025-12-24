@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type ComponentItem = {
   id: string;
   title: string;
@@ -14,7 +16,7 @@ export type ComponentItem = {
   tailwind?: string;
   examples: ComponentExample[];
 };
-
+export const categories = ["Animations", "Layouts", "Components", "Utilities", "Text Animations"];
 export type ComponentProp = {
   name: string;
   type: string;
@@ -29,7 +31,10 @@ export type ComponentExample = {
   description: string;
   code: string;
 };
+// Add this export to fix the TS2305 error
 
+
+// ... keep your existing ComponentItem type and allComponents array ...
 // Split Text Component Data
 export const splitTextComponent: ComponentItem = {
   id: 'split-text',
