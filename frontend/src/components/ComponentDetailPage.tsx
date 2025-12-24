@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Copy, Check, Play, Code, FileText, Terminal, Zap, ArrowLeft, Download } from 'lucide-react';
-import { getComponentById, ComponentProp, ComponentExample } from '../components/componentData';
+import { getComponentById, ComponentProp, ComponentExample } from './componentsData'; // Fixed import name
 
 interface ComponentDetailPageProps {
   theme: any;
@@ -10,22 +10,21 @@ interface ComponentDetailPageProps {
 
 type TabType = 'preview' | 'ts' | 'js' | 'tailwind';
 
-// Define Tab interface without JSX.Element if causing issues
 interface Tab {
   id: TabType;
   label: string;
-  icon: React.ReactNode; // Use React.ReactNode instead of JSX.Element
+  icon: React.ReactNode;
   color: string;
 }
 
 const ComponentDetailPage: React.FC<ComponentDetailPageProps> = ({ theme }) => {
-  const { componentId } = useParams();
+  const { componentId } = useParams<{ componentId: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabType>('preview');
   const [copied, setCopied] = useState<string | null>(null);
   const [activeExample, setActiveExample] = useState(0);
 
-  // Get component data
+  // Get component data - SAFE VERSION
   const component = getComponentById(componentId);
 
   if (!component) {
@@ -52,7 +51,6 @@ const ComponentDetailPage: React.FC<ComponentDetailPageProps> = ({ theme }) => {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  // Use Tab interface
   const tabs: Tab[] = [
     { id: 'preview', label: 'Live Demo', icon: <Play size={16} />, color: theme.accent },
     { id: 'ts', label: 'TypeScript', icon: <FileText size={16} />, color: '#3178C6' },
@@ -197,7 +195,7 @@ const ComponentDetailPage: React.FC<ComponentDetailPageProps> = ({ theme }) => {
                       </div>
                     )}
 
-                    {/* Code Tabs */}
+                    {/* TypeScript Tab */}
                     {activeTab === 'ts' && (
                       <div className="relative">
                         <div className="flex items-center justify-between mb-4">
@@ -217,6 +215,7 @@ const ComponentDetailPage: React.FC<ComponentDetailPageProps> = ({ theme }) => {
                       </div>
                     )}
 
+                    {/* JavaScript Tab */}
                     {activeTab === 'js' && (
                       <div className="relative">
                         <div className="flex items-center justify-between mb-4">
@@ -236,12 +235,13 @@ const ComponentDetailPage: React.FC<ComponentDetailPageProps> = ({ theme }) => {
                       </div>
                     )}
 
+                    {/* Tailwind Tab - FIXED VERSION */}
                     {activeTab === 'tailwind' && component.tailwind && (
                       <div className="relative">
                         <div className="flex items-center justify-between mb-4">
                           <h4 className="font-medium">Tailwind CSS Usage</h4>
                           <button
-                            onClick={() => copyToClipboard(component.tailwind, 'tailwind')}
+                            onClick={() => copyToClipboard(component.tailwind!, 'tailwind')} 
                             className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium"
                             style={{ backgroundColor: `${theme.accent}20`, color: theme.accent }}
                           >
