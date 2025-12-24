@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './home/Home';
 import About from './pages/About';
 import Work from './pages/Work';
-import Contact from './pages/Contact'; // Ensure this matches filename case
+import Contact from './pages/contact'; // Changed to lowercase 'c' to match your file
 import Navigation from './components/Navbar';
 
 function App() {
