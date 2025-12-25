@@ -2,32 +2,32 @@ import React from 'react';
 import { Trophy } from 'lucide-react';
 import { Theme } from '../types/theme';
 
+// 1. IMPORT YOUR IMAGES HERE (The Problem Solver)
+import aqvhPhoto from '../assets/aqvh-state-finale.jpg'; 
+import hackoverflowPhoto from '../assets/hackoverflow-prize.jpg';
+
 interface AchievementsProps { theme: Theme; }
 
 const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
-  const achievements = [
+  const data = [
     {
       title: "AQVH Hackathon",
       rank: "3rd Prize // State Level",
-      image: "/assets/aqvh-state-finale.jpg", 
-      desc: "Developed a Quantum-Secure communication prototype for the APSCHE grand finale."
+      image: aqvhPhoto, // Use the imported variable
+      desc: "Quantum-Secure communication prototype for APSCHE finale."
     },
     {
       title: "Hackoverflow 2k25",
       rank: "2nd Prize // National Level",
-      image: "/assets/hackoverflow-prize.jpg",
-      desc: "Engineered a scalable AI-driven solution for real-world industry problem statements."
+      image: hackoverflowPhoto, // Use the imported variable
+      desc: "AI-driven industry solution for real-world problem statements."
     }
   ];
 
   return (
     <section id="achievements" style={{ padding: '80px 0' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
-        Achievements<span style={{ color: theme.accent }}>.</span>
-      </h2>
-
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-        {achievements.map((item, idx) => (
+        {data.map((item, idx) => (
           <div key={idx} style={{
             aspectRatio: '1/1',
             position: 'relative',
@@ -38,17 +38,19 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
           }}>
             <img 
               src={item.image} 
+              alt={item.title}
               style={{ 
-                width: '100%', height: '100%', 
+                width: '100%', 
+                height: '100%', 
                 objectFit: 'cover', 
-                objectPosition: 'top', // FIX: Prevents cutting off your body
+                objectPosition: 'top center', // Fixes the "cut body" issue
                 opacity: 0.5 
               }} 
             />
             <div style={{
               position: 'absolute', inset: 0, padding: '32px',
               display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%)'
+              background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 70%)'
             }}>
               <Trophy size={20} color={theme.accent} style={{ marginBottom: '12px' }} />
               <span style={{ fontSize: '10px', fontWeight: 800, color: theme.accent, letterSpacing: '2px' }}>{item.rank}</span>
