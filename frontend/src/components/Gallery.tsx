@@ -5,27 +5,17 @@ interface GalleryProps { theme: Theme; }
 
 const Gallery: React.FC<GalleryProps> = ({ theme }) => {
   const images = [
-    { url: '/images/hack1.jpg', title: 'AQVH Grand Finale', category: 'Quantum Research' },
-    { url: '/images/hack2.jpg', title: 'Hackoverflow 2k25', category: 'AI Engineering' }
+    { url: '/assets/aqvh-presentation.jpg', title: 'AQVH State Grand Finale', category: 'Quantum Research' },
+    { url: '/assets/hackoverflow-pitch.jpg', title: 'Hackoverflow 2k25 Presentation', category: 'AI Engineering' }
   ];
 
   return (
     <section id="gallery" style={{ padding: '80px 0' }}>
-      <h2 style={{ 
-        fontSize: '2.5rem', 
-        fontWeight: 800, 
-        color: '#fff', 
-        marginBottom: '40px', 
-        letterSpacing: '-0.04em' 
-      }}>
+      <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px', letterSpacing: '-0.04em' }}>
         Visual Log<span style={{ color: theme.accent }}>.</span>
       </h2>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-        gap: '24px',
-      }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '24px' }}>
         {images.map((img, idx) => (
           <div key={idx} className="gallery-item" style={{
             position: 'relative',
@@ -36,7 +26,7 @@ const Gallery: React.FC<GalleryProps> = ({ theme }) => {
             background: 'rgba(255,255,255,0.02)'
           }}>
             <img src={img.url} alt={img.title} style={{
-              width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8,
+              width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7,
               transition: '0.6s cubic-bezier(0.16, 1, 0.3, 1)'
             }} />
             <div style={{
@@ -56,10 +46,6 @@ const Gallery: React.FC<GalleryProps> = ({ theme }) => {
           </div>
         ))}
       </div>
-      <style>{`
-        .gallery-item:hover img { transform: scale(1.05); opacity: 1; }
-        .gallery-item:hover { border-color: ${theme.accent}; }
-      `}</style>
     </section>
   );
 };
