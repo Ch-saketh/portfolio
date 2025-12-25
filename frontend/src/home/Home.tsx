@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
+import { BrowserRouter as Router } from 'react-router-dom'; // Ensure routing context
 import Navbar from '../components/Navbar';
 import About from '../pages/About';
 import Skills from '../pages/Skills';
 import Work from '../pages/Work';
+import Achievements from '../components/Achievements'; // New Import
+import Gallery from '../components/Gallery';           // New Import
+import Contact from '../pages/contact';             // New Import
 import LightRays from '../components/LightRays'; 
 
 export default function Home(): React.ReactElement {
@@ -44,7 +48,7 @@ export default function Home(): React.ReactElement {
         opacity: 0.04;
         mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
         pointer-events: none;
-        z-index: 1; /* Above LightRays, below content */
+        z-index: 1;
       }
 
       section {
@@ -73,7 +77,7 @@ export default function Home(): React.ReactElement {
   return (
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh', position: 'relative' }}>
       
-      {/* 1. GLOBAL LIGHT RAYS - CENTERED SPOTLIGHT */}
+      {/* GLOBAL LIGHT RAYS */}
       <div style={{
         position: 'fixed',
         top: 0,
@@ -84,10 +88,10 @@ export default function Home(): React.ReactElement {
         pointerEvents: 'none'
       }}>
         <LightRays
-          raysOrigin="top-center" // Centered to unify the text and card
+          raysOrigin="top-center"
           raysColor={theme.accent}
           raysSpeed={0.8}
-          lightSpread={0.9} // Wider spread for the centered look
+          lightSpread={0.9}
           rayLength={2.0}
           followMouse={true}
           mouseInfluence={0.04}
@@ -99,17 +103,34 @@ export default function Home(): React.ReactElement {
       <Navbar theme={theme} />
       
       <div style={{ position: 'relative', zIndex: 10 }}>
-        {/* Padding: 0 allows the top-pinned About layout to touch the navbar */}
+        {/* ABOUT SECTION */}
         <section id="about" style={{ padding: '0 !important' }}>
           <About theme={theme} />
         </section>
 
+        {/* WORK SECTION */}
         <section id="work" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '100px 0 !important' }}>
           <Work theme={theme} />
         </section>
 
+        {/* ACHIEVEMENTS SECTION (New) */}
+        <section id="achievements" style={{ borderTop: `1px solid ${theme.border}`, padding: '100px 0 !important' }}>
+          <Achievements theme={theme} />
+        </section>
+
+        {/* GALLERY SECTION (New) */}
+        <section id="gallery" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '100px 0 !important' }}>
+          <Gallery theme={theme} />
+        </section>
+
+        {/* SKILLS SECTION */}
         <section id="skills" style={{ borderTop: `1px solid ${theme.border}`, padding: '100px 0 !important' }}>
           <Skills theme={theme} />
+        </section>
+
+        {/* CONTACT SECTION (Final frame) */}
+        <section id="contact" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '0 !important' }}>
+          <Contact theme={theme} />
         </section>
       </div>
 
@@ -126,10 +147,10 @@ export default function Home(): React.ReactElement {
               <h3 style={{ fontSize: '1.6rem', fontWeight: 700, background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentLight})`, backgroundClip: 'text', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1rem' }}>Chokkapu Saketh</h3>
               <p style={{ color: theme.textSecondary, fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem' }}>Full-Stack AI Engineer specializing in Quantum-Secure and Intelligent systems.</p>
               <div style={{ display: 'flex', gap: '0.8rem' }}>
-                <a href="https://github.com/ch-saketh" target="_blank" style={fStyles.socialLink(theme)}>
+                <a href="https://github.com/ch-saketh" target="_blank" rel="noopener noreferrer" style={fStyles.socialLink(theme)}>
                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 </a>
-                <a href="https://linkedin.com/in/saketh-chokkapu-3a668a2b9" target="_blank" style={fStyles.socialLink(theme)}>
+                <a href="https://linkedin.com/in/saketh-chokkapu-3a668a2b9" target="_blank" rel="noopener noreferrer" style={fStyles.socialLink(theme)}>
                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 </a>
               </div>
@@ -139,7 +160,10 @@ export default function Home(): React.ReactElement {
               <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                 <a href="#about" style={fStyles.link(theme)}>About</a>
                 <a href="#work" style={fStyles.link(theme)}>Work</a>
+                <a href="#achievements" style={fStyles.link(theme)}>Achievements</a>
+                <a href="#gallery" style={fStyles.link(theme)}>Gallery</a>
                 <a href="#skills" style={fStyles.link(theme)}>Skills</a>
+                <a href="#contact" style={fStyles.link(theme)}>Contact</a>
               </nav>
             </div>
             <div>
@@ -148,7 +172,7 @@ export default function Home(): React.ReactElement {
             </div>
           </div>
           <div style={fStyles.bottom(theme)}>
-            <p style={{ color: theme.textSecondary, fontSize: '0.8rem' }}>© 2024 Chokkapu Saketh. All rights reserved.</p>
+            <p style={{ color: theme.textSecondary, fontSize: '0.8rem' }}>© 2025 Chokkapu Saketh. All rights reserved.</p>
             <span style={{ color: theme.textSecondary, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <div style={{ width: '6px', height: '6px', backgroundColor: '#10b981', borderRadius: '50%', animation: 'pulse 2s infinite' }}></div> Available
             </span>
