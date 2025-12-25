@@ -102,38 +102,21 @@ export default function Home(): React.ReactElement {
 
       <Navbar theme={theme} />
       
-      <div style={{ position: 'relative', zIndex: 10 }}>
-        {/* ABOUT SECTION */}
-        <section id="about" style={{ padding: '0 !important' }}>
-          <About theme={theme} />
-        </section>
-
-        {/* WORK SECTION */}
-        <section id="work" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '100px 0 !important' }}>
-          <Work theme={theme} />
-        </section>
-
-        {/* ACHIEVEMENTS SECTION (New) */}
-        <section id="achievements" style={{ borderTop: `1px solid ${theme.border}`, padding: '100px 0 !important' }}>
-          <Achievements theme={theme} />
-        </section>
-
-        {/* GALLERY SECTION (New) */}
-        <section id="gallery" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '100px 0 !important' }}>
-          <Gallery theme={theme} />
-        </section>
-
-        {/* SKILLS SECTION */}
-        <section id="skills" style={{ borderTop: `1px solid ${theme.border}`, padding: '100px 0 !important' }}>
-          <Skills theme={theme} />
-        </section>
-
-        {/* CONTACT SECTION (Final frame) */}
-        <section id="contact" style={{ borderTop: `1px solid ${theme.border}`, maxWidth: 'none', padding: '0 !important' }}>
-          <Contact theme={theme} />
-        </section>
-      </div>
-
+    <div style={{ position: 'relative', zIndex: 10 }}>
+  <section id="about"><About theme={theme} /></section>
+  
+  {/* Link "Work" or "My Projects" here */}
+  <section id="work"><Work theme={theme} /></section>
+  
+  {/* Link "Milestones" here */}
+  <section id="milestones"><Achievements theme={theme} /></section>
+  
+  <section id="gallery"><Gallery theme={theme} /></section>
+  <section id="skills"><Skills theme={theme} /></section>
+  
+  {/* Link "Contact" here */}
+  <section id="contact"><Contact theme={theme} /></section>
+</div>
       <footer style={{
         borderTop: `1px solid ${theme.border}`,
         padding: '4rem 2rem 2rem',

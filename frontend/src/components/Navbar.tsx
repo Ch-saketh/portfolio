@@ -18,8 +18,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive = (path: string) => location.pathname === path;
-
   return (
     <header
       style={{
@@ -58,6 +56,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             gap: '0.5rem',
             textDecoration: 'none',
           }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <div
             style={{
@@ -71,6 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
+          {/* Universal Home link (only shows if not on Home page root) */}
           {location.pathname !== '/' && (
             <Link
               to="/"
@@ -82,42 +82,42 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
             </Link>
           )}
 
-          
+          {/* SINGLE-PAGE SCROLLING LINKS */}
+          <a
+            href="#work"
+            style={navLinkStyle(false, theme)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
+          >
+            Work
+          </a>
 
-          {location.pathname === '/' && (
-            <>
-              <a
-                href="#about"
-                style={navLinkStyle(false, theme)}
-                onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
-              >
-                About
-              </a>
+          <a
+            href="#milestones"
+            style={navLinkStyle(false, theme)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
+          >
+            Milestones
+          </a>
 
-              <a
-                href="#skills"
-                style={navLinkStyle(false, theme)}
-                onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
-              >
-                Skills
-              </a>
-            </>
-          )}
+          <a
+            href="#skills"
+            style={navLinkStyle(false, theme)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
+          >
+            Skills
+          </a>
 
-          <Link
-            to="/contact"
-            style={navLinkStyle(isActive('/contact'), theme)}
-            onMouseEnter={(e) =>
-              !isActive('/contact') && (e.currentTarget.style.color = theme.accent)
-            }
-            onMouseLeave={(e) =>
-              !isActive('/contact') && (e.currentTarget.style.color = theme.textSecondary)
-            }
+          <a
+            href="#contact"
+            style={navLinkStyle(false, theme)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = theme.accent)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = theme.textSecondary)}
           >
             Contact
-          </Link>
+          </a>
         </div>
       </nav>
     </header>
