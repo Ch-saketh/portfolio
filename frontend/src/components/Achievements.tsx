@@ -2,8 +2,8 @@ import React from 'react';
 import { Trophy } from 'lucide-react';
 import { Theme } from '../types/theme';
 
-// 1. IMPORT YOUR IMAGES HERE (The Problem Solver)
-import aqvhPhoto from '../assets/aqvh-state-finale.jpg'; 
+// USING YOUR EXACT FILE NAMES FROM SRC/ASSETS
+import aqvhPhoto from '../assets/aqvh-state-finale.jpg';
 import hackoverflowPhoto from '../assets/hackoverflow-prize.jpg';
 
 interface AchievementsProps { theme: Theme; }
@@ -13,23 +13,30 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
     {
       title: "AQVH Hackathon",
       rank: "3rd Prize // State Level",
-      image: aqvhPhoto, // Use the imported variable
-      desc: "Quantum-Secure communication prototype for APSCHE finale."
+      image: aqvhPhoto,
+      desc: "Developed a Quantum-Secure communication prototype for the APSCHE state-level grand finale."
     },
     {
       title: "Hackoverflow 2k25",
       rank: "2nd Prize // National Level",
-      image: hackoverflowPhoto, // Use the imported variable
-      desc: "AI-driven industry solution for real-world problem statements."
+      image: hackoverflowPhoto,
+      desc: "Engineered a scalable AI-driven solution for real-world industry problem statements."
     }
   ];
 
   return (
     <section id="achievements" style={{ padding: '80px 0' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
+        Achievements<span style={{ color: theme.accent }}>.</span>
+      </h2>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+        gap: '24px' 
+      }}>
         {data.map((item, idx) => (
-          <div key={idx} style={{
-            aspectRatio: '1/1',
+          <div key={idx} className="achievement-card" style={{
+            aspectRatio: '1/1', // EXACT SIZE MATCH FOR PROJECT CARDS
             position: 'relative',
             borderRadius: '24px',
             overflow: 'hidden',
@@ -38,12 +45,11 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
           }}>
             <img 
               src={item.image} 
-              alt={item.title}
               style={{ 
                 width: '100%', 
                 height: '100%', 
                 objectFit: 'cover', 
-                objectPosition: 'top center', // Fixes the "cut body" issue
+                objectPosition: 'top center', // PREVENTS CUTTING YOUR BODY
                 opacity: 0.5 
               }} 
             />
