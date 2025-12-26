@@ -265,8 +265,8 @@
 .pc-user-info {
   position: absolute;
   bottom: 18px;
-  left: 22px;
-  right: 22px;
+  left: 32px;
+  right: 32px;
   z-index: 6 !important;
   display: flex !important;
   align-items: center;
@@ -280,7 +280,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   gap: 6px;
   overflow: hidden;
-  width: calc(100% - 44px);
+  width: calc(100% - 64px);
   min-height: 40px;
 }
 
