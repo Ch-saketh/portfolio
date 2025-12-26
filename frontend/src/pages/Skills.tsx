@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Theme } from '../types/theme';
 
 interface SkillsProps {
@@ -33,11 +33,8 @@ interface TechDetail {
 const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState<string>('programming');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const [graphData, setGraphData] = useState<{ nodes: GraphNode[], links: GraphLink[] }>({ nodes: [], links: [] });
-  const [isInitialAnimation, setIsInitialAnimation] = useState(true);
   const [showInfo, setShowInfo] = useState<boolean>(false);
-  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   // Professional icon URLs - UPDATED TO MATCH RESUME
   const categoryIcons: Record<string, string> = {
@@ -333,14 +330,73 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   };
 
   // UPDATED TO MATCH YOUR RESUME STRUCTURE
-  type SkillCategory = 'programming' | 'frontend' | 'backend' | 'databases' | 'ai' | 'tools';
-  const skillsData: Record<SkillCategory, { title: string; color: string; skills: string[] }> = {
-    programming: { title: 'Languages', color: '#007AFF', skills: ['Python', 'Java', 'JavaScript', 'C'] },
-    frontend: { title: 'Frontend', color: '#5856D6', skills: ['React.js', 'Vite', 'TailwindCSS'] },
-    backend: { title: 'Backend', color: '#34C759', skills: ['Node.js', 'Express.js', 'FastAPI', 'Flask'] },
-    databases: { title: 'Databases', color: '#FF3B30', skills: ['MongoDB', 'Neo4j', 'PostgreSQL', 'Supabase'] },
-    ai: { title: 'AI & Quantum', color: '#FF9500', skills: ['Scikit-learn', 'IBM Qiskit'] },
-    tools: { title: 'Tools', color: '#AF52DE', skills: ['Git', 'Linux', 'VS Code', 'Postman'] }
+  const skillsData = {
+    'programming': {
+      title: 'Programming',
+      skills: [
+        { name: 'Python', color: '#3776AB' },
+        { name: 'Java', color: '#007396' },
+        { name: 'JavaScript', color: '#F7DF1E' }
+      ]
+    },
+    'frontend': {
+      title: 'Frontend',
+      skills: [
+        { name: 'React.js', color: '#61DAFB' },
+        { name: 'Vite', color: '#646CFF' },
+        { name: 'TailwindCSS', color: '#38B2AC' },
+        { name: 'HTML5', color: '#E34F26' },
+        { name: 'CSS3', color: '#1572B6' },
+        { name: 'Electron.js', color: '#47848F' }
+      ]
+    },
+    'backend': {
+      title: 'Backend',
+      skills: [
+        { name: 'Node.js', color: '#339933' },
+        { name: 'Express.js', color: '#000000' },
+        { name: 'Flask', color: '#000000' },
+        { name: 'FastAPI', color: '#009688' },
+        { name: 'RESTful APIs', color: '#FF6D00' }
+      ]
+    },
+    'databases': {
+      title: 'Databases',
+      skills: [
+        { name: 'MongoDB', color: '#47A248' },
+        { name: 'Neo4j', color: '#008CC1' },
+        { name: 'SQL', color: '#4479A1' }
+      ]
+    },
+    'ai': {
+      title: 'Machine Learning',
+      skills: [
+        { name: 'Scikit-learn', color: '#F7931E' },
+        { name: 'LightFM', color: '#FF6B35' },
+        { name: 'TF-IDF', color: '#3D5AFE' },
+        { name: 'Cosine Similarity', color: '#3D5AFE' },
+        { name: 'NLP', color: '#3D5AFE' }
+      ]
+    },
+    'quantum': {
+      title: 'Quantum Computing',
+      skills: [
+        { name: 'IBM Qiskit', color: '#6929C4' },
+        { name: 'Quantum Key Distribution', color: '#6929C4' },
+        { name: 'BB84 Protocol', color: '#6929C4' },
+        { name: 'Kyber', color: '#6929C4' }
+      ]
+    },
+    'tools': {
+      title: 'Tools',
+      skills: [
+        { name: 'Git', color: '#F05032' },
+        { name: 'Linux', color: '#FCC624' },
+        { name: 'Jupyter Notebook', color: '#F37626' },
+        { name: 'VS Code', color: '#007ACC' },
+        { name: 'Postman', color: '#FF6C37' }
+      ]
+    }
   };
 
   const createLayout = (): GraphNode[] => {
@@ -369,14 +425,14 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       data.skills.forEach((skill, index) => {
         const angle = (-Math.PI / 2) + (angleStep * index);
         nodes.push({
-          id: skill,
-          name: skill,
-          color: data.color,
+          id: skill.name,
+          name: skill.name,
+          color: skill.color,
           category,
           x: center.x + radius * Math.cos(angle),
           y: center.y + radius * Math.sin(angle),
-          description: techDetails[skill]?.description || `${skill} technology`,
-          learnMoreUrl: techDetails[skill]?.url || '#'
+          description: techDetails[skill.name]?.description || `${skill.name} technology`,
+          learnMoreUrl: techDetails[skill.name]?.url || '#'
         });
       });
     });
@@ -395,8 +451,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       { source: 'Python', target: 'Jupyter Notebook', strength: 0.7 },
       { source: 'JavaScript', target: 'React.js', strength: 0.9 },
       { source: 'JavaScript', target: 'Node.js', strength: 0.9 },
-      { source: 'JavaScript', target: 'Vite', strength: 0.7 },
-      { source: 'Java', target: 'Spring Boot', strength: 0.8 }
+      { source: 'JavaScript', target: 'Vite', strength: 0.7 }
     );
     
     // Frontend connections
@@ -446,7 +501,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     Object.values(skillsData).forEach(categoryData => {
       categoryData.skills.forEach(skill => {
         connections.push({
-          source: skill,
+          source: skill.name,
           target: `center-${categoryData.title.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-')}`,
           strength: 0.5
         });
@@ -471,35 +526,33 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
   useEffect(() => {
     setGraphData({ nodes: createLayout(), links: getTechnologyConnections() });
-    const timer = setTimeout(() => setIsInitialAnimation(false), 1000);
-    return () => clearTimeout(timer);
   }, []);
 
-  const handleNodeClick = (nodeId: string) => { setSelectedSkill(nodeId); setShowInfo(true); };
-  const handleMouseEnter = (nodeId: string) => { setHoveredSkill(nodeId); };
-  const handleMouseLeave = () => { setHoveredSkill(null); };
-  const closeInfoPanel = () => { setShowInfo(false); setSelectedSkill(null); };
-
-  const getConnectedNodes = (nodeId: string): string[] => {
-    const connections = graphData.links.filter(link => link.source === nodeId || link.target === nodeId);
-    const connectedNodes = new Set<string>();
-    connections.forEach(link => {
-      if (link.source === nodeId) connectedNodes.add(link.target);
-      if (link.target === nodeId) connectedNodes.add(link.source);
-    });
-    return Array.from(connectedNodes);
+  const handleNodeClick = (nodeId: string) => { 
+    setSelectedSkill(nodeId); 
+    setShowInfo(true); 
   };
 
-  const filteredNodes = graphData.nodes.filter(node => node.id.startsWith('center-') || node.category === activeCategory);
+  const closeInfoPanel = () => { 
+    setShowInfo(false); 
+    setSelectedSkill(null); 
+  };
+
+  const filteredNodes = graphData.nodes.filter(node => 
+    node.id.startsWith('center-') || node.category === activeCategory
+  );
+  
   const filteredLinks = graphData.links.filter(link => {
     const sourceNode = graphData.nodes.find(n => n.id === link.source);
     const targetNode = graphData.nodes.find(n => n.id === link.target);
-    return sourceNode?.category === activeCategory || targetNode?.category === activeCategory || sourceNode?.id.startsWith('center-') || targetNode?.id.startsWith('center-');
+    return sourceNode?.category === activeCategory || 
+           targetNode?.category === activeCategory || 
+           sourceNode?.id.startsWith('center-') || 
+           targetNode?.id.startsWith('center-');
   });
 
   const selectedNode = selectedSkill ? graphData.nodes.find(n => n.id === selectedSkill) : null;
-  const connectedNodes = selectedSkill ? getConnectedNodes(selectedSkill) : [];
-  const needsWhiteBackground = ['Python', 'Java', 'JavaScript', 'React.js', 'Node.js', 'Express.js', 'Flask', 'FastAPI', 'MongoDB', 'Neo4j', 'SQL', 'Scikit-learn', 'LightFM', 'IBM Qiskit', 'Git', 'Linux', 'VS Code', 'Postman'];
+  const needsWhiteBackground = ['Express.js', 'Flask', 'Git', 'VS Code', 'Postman'];
 
   // Information Panel Component
   const InformationPanel = () => {
@@ -539,17 +592,31 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           <button
             onClick={closeInfoPanel}
             style={{
-              position: 'absolute', top: '1rem', right: '1.2rem',
-              background: 'rgba(255,255,255,0.05)', border: 'none',
-              color: '#fff', cursor: 'pointer', width: '32px', height: '32px', borderRadius: '50%'
+              position: 'absolute', 
+              top: '1rem', 
+              right: '1.2rem',
+              background: 'rgba(255,255,255,0.05)', 
+              border: 'none',
+              color: '#fff', 
+              cursor: 'pointer', 
+              width: '32px', 
+              height: '32px', 
+              borderRadius: '50%'
             }}
-          >✕</button>
+          >
+            ✕
+          </button>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ 
-              width: '48px', height: '48px', borderRadius: '12px', 
+              width: '48px', 
+              height: '48px', 
+              borderRadius: '12px', 
               background: isCenterNode ? selectedNode.color : 'white',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px'
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              padding: '8px'
             }}>
               <img 
                 src={isCenterNode ? categoryIcons[selectedNode.category] : techIcons[selectedNode.name]} 
@@ -558,7 +625,9 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: theme.text, margin: 0 }}>{selectedNode.name}</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: theme.text, margin: 0 }}>
+                {selectedNode.name}
+              </h3>
               <span style={{ fontSize: '0.8rem', color: selectedNode.color, fontWeight: 600 }}>
                 {isCenterNode ? 'Category' : 'Technology'}
               </span>
@@ -614,35 +683,139 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
   const renderGraph = () => {
     return (
-      <svg width="100%" height="100%" viewBox="0 0 900 700" style={{ background: `radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 100%)`, borderRadius: '24px', overflow: 'visible' }}>
+      <svg 
+        width="100%" 
+        height="100%" 
+        viewBox="0 0 900 700" 
+        style={{ 
+          background: `radial-gradient(circle at center, ${theme.cardBg}80 0%, ${theme.bg} 100%)`, 
+          borderRadius: '12px', 
+          overflow: 'visible' 
+        }}
+      >
         <defs>
-          <filter id="node-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="1.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="selected-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="3" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="node-glow">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <filter id="selected-glow">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
+        
+        {/* Render links */}
         {filteredLinks.map((link, index) => {
           const sourceNode = filteredNodes.find(n => n.id === link.source);
           const targetNode = filteredNodes.find(n => n.id === link.target);
           if (!sourceNode || !targetNode) return null;
+          
           const isSelectedLink = selectedSkill && (selectedSkill === link.source || selectedSkill === link.target);
           return (
-            <line key={`${link.source}-${link.target}-${index}`} x1={sourceNode.x} y1={sourceNode.y} x2={targetNode.x} y2={targetNode.y} stroke={isSelectedLink ? theme.accent : `${theme.accent}20`} strokeWidth={isSelectedLink ? 4 : link.strength * 2} opacity={isSelectedLink ? 0.9 : 0.3} style={{ transition: '0.3s' }} />
+            <line 
+              key={`${link.source}-${link.target}-${index}`} 
+              x1={sourceNode.x} 
+              y1={sourceNode.y} 
+              x2={targetNode.x} 
+              y2={targetNode.y} 
+              stroke={isSelectedLink ? theme.accent : `${theme.accent}20`} 
+              strokeWidth={isSelectedLink ? 4 : link.strength * 2} 
+              opacity={isSelectedLink ? 0.9 : 0.3} 
+              style={{ transition: '0.3s' }} 
+            />
           );
         })}
+        
+        {/* Render nodes */}
         {filteredNodes.map((node) => {
           const isCenterNode = node.id.startsWith('center-');
           const isSelected = selectedSkill === node.id;
           const radius = isCenterNode ? 40 : 22;
+          
           return (
-            <g key={node.id} className="graph-node-group" transform={`translate(${node.x}, ${node.y})`} onClick={() => handleNodeClick(node.id)}>
-              {isSelected && (<circle r={radius + 12} fill={node.color} opacity="0.15" filter="url(#selected-glow)" />)}
-              {needsWhiteBackground.includes(node.name) && !isCenterNode && (<circle r={radius - 3} fill="white" opacity="0.95" />)}
-              <circle className="node-circle" r={radius} fill={node.color} stroke={isSelected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.2)'} strokeWidth={isSelected ? 3 : 1.5} filter="url(#node-glow)" style={{ transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
-              {!isCenterNode && techIcons[node.name] && (<image href={techIcons[node.name]} x="-14" y="-14" width="28" height="28" style={{ pointerEvents: 'none', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))', transition: 'all 0.3s ease' }} />)}
-              {isCenterNode && categoryIcons[node.category] && (<image href={categoryIcons[node.category]} x="-18" y="-18" width="36" height="36" style={{ pointerEvents: 'none', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />)}
-              <text textAnchor="middle" y={radius + 18} fill="#fff" fontSize="10" fontWeight="600" style={{ pointerEvents: 'none', opacity: isSelected ? 1 : 0.7, transition: 'opacity 0.3s ease' }}>
-                {isCenterNode ? node.name : node.name.length > 12 ? node.name.substring(0, 10) + '...' : node.name}
+            <g 
+              key={node.id} 
+              className="graph-node-group" 
+              transform={`translate(${node.x}, ${node.y})`} 
+              onClick={() => handleNodeClick(node.id)}
+            >
+              {isSelected && (
+                <circle 
+                  r={radius + 15} 
+                  fill={node.color} 
+                  opacity="0.2" 
+                  filter="url(#selected-glow)" 
+                />
+              )}
+              
+              {needsWhiteBackground.includes(node.name) && !isCenterNode && (
+                <circle 
+                  r={radius - 4} 
+                  fill="white" 
+                  opacity="0.9" 
+                />
+              )}
+              
+              <circle 
+                className="node-circle" 
+                r={radius} 
+                fill={node.color} 
+                stroke={isSelected ? 'white' : theme.border} 
+                strokeWidth={isSelected ? 4 : 2} 
+                filter="url(#node-glow)" 
+                style={{ transition: '0.2s' }} 
+              />
+              
+              {!isCenterNode && techIcons[node.name] && (
+                <image 
+                  href={techIcons[node.name]} 
+                  x="-14" 
+                  y="-14" 
+                  width="28" 
+                  height="28" 
+                  style={{ pointerEvents: 'none' }} 
+                />
+              )}
+              
+              {isCenterNode && categoryIcons[node.category] && (
+                <image 
+                  href={categoryIcons[node.category]} 
+                  x="-18" 
+                  y="-18" 
+                  width="36" 
+                  height="36" 
+                  style={{ pointerEvents: 'none' }} 
+                />
+              )}
+              
+              <text 
+                textAnchor="middle" 
+                y={radius + 18} 
+                fill="#fff" 
+                fontSize="10" 
+                style={{ pointerEvents: 'none', opacity: 0.7 }}
+              >
+                {isCenterNode ? node.name : node.name.length > 12 ? 
+                  node.name.substring(0, 10) + '...' : node.name}
               </text>
-              {isSelected && (<circle r={radius + 8} fill="transparent" stroke={theme.accent} strokeWidth="2" opacity="0.5" style={{ animation: 'pulse-ring 2s ease-out infinite' }} />)}
+              
+              {isSelected && (
+                <circle 
+                  r={radius + 6} 
+                  fill="transparent" 
+                  stroke={theme.accent} 
+                  strokeWidth="2" 
+                  strokeDasharray="5,5" 
+                  opacity="0.8" 
+                  style={{ animation: 'rotate 6s linear infinite' }} 
+                />
+              )}
             </g>
           );
         })}
@@ -651,33 +824,57 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   };
 
   return (
-    <section id="skills" style={{ padding: '100px 2rem', backgroundColor: theme.bg, minHeight: '100vh', position: 'relative', background: `linear-gradient(135deg, ${theme.bg} 0%, rgba(139, 92, 246, 0.03) 100%)` }}>
+    <section id="skills" style={{ 
+      padding: '80px 2rem', 
+      backgroundColor: theme.bg, 
+      minHeight: '100vh', 
+      position: 'relative' 
+    }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 900, color: theme.text, letterSpacing: '-0.02em', marginBottom: '0.5rem' }}>Technical Stack</h1>
-          <p style={{ color: theme.textSecondary, fontSize: '1.1rem', fontWeight: 500 }}>Explore my expertise across different technologies</p>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: theme.text }}>
+            Technical Stack
+          </h1>
+          <p style={{ color: theme.textSecondary }}>
+            Click on any node to see detailed information
+          </p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '2.5rem' }}>
-          <div style={{ background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)`, backdropFilter: 'blur(20px)', borderRadius: '28px', padding: '2rem', border: `1px solid rgba(255,255,255,0.1)`, boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
-            <h3 style={{ color: theme.accent, fontSize: '0.85rem', marginBottom: '1.5rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', opacity: 0.8 }}>CATEGORIES</h3>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
+          {/* Categories Sidebar */}
+          <div style={{ 
+            background: theme.cardBg, 
+            borderRadius: '20px', 
+            padding: '2rem', 
+            border: `1px solid ${theme.border}` 
+          }}>
+            <h3 style={{ 
+              color: theme.accent, 
+              fontSize: '0.9rem', 
+              marginBottom: '1rem', 
+              textTransform: 'uppercase' 
+            }}>
+              CATEGORIES
+            </h3>
+            
             {Object.entries(skillsData).map(([key, data]) => (
               <button 
                 key={key} 
                 onClick={() => setActiveCategory(key)} 
                 style={{ 
-                  display: 'flex', 
                   width: '100%', 
-                  padding: '14px 16px', 
-                  background: activeCategory === key ? `linear-gradient(135deg, ${theme.accent}25 0%, ${theme.accent}10 100%)` : 'transparent', 
-                  color: activeCategory === key ? theme.accent : 'rgba(255,255,255,0.6)', 
-                  border: activeCategory === key ? `1px solid ${theme.accent}40` : '1px solid transparent', 
+                  padding: '12px 16px', 
+                  background: activeCategory === key ? `${theme.accent}20` : 'transparent', 
+                  color: activeCategory === key ? theme.accent : '#aaa', 
+                  border: 'none', 
                   textAlign: 'left', 
                   cursor: 'pointer', 
-                  borderRadius: '16px', 
-                  fontSize: '0.95rem', 
-                  fontWeight: activeCategory === key ? 700 : 600,
-                  marginBottom: '10px',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  borderRadius: '10px', 
+                  fontSize: '0.9rem', 
+                  fontWeight: 600,
+                  marginBottom: '8px',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
@@ -685,32 +882,61 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 <span>{data.title}</span>
                 <span style={{ 
                   fontSize: '0.8rem', 
-                  background: activeCategory === key ? `${theme.accent}30` : 'rgba(255,255,255,0.08)', 
-                  padding: '3px 10px', 
-                  borderRadius: '8px',
-                  fontWeight: 600
+                  background: 'rgba(255,255,255,0.1)', 
+                  padding: '2px 8px', 
+                  borderRadius: '12px' 
                 }}>
                   {data.skills.length}
                 </span>
               </button>
             ))}
           </div>
-          <div style={{ background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)`, backdropFilter: 'blur(20px)', borderRadius: '28px', border: `1px solid rgba(255,255,255,0.1)`, position: 'relative', height: '700px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
+          
+          {/* Graph Visualization */}
+          <div style={{ 
+            background: theme.cardBg, 
+            borderRadius: '20px', 
+            border: `1px solid ${theme.border}`, 
+            position: 'relative', 
+            height: '700px', 
+            overflow: 'hidden' 
+          }}>
             {renderGraph()}
             <InformationPanel />
           </div>
         </div>
       </div>
+      
       <style>{`
         .graph-node-group { cursor: pointer; }
-        .graph-node-group:hover .node-circle { transform: scale(1.1); filter: brightness(1.2); }
-        @keyframes fadeInPanel { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .graph-node-group:hover .node-circle { 
+          transform: scale(1.1); 
+          filter: brightness(1.2); 
+        }
+        @keyframes fadeInPanel { 
+          from { 
+            opacity: 0; 
+            transform: translateX(20px); 
+          } 
+          to { 
+            opacity: 1; 
+            transform: translateX(0); 
+          } 
+        }
+        @keyframes rotate { 
+          from { 
+            transform: rotate(0deg); 
+          } 
+          to { 
+            transform: rotate(360deg); 
+          } 
+        }
       `}</style>
     </section>
   );
 };
 
+// Fixed styles object without duplicate properties
 const styles = {
   detailLabel: { 
     fontSize: '0.7rem', 
@@ -727,19 +953,16 @@ const styles = {
     margin: 0 
   },
   learnMoreBtn: { 
-    padding: '12px 20px', 
-    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', 
+    padding: '0.8rem', 
+    background: '#3b82f6', 
     border: 'none', 
-    borderRadius: '12px', 
+    borderRadius: '10px', 
     color: 'white', 
     fontWeight: 700, 
-    fontSize: '0.95rem',
     cursor: 'pointer', 
     width: '100%', 
-    boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+    transition: 'background 0.3s'
   }
 };
 
 export default Skills;
-
