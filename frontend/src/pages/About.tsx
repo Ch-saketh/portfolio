@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
 // Using your confirmed PNG photo
-import profileImage from '../assets/saketh-photo.png'; 
-import resumeFile from '../assets/saketh_resume.pdf'; 
+import profileImage from '../assets/saketh-photo.png';
+import resumeFile from '../assets/saketh_resume.pdf';
 
 interface AboutProps {
   theme: {
@@ -38,11 +38,11 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           <h1 style={styles.heroTitle}>
             Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
           </h1>
-          
+
           <p style={styles.description}>
-            Focused on building scalable web applications and AI-driven systems, 
-            with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>, 
-            <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied 
+            Focused on building scalable web applications and AI-driven systems,
+            with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
+            <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied
             <span style={{ color: '#fff', fontWeight: 600 }}> machine learning</span> models.
           </p>
 
@@ -58,13 +58,13 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
 
           <div style={styles.buttonGroup}>
-            <button 
+            <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
             >
               Contact Me
             </button>
-            <button 
+            <button
               onClick={() => setShowResume(true)}
               style={{ ...styles.ctaBase, ...styles.ctaSecondary, borderColor: theme.border, cursor: 'pointer' }}
             >
@@ -77,14 +77,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         <div style={styles.rightColumn} className="reveal-right">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
-          <ProfileCard
-  name="Chokkapu Saketh"
-  avatarUrl={profileImage}
-  handle="ch-saketh"
-  link="mailto:chokkapusaketh@gmail.com" 
-  enableTilt={true}
-  behindGlowEnabled={false}
-/>
+            <ProfileCard
+              name="Chokkapu Saketh"
+              avatarUrl={profileImage}
+              handle="ch-saketh"
+              link="mailto:chokkapusaketh@gmail.com"
+              enableTilt={true}
+              behindGlowEnabled={false}
+            />
           </div>
         </div>
       </div>
@@ -147,54 +147,54 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 const styles = {
   section: {
     width: '100%',
-    minHeight: '100vh', 
+    minHeight: '100vh',
     display: 'flex',
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
     background: 'transparent',
     overflow: 'hidden',
     position: 'relative' as const,
-    paddingTop: '60px', 
+    paddingTop: '60px',
     paddingBottom: '80px',
   },
   mainContainer: {
-    maxWidth: '1200px', 
+    maxWidth: '1200px',
     width: '100%',
     margin: '0 auto',
     display: 'grid',
     gridTemplateColumns: '1.2fr 0.8fr',
-    gap: '5rem', 
-    alignItems: 'center', 
+    gap: '5rem',
+    alignItems: 'center',
     zIndex: 10,
     padding: '0 4rem',
   },
   leftColumn: { display: 'flex', flexDirection: 'column' as const, gap: '1.4rem', justifyContent: 'center', marginTop: '-40px' },
   badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
   badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
-  heroTitle: { fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' }, 
-  description: { fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 }, 
+  heroTitle: { fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
+  description: { fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 },
   bentoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginTop: '1rem' },
   bentoTitle: { fontSize: '11px', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 },
   buttonGroup: { display: 'flex', gap: '1.5rem', marginTop: '1.5rem' },
-  ctaBase: { padding: '12px 28px', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }, 
+  ctaBase: { padding: '12px 28px', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
   rightColumn: { display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' as const },
-  cardWrapper: { 
-    width: '360px', 
-    maxWidth: '100%', 
-    transform: 'scale(0.85)', 
-    marginTop: '-60px' 
+  cardWrapper: {
+    width: '360px',
+    maxWidth: '100%',
+    transform: 'scale(0.85)',
+    marginTop: '-60px'
   },
   cardGlow: { position: 'absolute' as const, width: '100%', height: '100%', filter: 'blur(100px)', opacity: 0.15, zIndex: -1 },
-  
+
   modalOverlay: {
     position: 'fixed' as const,
     inset: 0,
     background: 'rgba(0, 0, 0, 0.85)',
     backdropFilter: 'blur(10px)',
-    zIndex: 10000, 
+    zIndex: 10000,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
