@@ -265,8 +265,8 @@
 .pc-user-info {
   position: absolute;
   bottom: 24px;
-  left: 24px;
-  right: 24px;
+  left: 20px;
+  right: 20px;
   z-index: 6 !important;
   display: flex !important;
   align-items: center;
@@ -275,15 +275,20 @@
   backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   pointer-events: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  gap: 12px;
+  overflow: hidden;
+  width: calc(100% - 40px);
 }
 
 .pc-user-details {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
 }
 
 .pc-mini-avatar {
@@ -329,8 +334,8 @@
 .pc-contact-btn {
   border: 1px solid rgba(59, 130, 246, 0.6);
   border-radius: 10px;
-  padding: 10px 16px;
-  font-size: 12px;
+  padding: 8px 14px;
+  font-size: 11px;
   font-weight: 600;
   color: white;
   cursor: pointer;
@@ -341,6 +346,8 @@
   pointer-events: auto;
   display: block !important;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pc-contact-btn:hover {
