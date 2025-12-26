@@ -107,7 +107,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   };
 
   // Dark logos that need light background for visibility
-  const darkLogos = new Set(['Git', 'Java', 'Linux', 'PostgreSQL', 'SQL', 'C', 'Jupyter Notebook']);
+  const darkLogos = new Set(['Git', 'Java', 'Linux', 'PostgreSQL', 'SQL', 'C', 'Jupyter Notebook', 'Electron.js', 'TailwindCSS', 'Quantum Computing', 'Express.js', 'Flask', 'IBM Qiskit', 'Quantum Key Distribution']);
 
   // Tech details
   const techDetails: Record<string, TechDetail> = {
