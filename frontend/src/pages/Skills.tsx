@@ -35,25 +35,25 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [graphData, setGraphData] = useState<{ nodes: GraphNode[], links: GraphLink[] }>({ nodes: [], links: [] });
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
-  // Professional icon URLs - ONLY YOUR EXACT STACK
+  // ONLY YOUR EXACT CATEGORIES
   const categoryIcons: Record<string, string> = {
     'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
     'frontend': 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png',
     'backend': 'https://cdn-icons-png.flaticon.com/512/1086/1086581.png',
     'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
     'ml': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
-    'quantum': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Qiskit-Logo.svg/1024px-Qiskit-Logo.svg.png',
+    'quantum': 'https://qiskit.org/textbook/assets/images/logo.png',
     'tools': 'https://cdn-icons-png.flaticon.com/512/3248/3248193.png'
   };
 
-  // ONLY YOUR EXACT TECH STACK - FIXED QUANTUM ICONS
+  // ONLY YOUR EXACT TECH STACK - NO EXTRAS
   const techIcons: Record<string, string> = {
-    // Programming Languages
+    // Programming Languages - ONLY 3
     'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
     'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
     'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
     
-    // Frontend
+    // Frontend - ONLY 6
     'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
     'Vite': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
     'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
@@ -61,32 +61,32 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'CSS3': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
     'Electron.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg',
     
-    // Backend
+    // Backend - ONLY 5
     'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
     'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
     'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg',
     'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',
     'RESTful APIs': 'https://cdn-icons-png.flaticon.com/512/2165/2165004.png',
     
-    // Databases
+    // Databases - ONLY 3
     'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
     'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg',
     'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
     
-    // Machine Learning
+    // Machine Learning - ONLY 5
     'Scikit-learn': 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg',
     'LightFM': 'https://raw.githubusercontent.com/lyst/lightfm/master/logo.png',
     'TF-IDF': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
     'Cosine Similarity': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
     'NLP': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
     
-    // Quantum Computing - FIXED IBM QISKIT LOGO
+    // Quantum Computing - ONLY 4
     'IBM Qiskit': 'https://qiskit.org/textbook/assets/images/logo.png',
     'Quantum Key Distribution': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
     'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
     'Kyber': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
     
-    // Tools
+    // Tools - ONLY 5
     'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
     'Linux': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg',
     'Jupyter Notebook': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg',
@@ -99,65 +99,65 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     // Programming Languages
     'Python': {
       title: 'Python',
-      description: 'A high-level, interpreted programming language known for its simplicity and versatility. Used extensively in AI/ML, backend development, and automation.',
-      useCases: ['AI/ML Development', 'Backend Services', 'Data Analysis', 'Automation Scripting'],
-      experience: '4+ years of production experience',
+      description: 'High-level programming language for AI/ML, backend services, and automation.',
+      useCases: ['AI/ML Development', 'Backend Services', 'Data Analysis', 'Automation'],
+      experience: '4+ years',
       url: 'https://www.python.org'
     },
     'Java': {
       title: 'Java',
-      description: 'Object-oriented programming language designed for reliability and scalability in enterprise environments.',
+      description: 'Object-oriented language for enterprise applications and Android development.',
       useCases: ['Enterprise Applications', 'Android Development', 'High-concurrency Systems'],
-      experience: '3+ years building robust applications',
+      experience: '3+ years',
       url: 'https://www.java.com'
     },
     'JavaScript': {
       title: 'JavaScript',
-      description: 'The universal scripting language for interactive web applications and modern full-stack development.',
+      description: 'Universal scripting language for web and full-stack development.',
       useCases: ['Web Applications', 'Server-side Development', 'Real-time Applications'],
-      experience: '4+ years across full stack',
+      experience: '4+ years',
       url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
     },
 
     // Frontend
     'React.js': {
       title: 'React.js',
-      description: 'A declarative, component-based JavaScript library for building modern user interfaces.',
+      description: 'JavaScript library for building modern user interfaces.',
       useCases: ['Single Page Applications', 'Complex Dashboards', 'Real-time Interfaces'],
-      experience: '3+ years in production',
+      experience: '3+ years',
       url: 'https://reactjs.org'
     },
     'Vite': {
       title: 'Vite',
-      description: 'Next-generation frontend tooling with lightning-fast development experience.',
+      description: 'Next-generation frontend tooling with fast development experience.',
       useCases: ['Modern Web Development', 'Fast Refresh', 'Production Bundling'],
-      experience: '2+ years using Vite',
+      experience: '2+ years',
       url: 'https://vitejs.dev'
     },
     'TailwindCSS': {
       title: 'TailwindCSS',
-      description: 'A utility-first CSS framework for rapid UI development.',
+      description: 'Utility-first CSS framework for rapid UI development.',
       useCases: ['Rapid Prototyping', 'Design Systems', 'Responsive Design'],
-      experience: '2+ years building interfaces',
+      experience: '2+ years',
       url: 'https://tailwindcss.com'
     },
     'HTML5': {
       title: 'HTML5',
-      description: 'Latest markup language for creating web pages and applications.',
+      description: 'Latest markup language for web pages and applications.',
       useCases: ['Web Page Structure', 'Semantic Markup', 'Web Applications'],
-      experience: '5+ years writing semantic HTML',
+      experience: '5+ years',
       url: 'https://developer.mozilla.org/en-US/docs/Web/HTML'
     },
     'CSS3': {
       title: 'CSS3',
-      description: 'Latest CSS with flexbox, grid, animations, and responsive design.',
+      description: 'Latest CSS with modern layout and animation features.',
       useCases: ['Styling and Layout', 'Responsive Design', 'Animations'],
-      experience: '5+ years creating interfaces',
+      experience: '5+ years',
       url: 'https://developer.mozilla.org/en-US/docs/Web/CSS'
     },
     'Electron.js': {
       title: 'Electron.js',
-      description: 'Framework for building cross-platform desktop apps with web tech.',
+      description: 'Framework for building cross-platform desktop apps.',
       useCases: ['Desktop Applications', 'Cross-platform Tools'],
       experience: 'Desktop app development',
       url: 'https://www.electronjs.org'
@@ -166,46 +166,46 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     // Backend
     'Node.js': {
       title: 'Node.js',
-      description: 'JavaScript runtime for building scalable network applications.',
+      description: 'JavaScript runtime for scalable network applications.',
       useCases: ['RESTful APIs', 'Real-time Applications', 'Microservices'],
-      experience: '3+ years in production',
+      experience: '3+ years',
       url: 'https://nodejs.org'
     },
     'Express.js': {
       title: 'Express.js',
-      description: 'Minimal and flexible Node.js web application framework.',
+      description: 'Minimal Node.js web application framework.',
       useCases: ['REST API Development', 'Web Applications', 'Middleware'],
-      experience: '3+ years building APIs',
+      experience: '3+ years',
       url: 'https://expressjs.com'
     },
     'Flask': {
       title: 'Flask',
-      description: 'Lightweight WSGI web application framework for Python.',
+      description: 'Lightweight Python web framework.',
       useCases: ['Rapid Prototyping', 'REST APIs', 'Web Applications'],
-      experience: '2+ years with Flask',
+      experience: '2+ years',
       url: 'https://flask.palletsprojects.com'
     },
     'FastAPI': {
       title: 'FastAPI',
-      description: 'Modern, fast Python framework for building APIs.',
+      description: 'Modern Python framework for building APIs.',
       useCases: ['High-performance APIs', 'Microservices', 'Data Validation'],
-      experience: 'Fast API development',
+      experience: 'API development',
       url: 'https://fastapi.tiangolo.com'
     },
     'RESTful APIs': {
       title: 'RESTful APIs',
-      description: 'Architectural style for designing networked applications.',
+      description: 'Architectural style for networked applications.',
       useCases: ['Web Services', 'Mobile Backends', 'Third-party Integrations'],
-      experience: '4+ years designing APIs',
+      experience: '4+ years',
       url: 'https://restfulapi.net'
     },
 
     // Databases
     'MongoDB': {
       title: 'MongoDB',
-      description: 'NoSQL document database designed for scalability.',
+      description: 'NoSQL document database for scalability.',
       useCases: ['Content Management', 'Real-time Analytics', 'Mobile Apps'],
-      experience: '3+ years in production',
+      experience: '3+ years',
       url: 'https://www.mongodb.com'
     },
     'Neo4j': {
@@ -217,18 +217,18 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     },
     'SQL': {
       title: 'SQL',
-      description: 'Structured Query Language for relational databases.',
+      description: 'Language for relational databases.',
       useCases: ['Relational Data', 'Transaction Systems', 'Data Warehousing'],
-      experience: '4+ years with SQL',
+      experience: '4+ years',
       url: 'https://en.wikipedia.org/wiki/SQL'
     },
 
     // Machine Learning
     'Scikit-learn': {
       title: 'Scikit-learn',
-      description: 'Machine learning library for predictive data analysis.',
+      description: 'Machine learning library for predictive analysis.',
       useCases: ['Predictive Analytics', 'Classification', 'Clustering'],
-      experience: '2+ years building ML models',
+      experience: '2+ years',
       url: 'https://scikit-learn.org'
     },
     'LightFM': {
@@ -240,7 +240,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     },
     'TF-IDF': {
       title: 'TF-IDF',
-      description: 'Statistical measure for word importance in documents.',
+      description: 'Statistical measure for word importance.',
       useCases: ['Text Mining', 'Information Retrieval', 'Document Classification'],
       experience: 'Text analysis implementation',
       url: 'https://en.wikipedia.org/wiki/Tf%E2%80%93idf'
@@ -254,18 +254,18 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     },
     'NLP': {
       title: 'NLP',
-      description: 'AI subfield for computer-human language interaction.',
+      description: 'AI for computer-human language interaction.',
       useCases: ['Text Classification', 'Sentiment Analysis', 'Named Entity Recognition'],
-      experience: 'NLP techniques for text processing',
+      experience: 'NLP techniques',
       url: 'https://en.wikipedia.org/wiki/Natural_language_processing'
     },
 
     // Quantum Computing
     'IBM Qiskit': {
       title: 'IBM Qiskit',
-      description: 'Open-source SDK for quantum computing algorithms.',
+      description: 'Open-source SDK for quantum computing.',
       useCases: ['Quantum Algorithm Development', 'Circuit Simulation'],
-      experience: 'Quantum computing concepts and simulation',
+      experience: 'Quantum computing concepts',
       url: 'https://qiskit.org'
     },
     'Quantum Key Distribution': {
@@ -295,40 +295,40 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       title: 'Git',
       description: 'Distributed version control system.',
       useCases: ['Version Control', 'Collaborative Development'],
-      experience: '4+ years with Git',
+      experience: '4+ years',
       url: 'https://git-scm.com'
     },
     'Linux': {
       title: 'Linux',
-      description: 'Open-source Unix-like operating system.',
+      description: 'Open-source operating system.',
       useCases: ['Server Administration', 'Development Environments'],
-      experience: '4+ years with Linux',
+      experience: '4+ years',
       url: 'https://www.linux.org'
     },
     'Jupyter Notebook': {
       title: 'Jupyter Notebook',
-      description: 'Web app for live code and visualizations.',
+      description: 'Web app for code and visualizations.',
       useCases: ['Data Analysis', 'ML Prototyping'],
-      experience: '3+ years with Jupyter',
+      experience: '3+ years',
       url: 'https://jupyter.org'
     },
     'VS Code': {
       title: 'VS Code',
-      description: 'Free source-code editor by Microsoft.',
+      description: 'Source-code editor.',
       useCases: ['Code Editing', 'Debugging', 'Extensions'],
-      experience: '4+ years as primary editor',
+      experience: '4+ years',
       url: 'https://code.visualstudio.com'
     },
     'Postman': {
       title: 'Postman',
       description: 'API platform for building and testing.',
       useCases: ['API Testing', 'Documentation', 'Mock Servers'],
-      experience: '3+ years with Postman',
+      experience: '3+ years',
       url: 'https://www.postman.com'
     }
   };
 
-  // ONLY YOUR EXACT CATEGORIES AND SKILLS
+  // ONLY YOUR EXACT 7 CATEGORIES WITH EXACT TECHNOLOGIES
   const skillsData = {
     'programming': {
       title: 'Programming',
@@ -401,7 +401,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const createLayout = (): GraphNode[] => {
     const nodes: GraphNode[] = [];
     
-    // Optimized center positions to prevent overlaps
+    // Optimized center positions for 7 categories
     const categoryCenters = [
       { id: 'center-programming', name: 'Programming', color: '#3b82f6', category: 'programming', x: 450, y: 120 },
       { id: 'center-frontend', name: 'Frontend', color: '#8b5cf6', category: 'frontend', x: 180, y: 220 },
@@ -418,37 +418,19 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       learnMoreUrl: '#'
     }));
     
+    // Create skill nodes
     Object.entries(skillsData).forEach(([category, data]) => {
       const center = categoryCenters.find(c => c.category === category);
       if (!center) return;
       
-      // Different radii based on number of skills to prevent overlap
-      let radius: number;
-      switch(category) {
-        case 'programming': radius = 100; break;
-        case 'databases': radius = 100; break;
-        case 'quantum': radius = 110; break;
-        case 'ml': radius = 130; break;
-        case 'backend': radius = 130; break;
-        case 'frontend': radius = 140; break;
-        case 'tools': radius = 140; break;
-        default: radius = 120;
-      }
-      
+      // Calculate radius based on number of skills
+      const radius = 80 + (data.skills.length * 10);
       const angleStep = (2 * Math.PI) / data.skills.length;
       
       data.skills.forEach((skill, index) => {
-        // Add small random offset to prevent perfect alignment overlap
-        const randomOffset = (Math.random() - 0.5) * 15;
-        const angle = (-Math.PI / 2) + (angleStep * index) + randomOffset * 0.01;
-        
-        // Ensure nodes don't go out of bounds
-        let x = center.x + radius * Math.cos(angle);
-        let y = center.y + radius * Math.sin(angle);
-        
-        // Boundary checks
-        x = Math.max(50, Math.min(x, 850));
-        y = Math.max(50, Math.min(y, 650));
+        const angle = (-Math.PI / 2) + (angleStep * index);
+        const x = center.x + radius * Math.cos(angle);
+        const y = center.y + radius * Math.sin(angle);
         
         nodes.push({
           id: skill.name,
@@ -469,19 +451,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const getTechnologyConnections = (): GraphLink[] => {
     const connections: GraphLink[] = [];
     
-    // Core connections
-    connections.push(
-      { source: 'Python', target: 'Scikit-learn', strength: 0.9 },
-      { source: 'Python', target: 'Flask', strength: 0.8 },
-      { source: 'Python', target: 'FastAPI', strength: 0.8 },
-      { source: 'JavaScript', target: 'React.js', strength: 0.9 },
-      { source: 'JavaScript', target: 'Node.js', strength: 0.9 },
-      { source: 'React.js', target: 'Vite', strength: 0.8 },
-      { source: 'Node.js', target: 'Express.js', strength: 0.9 },
-      { source: 'Node.js', target: 'MongoDB', strength: 0.8 }
-    );
-    
-    // Connect skills to their category centers
+    // Connect skills to their category centers ONLY
     Object.values(skillsData).forEach(categoryData => {
       const centerId = `center-${categoryData.title.toLowerCase().replace(/ /g, '-')}`;
       categoryData.skills.forEach(skill => {
@@ -493,13 +463,12 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       });
     });
     
-    // Connect category centers
+    // Minimal connections between category centers
     connections.push(
       { source: 'center-programming', target: 'center-frontend', strength: 0.6 },
       { source: 'center-programming', target: 'center-backend', strength: 0.7 },
       { source: 'center-programming', target: 'center-ml', strength: 0.6 },
-      { source: 'center-backend', target: 'center-databases', strength: 0.7 },
-      { source: 'center-databases', target: 'center-tools', strength: 0.5 }
+      { source: 'center-backend', target: 'center-databases', strength: 0.7 }
     );
     
     return connections;
@@ -565,7 +534,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           animation: 'fadeInPanel 0.3s ease-out'
         }}
       >
-        {/* Fixed Header */}
         <div style={{ 
           padding: '1.5rem', 
           borderBottom: `1px solid ${theme.border}`,
@@ -609,13 +577,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     objectFit: 'contain' 
                   }} 
                   alt={selectedNode.name} 
-                  onError={(e) => {
-                    // Fallback for broken images
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    target.parentElement!.innerHTML = '<span style="color: #000; font-weight: bold; font-size: 12px;">' + 
-                      selectedNode.name.charAt(0) + '</span>';
-                  }}
                 />
               )}
             </div>
@@ -630,7 +591,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           </div>
         </div>
         
-        {/* Scrollable Body */}
         <div style={{ 
           flex: '1 1 auto',
           overflowY: 'auto', 
@@ -664,8 +624,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           )}
         </div>
 
-        {/* Fixed Footer */}
-        {(detail?.url) && (
+        {detail?.url && (
           <div style={{ 
             padding: '1.25rem', 
             borderTop: `1px solid ${theme.border}`, 
@@ -675,8 +634,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
             <button 
               onClick={() => window.open(detail.url, '_blank')} 
               style={styles.learnMoreBtn}
-              onMouseEnter={(e) => e.currentTarget.style.background = '#2563eb'}
-              onMouseLeave={(e) => e.currentTarget.style.background = '#3b82f6'}
             >
               📚 Learn More
             </button>
@@ -715,7 +672,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           </filter>
         </defs>
         
-        {/* Render links */}
         {filteredLinks.map((link, index) => {
           const sourceNode = filteredNodes.find(n => n.id === link.source);
           const targetNode = filteredNodes.find(n => n.id === link.target);
@@ -737,7 +693,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           );
         })}
         
-        {/* Render nodes */}
         {filteredNodes.map((node) => {
           const isCenterNode = node.id.startsWith('center-');
           const isSelected = selectedSkill === node.id;
@@ -792,10 +747,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     pointerEvents: 'none',
                     borderRadius: '50%'
                   }} 
-                  onError={(e) => {
-                    // Hide broken images
-                    (e.target as SVGImageElement).style.display = 'none';
-                  }}
                 />
               )}
               
@@ -862,7 +813,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
-          {/* Categories Sidebar */}
           <div style={{ 
             background: theme.cardBg, 
             borderRadius: '20px', 
@@ -922,7 +872,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
             ))}
           </div>
           
-          {/* Graph Visualization */}
           <div style={{ 
             background: theme.cardBg, 
             borderRadius: '20px', 
