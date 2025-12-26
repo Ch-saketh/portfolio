@@ -733,30 +733,23 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               />
               
               {iconUrl && (
-                <>
-                  <circle 
-                    r={isCenterNode ? 20 : 16} 
-                    fill="rgba(255, 255, 255, 0.08)" 
-                    opacity="0.6"
-                  />
-                  <image 
-                    href={iconUrl} 
-                    x={isCenterNode ? -18 : -14} 
-                    y={isCenterNode ? -18 : -14} 
-                    width={isCenterNode ? 36 : 28} 
-                    height={isCenterNode ? 36 : 28} 
-                    style={{ 
-                      pointerEvents: 'none',
-                      borderRadius: '50%',
-                      filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.2))'
-                    }} 
-                    onError={(e) => {
-                      // Hide broken images
-                      const target = e.target as SVGImageElement;
-                      target.style.display = 'none';
-                    }}
-                  />
-                </>
+                <image 
+                  href={iconUrl} 
+                  x={isCenterNode ? -18 : -14} 
+                  y={isCenterNode ? -18 : -14} 
+                  width={isCenterNode ? 36 : 28} 
+                  height={isCenterNode ? 36 : 28} 
+                  style={{ 
+                    pointerEvents: 'none',
+                    borderRadius: '50%',
+                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.4))'
+                  }} 
+                  onError={(e) => {
+                    // Hide broken images
+                    const target = e.target as SVGImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
               )}
               
               <text 
