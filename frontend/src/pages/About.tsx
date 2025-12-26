@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
+// Using your confirmed PNG photo
 import profileImage from '../assets/saketh-photo.png'; 
 import resumeFile from '../assets/saketh_resume.pdf'; 
 
@@ -19,12 +20,9 @@ interface AboutProps {
 const About: React.FC<AboutProps> = ({ theme }) => {
   const [showResume, setShowResume] = useState(false);
 
-  // NEW: Function to open Gmail/Outlook
-  const handleContactClick = () => {
-    const email = "chokkapusaketh@gmail.com";
-    const subject = encodeURIComponent("Project Inquiry / Collaboration");
-    const body = encodeURIComponent("Hi Saketh,\n\nI saw your portfolio and would like to connect regarding...");
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  // Email logic for the main CTA buttons
+  const handleContactMe = () => {
+    window.location.href = "mailto:chokkapusaketh@gmail.com?subject=Collaboration Inquiry";
   };
 
   return (
@@ -60,16 +58,9 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
 
           <div style={styles.buttonGroup}>
-            {/* UPDATED: Contact Me Button */}
             <button 
-              onClick={handleContactClick}
-              style={{ 
-                ...styles.ctaBase, 
-                ...styles.ctaPrimary, 
-                background: theme.accent,
-                cursor: 'pointer',
-                border: 'none'
-              }}
+              onClick={handleContactMe}
+              style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
             >
               Contact Me
             </button>
@@ -86,14 +77,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         <div style={styles.rightColumn} className="reveal-right">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
-            <ProfileCard
-              name="Chokkapu Saketh"
-              title="" 
-              avatarUrl={profileImage}
-              enableTilt={true}
-              behindGlowEnabled={false}
-              handle="ch-saketh"
-            />
+          <ProfileCard
+  name="Chokkapu Saketh"
+  avatarUrl={profileImage}
+  handle="ch-saketh"
+  link="mailto:chokkapusaketh@gmail.com" 
+  enableTilt={true}
+  behindGlowEnabled={false}
+/>
           </div>
         </div>
       </div>
@@ -123,6 +114,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Centering and Raising the Name */
         .pc-details {
           margin-top: 14px !important; 
           text-align: center !important;
@@ -132,20 +124,10 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           align-items: center !important;
         }
 
-        .pc-details h3 {
-          text-align: center !important;
-          margin: 0 !important;
-          font-size: 1.6rem !important;
-          font-weight: 700;
-          color: #fff;
-          letter-spacing: -0.01em;
-        }
-
+        /* Glass footer containment */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
-          right: 20px !important;
-          box-sizing: border-box !important;
           bottom: 22px !important;
           position: absolute !important;
         }
@@ -163,10 +145,31 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 };
 
 const styles = {
-  section: { width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', overflow: 'hidden', position: 'relative' as const, padding: '60px 0 80px 0' },
-  mainContainer: { maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '5rem', alignItems: 'center', zIndex: 10, padding: '0 4rem' },
+  section: {
+    width: '100%',
+    minHeight: '100vh', 
+    display: 'flex',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    background: 'transparent',
+    overflow: 'hidden',
+    position: 'relative' as const,
+    paddingTop: '60px', 
+    paddingBottom: '80px',
+  },
+  mainContainer: {
+    maxWidth: '1200px', 
+    width: '100%',
+    margin: '0 auto',
+    display: 'grid',
+    gridTemplateColumns: '1.2fr 0.8fr',
+    gap: '5rem', 
+    alignItems: 'center', 
+    zIndex: 10,
+    padding: '0 4rem',
+  },
   leftColumn: { display: 'flex', flexDirection: 'column' as const, gap: '1.4rem', justifyContent: 'center', marginTop: '-40px' },
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid', borderRadius: '100px', width: 'fit-content' },
+  badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
   badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
   heroTitle: { fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' }, 
   description: { fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 }, 
@@ -178,11 +181,43 @@ const styles = {
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
   rightColumn: { display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' as const },
-  cardWrapper: { width: '360px', maxWidth: '100%', transform: 'scale(0.85)', marginTop: '-60px' },
+  cardWrapper: { 
+    width: '360px', 
+    maxWidth: '100%', 
+    transform: 'scale(0.85)', 
+    marginTop: '-60px' 
+  },
   cardGlow: { position: 'absolute' as const, width: '100%', height: '100%', filter: 'blur(100px)', opacity: 0.15, zIndex: -1 },
-  modalOverlay: { position: 'fixed' as const, inset: 0, background: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(10px)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 40px' },
-  modalContent: { width: '100%', maxWidth: '1000px', height: '85vh', background: '#111', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'column' as const, overflow: 'hidden' },
-  modalHeader: { padding: '20px 30px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+  
+  modalOverlay: {
+    position: 'fixed' as const,
+    inset: 0,
+    background: 'rgba(0, 0, 0, 0.85)',
+    backdropFilter: 'blur(10px)',
+    zIndex: 10000, 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '80px 40px 40px 40px',
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: '1000px',
+    height: '85vh',
+    background: '#111',
+    borderRadius: '24px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    padding: '20px 30px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   modalActions: { display: 'flex', gap: '15px', alignItems: 'center' },
   iframe: { width: '100%', flex: 1, border: 'none' },
   closeBtn: { background: 'transparent', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', padding: '5px' },

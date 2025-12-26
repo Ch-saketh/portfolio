@@ -21,6 +21,8 @@ interface ProfileCardProps {
   contactText?: string;
   showUserInfo?: boolean;
   onContactClick?: () => void;
+  // ADDED THIS LINE TO FIX TS2322
+  link?: string; 
 }
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
@@ -39,9 +41,9 @@ const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: numbe
   round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = '<Placeholder for avatar URL>',
-  iconUrl = '<Placeholder for icon URL>',
-  grainUrl = '<Placeholder for grain URL>',
+  avatarUrl,
+  iconUrl = '',
+  grainUrl = '',
   innerGradient,
   behindGlowEnabled = true,
   behindGlowColor,
@@ -51,13 +53,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   enableMobileTilt = false,
   mobileTiltSensitivity = 5,
   miniAvatarUrl,
-  name = 'Javi A. Torres',
+  name = 'Chokkapu Saketh',
   title = '',
-  handle = 'javicodes',
+  handle = 'ch-saketh',
   status = 'Online',
   contactText = 'Contact',
   showUserInfo = true,
-  onContactClick
+  onContactClick,
+  link // DESTRUCTURED HERE
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -324,9 +327,15 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]
   );
 
-  const handleContactClick = useCallback(() => {
-    onContactClick?.();
-  }, [onContactClick]);
+  // LOGIC TO TRIGGER EMAIL CLIENT
+  const handleContactClickInternal = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation(); // Stop tilt engine interference
+    if (link) {
+      window.location.href = link;
+    } else {
+      onContactClick?.();
+    }
+  }, [link, onContactClick]);
 
   return (
     <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
@@ -369,7 +378,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   </div>
                   <button
                     className="pc-contact-btn"
-                    onClick={handleContactClick}
+                    onClick={handleContactClickInternal}
                     style={{ pointerEvents: 'auto' }}
                     type="button"
                     aria-label={`Contact ${name || 'user'}`}
