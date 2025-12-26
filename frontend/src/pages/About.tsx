@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
-// Using the PNG format for your professional photo as confirmed
 import profileImage from '../assets/saketh-photo.png'; 
 import resumeFile from '../assets/saketh_resume.pdf'; 
 
-// THE FIX: This interface now matches the object structure in App.tsx exactly
 interface AboutProps {
   theme: {
     bg: string;
@@ -20,6 +18,14 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = ({ theme }) => {
   const [showResume, setShowResume] = useState(false);
+
+  // NEW: Function to open Gmail/Outlook
+  const handleContactClick = () => {
+    const email = "chokkapusaketh@gmail.com";
+    const subject = encodeURIComponent("Project Inquiry / Collaboration");
+    const body = encodeURIComponent("Hi Saketh,\n\nI saw your portfolio and would like to connect regarding...");
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  };
 
   return (
     <section id="about" style={styles.section}>
@@ -54,14 +60,19 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
 
           <div style={styles.buttonGroup}>
-            <a 
-              href="https://github.com/Ch-saketh" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent }}
+            {/* UPDATED: Contact Me Button */}
+            <button 
+              onClick={handleContactClick}
+              style={{ 
+                ...styles.ctaBase, 
+                ...styles.ctaPrimary, 
+                background: theme.accent,
+                cursor: 'pointer',
+                border: 'none'
+              }}
             >
-              GitHub Profile
-            </a>
+              Contact Me
+            </button>
             <button 
               onClick={() => setShowResume(true)}
               style={{ ...styles.ctaBase, ...styles.ctaSecondary, borderColor: theme.border, cursor: 'pointer' }}
@@ -112,7 +123,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Perfect centering calibration */
         .pc-details {
           margin-top: 14px !important; 
           text-align: center !important;
@@ -131,7 +141,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           letter-spacing: -0.01em;
         }
 
-        /* Glass footer containment */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
