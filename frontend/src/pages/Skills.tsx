@@ -614,10 +614,10 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
   const renderGraph = () => {
     return (
-      <svg width="100%" height="100%" viewBox="0 0 900 700" style={{ background: `radial-gradient(circle at center, ${theme.cardBg}80 0%, ${theme.bg} 100%)`, borderRadius: '12px', overflow: 'visible' }}>
+      <svg width="100%" height="100%" viewBox="0 0 900 700" style={{ background: `radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 100%)`, borderRadius: '24px', overflow: 'visible' }}>
         <defs>
-          <filter id="node-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="2" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="selected-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="4" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="node-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="1.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="selected-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="3" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
         {filteredLinks.map((link, index) => {
           const sourceNode = filteredNodes.find(n => n.id === link.source);
@@ -634,15 +634,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           const radius = isCenterNode ? 40 : 22;
           return (
             <g key={node.id} className="graph-node-group" transform={`translate(${node.x}, ${node.y})`} onClick={() => handleNodeClick(node.id)}>
-              {isSelected && (<circle r={radius + 15} fill={node.color} opacity="0.2" filter="url(#selected-glow)" />)}
-              {needsWhiteBackground.includes(node.name) && !isCenterNode && (<circle r={radius - 4} fill="white" opacity="0.9" />)}
-              <circle className="node-circle" r={radius} fill={node.color} stroke={isSelected ? 'white' : theme.border} strokeWidth={isSelected ? 4 : 2} filter="url(#node-glow)" style={{ transition: '0.2s' }} />
-              {!isCenterNode && techIcons[node.name] && (<image href={techIcons[node.name]} x="-14" y="-14" width="28" height="28" style={{ pointerEvents: 'none' }} />)}
-              {isCenterNode && categoryIcons[node.category] && (<image href={categoryIcons[node.category]} x="-18" y="-18" width="36" height="36" style={{ pointerEvents: 'none' }} />)}
-              <text textAnchor="middle" y={radius + 18} fill="#fff" fontSize="10" style={{ pointerEvents: 'none', opacity: 0.7 }}>
+              {isSelected && (<circle r={radius + 12} fill={node.color} opacity="0.15" filter="url(#selected-glow)" />)}
+              {needsWhiteBackground.includes(node.name) && !isCenterNode && (<circle r={radius - 3} fill="white" opacity="0.95" />)}
+              <circle className="node-circle" r={radius} fill={node.color} stroke={isSelected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.2)'} strokeWidth={isSelected ? 3 : 1.5} filter="url(#node-glow)" style={{ transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
+              {!isCenterNode && techIcons[node.name] && (<image href={techIcons[node.name]} x="-14" y="-14" width="28" height="28" style={{ pointerEvents: 'none', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))', transition: 'all 0.3s ease' }} />)}
+              {isCenterNode && categoryIcons[node.category] && (<image href={categoryIcons[node.category]} x="-18" y="-18" width="36" height="36" style={{ pointerEvents: 'none', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />)}
+              <text textAnchor="middle" y={radius + 18} fill="#fff" fontSize="10" fontWeight="600" style={{ pointerEvents: 'none', opacity: isSelected ? 1 : 0.7, transition: 'opacity 0.3s ease' }}>
                 {isCenterNode ? node.name : node.name.length > 12 ? node.name.substring(0, 10) + '...' : node.name}
               </text>
-              {isSelected && (<circle r={radius + 6} fill="transparent" stroke={theme.accent} strokeWidth="2" strokeDasharray="5,5" opacity="0.8" style={{ animation: 'rotate 6s linear infinite' }} />)}
+              {isSelected && (<circle r={radius + 8} fill="transparent" stroke={theme.accent} strokeWidth="2" opacity="0.5" style={{ animation: 'pulse-ring 2s ease-out infinite' }} />)}
             </g>
           );
         })}
@@ -651,15 +651,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   };
 
   return (
-    <section id="skills" style={{ padding: '80px 2rem', backgroundColor: theme.bg, minHeight: '100vh', position: 'relative' }}>
+    <section id="skills" style={{ padding: '100px 2rem', backgroundColor: theme.bg, minHeight: '100vh', position: 'relative', background: `linear-gradient(135deg, ${theme.bg} 0%, rgba(139, 92, 246, 0.03) 100%)` }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: theme.text }}>Technical Stack</h1>
-          <p style={{ color: theme.textSecondary }}>Click on any node to see detailed information</p>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: 900, color: theme.text, letterSpacing: '-0.02em', marginBottom: '0.5rem' }}>Technical Stack</h1>
+          <p style={{ color: theme.textSecondary, fontSize: '1.1rem', fontWeight: 500 }}>Explore my expertise across different technologies</p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
-          <div style={{ background: theme.cardBg, borderRadius: '20px', padding: '2rem', border: `1px solid ${theme.border}` }}>
-            <h3 style={{ color: theme.accent, fontSize: '0.9rem', marginBottom: '1rem', textTransform: 'uppercase' }}>CATEGORIES</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '2.5rem' }}>
+          <div style={{ background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)`, backdropFilter: 'blur(20px)', borderRadius: '28px', padding: '2rem', border: `1px solid rgba(255,255,255,0.1)`, boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
+            <h3 style={{ color: theme.accent, fontSize: '0.85rem', marginBottom: '1.5rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em', opacity: 0.8 }}>CATEGORIES</h3>
             {Object.entries(skillsData).map(([key, data]) => (
               <button 
                 key={key} 
@@ -667,17 +667,17 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 style={{ 
                   display: 'flex', 
                   width: '100%', 
-                  padding: '12px 16px', 
-                  background: activeCategory === key ? `${theme.accent}20` : 'transparent', 
-                  color: activeCategory === key ? theme.accent : '#aaa', 
-                  border: 'none', 
+                  padding: '14px 16px', 
+                  background: activeCategory === key ? `linear-gradient(135deg, ${theme.accent}25 0%, ${theme.accent}10 100%)` : 'transparent', 
+                  color: activeCategory === key ? theme.accent : 'rgba(255,255,255,0.6)', 
+                  border: activeCategory === key ? `1px solid ${theme.accent}40` : '1px solid transparent', 
                   textAlign: 'left', 
                   cursor: 'pointer', 
-                  borderRadius: '10px', 
-                  fontSize: '0.9rem', 
-                  fontWeight: 600,
-                  marginBottom: '8px',
-                  transition: 'all 0.3s ease',
+                  borderRadius: '16px', 
+                  fontSize: '0.95rem', 
+                  fontWeight: activeCategory === key ? 700 : 600,
+                  marginBottom: '10px',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
@@ -685,16 +685,17 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 <span>{data.title}</span>
                 <span style={{ 
                   fontSize: '0.8rem', 
-                  background: 'rgba(255,255,255,0.1)', 
-                  padding: '2px 8px', 
-                  borderRadius: '12px' 
+                  background: activeCategory === key ? `${theme.accent}30` : 'rgba(255,255,255,0.08)', 
+                  padding: '3px 10px', 
+                  borderRadius: '8px',
+                  fontWeight: 600
                 }}>
                   {data.skills.length}
                 </span>
               </button>
             ))}
           </div>
-          <div style={{ background: theme.cardBg, borderRadius: '20px', border: `1px solid ${theme.border}`, position: 'relative', height: '700px', overflow: 'hidden' }}>
+          <div style={{ background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)`, backdropFilter: 'blur(20px)', borderRadius: '28px', border: `1px solid rgba(255,255,255,0.1)`, position: 'relative', height: '700px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
             {renderGraph()}
             <InformationPanel />
           </div>
@@ -726,18 +727,17 @@ const styles = {
     margin: 0 
   },
   learnMoreBtn: { 
-    padding: '0.8rem', 
-    background: '#3b82f6', 
+    padding: '12px 20px', 
+    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', 
     border: 'none', 
-    borderRadius: '10px', 
+    borderRadius: '12px', 
     color: 'white', 
     fontWeight: 700, 
+    fontSize: '0.95rem',
     cursor: 'pointer', 
     width: '100%', 
-    transition: '0.3s',
-    '&:hover': {
-      background: '#2563eb'
-    }
+    boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
   }
 };
 
