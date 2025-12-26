@@ -57,7 +57,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'tools': '#F1502F'
   };
 
-  // FIXED LOGOS WITH WORKING URLs
+  // LOGOS WITH BEST VISIBILITY - Using colored and original variants for clarity
   const techIcons: Record<string, string> = {
     // Programming Languages
     'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
@@ -85,16 +85,16 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
     'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg',
     
-    // Machine Learning - REMOVED LightFM
+    // Machine Learning
     'Scikit-learn': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg',
     'TF-IDF': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg',
     'Cosine Similarity': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg',
     'NLP': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg',
     
-    // Quantum Computing - Official Company Logos
+    // Quantum Computing
     'IBM Qiskit': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
     'Quantum Computing': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
-    'Quantum Key Distribution': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
+    'Quantum Key Distribution': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
     'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/4436/4436481.png',
     'Kyber': 'https://cdn-icons-png.flaticon.com/512/3050/3050159.png',
     
@@ -105,6 +105,9 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'VS Code': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg',
     'Postman': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg'
   };
+
+  // Dark logos that need light background for visibility
+  const darkLogos = new Set(['Git', 'Java', 'Linux', 'PostgreSQL', 'SQL', 'C', 'Jupyter Notebook']);
 
   // Tech details
   const techDetails: Record<string, TechDetail> = {
@@ -481,7 +484,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   });
 
   const selectedNode = selectedSkill ? graphData.nodes.find(n => n.id === selectedSkill) : null;
-  const needsWhiteBackground = ['Express.js', 'Flask', 'Git'];
 
   // Information Panel Component
   const InformationPanel = () => {
@@ -703,22 +705,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 />
               )}
               
-              {needsWhiteBackground.includes(node.name) && !isCenterNode && (
-                <circle 
-                  r={radius - 2} 
-                  fill="white" 
-                  opacity="0.95" 
-                />
-              )}
-              
-              {!needsWhiteBackground.includes(node.name) && !isCenterNode && (
-                <circle 
-                  r={radius - 2} 
-                  fill="#ffffff" 
-                  opacity="0.15" 
-                />
-              )}
-              
               <circle 
                 className="node-circle" 
                 r={radius} 
@@ -733,23 +719,35 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               />
               
               {iconUrl && (
-                <image 
-                  href={iconUrl} 
-                  x={isCenterNode ? -18 : -14} 
-                  y={isCenterNode ? -18 : -14} 
-                  width={isCenterNode ? 36 : 28} 
-                  height={isCenterNode ? 36 : 28} 
-                  style={{ 
-                    pointerEvents: 'none',
-                    borderRadius: '50%',
-                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.4))'
-                  }} 
-                  onError={(e) => {
-                    // Hide broken images
-                    const target = e.target as SVGImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                <>
+                  {/* White background circle for dark logos */}
+                  {darkLogos.has(node.name) && (
+                    <circle 
+                      cx="0" 
+                      cy="0" 
+                      r={isCenterNode ? 20 : 16} 
+                      fill="rgba(255, 255, 255, 0.95)"
+                      opacity="0.9"
+                    />
+                  )}
+                  <image 
+                    href={iconUrl} 
+                    x={isCenterNode ? -18 : -14} 
+                    y={isCenterNode ? -18 : -14} 
+                    width={isCenterNode ? 36 : 28} 
+                    height={isCenterNode ? 36 : 28} 
+                    style={{ 
+                      pointerEvents: 'none',
+                      borderRadius: '50%',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                    }} 
+                    onError={(e) => {
+                      // Hide broken images
+                      const target = e.target as SVGImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </>
               )}
               
               <text 
