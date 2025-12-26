@@ -27,7 +27,7 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
   return (
     <section id="achievements" style={{ padding: '80px 0' }}>
       <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
-        Achievements<span style={{ color: theme.accent }}>.</span>
+        Achievements <span style={{ color: theme.accent }}>.</span>
       </h2>
       <div style={{ 
         display: 'grid', 

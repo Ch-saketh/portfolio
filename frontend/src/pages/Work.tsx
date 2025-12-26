@@ -86,7 +86,7 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
     <section id="work" style={{ padding: '100px 0', background: theme.bg, position: 'relative', zIndex: 5 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', marginBottom: '4rem' }}>
         <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em' }}>
-          My Projects<span style={{ color: theme.accent || '#3b82f6' }}>.</span>
+          My Projects <span style={{ color: theme.accent || '#3b82f6' }}>.</span>
         </h2>
       </div>
 

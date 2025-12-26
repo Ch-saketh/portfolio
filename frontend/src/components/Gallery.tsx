@@ -16,7 +16,7 @@ const Gallery: React.FC<GalleryProps> = ({ theme }) => {
   return (
     <section id="gallery" style={{ padding: '80px 0' }}>
       <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
-        Visual Log<span style={{ color: theme.accent }}>.</span>
+        Visual Log <span style={{ color: theme.accent }}>.</span>
       </h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '24px' }}>
         {images.map((img, idx) => (
