@@ -720,14 +720,14 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               
               {iconUrl && (
                 <>
-                  {/* White background circle for dark logos */}
+                  {/* Subtle background for dark logos - lower opacity to show logo through */}
                   {darkLogos.has(node.name) && (
                     <circle 
                       cx="0" 
                       cy="0" 
-                      r={isCenterNode ? 20 : 16} 
-                      fill="rgba(255, 255, 255, 0.95)"
-                      opacity="0.9"
+                      r={isCenterNode ? 19 : 15} 
+                      fill="rgba(255, 255, 255, 0.65)"
+                      opacity="0.75"
                     />
                   )}
                   <image 
@@ -739,7 +739,8 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     style={{ 
                       pointerEvents: 'none',
                       borderRadius: '50%',
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
+                      opacity: 1
                     }} 
                     onError={(e) => {
                       // Hide broken images
