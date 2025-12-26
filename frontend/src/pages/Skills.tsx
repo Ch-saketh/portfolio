@@ -1,7 +1,9 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { Theme } from '../types/theme';
 
-interface SkillsProps { theme: any; }
+interface SkillsProps {
+  theme: any;
+}
 
 interface GraphNode {
   id: string;
@@ -10,1068 +12,734 @@ interface GraphNode {
   category: string;
   x: number;
   y: number;
-  intro: string;
-  proficiency: number;
-  years: number;
-  details: {
-    type: string;
-    useCase: string;
-    strengths: string[];
-    projects: string[];
-  };
+  description?: string;
+  learnMoreUrl?: string;
+}
+
+interface GraphLink {
+  source: string;
+  target: string;
+  strength: number;
+}
+
+interface TechDetail {
+  title: string;
+  description: string;
+  useCases: string[];
+  experience: string;
+  url: string;
 }
 
 const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState<string>('programming');
-  const [selectedSkill, setSelectedSkill] = useState<string | null>('Python');
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const [graphData, setGraphData] = useState<{ nodes: GraphNode[], links: GraphLink[] }>({ nodes: [], links: [] });
+  const [isInitialAnimation, setIsInitialAnimation] = useState(true);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
-  // Enhanced high-fidelity data with comprehensive details
-  const techData: Record<string, any> = {
+  // Professional icon URLs - UPDATED TO MATCH RESUME
+  const categoryIcons: Record<string, string> = {
+    'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+    'frontend': 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png',
+    'backend': 'https://cdn-icons-png.flaticon.com/512/1086/1086581.png',
+    'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    'ai': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'quantum': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Qiskit-Logo.svg/1024px-Qiskit-Logo.svg.png',
+    'tools': 'https://cdn-icons-png.flaticon.com/512/3248/3248193.png'
+  };
+
+  // UPDATED TO MATCH YOUR RESUME TECH STACK
+  const techIcons: Record<string, string> = {
+    // Programming Languages
+    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+    'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
+    'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+    
+    // Frontend
+    'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+    'Vite': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
+    'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
+    'HTML5': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+    'CSS3': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+    'Electron.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg',
+    
+    // Backend
+    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+    'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
+    'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg',
+    'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',
+    'RESTful APIs': 'https://cdn-icons-png.flaticon.com/512/2165/2165004.png',
+    
+    // Databases
+    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg',
+    'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+    
+    // Machine Learning
+    'Scikit-learn': 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg',
+    'LightFM': 'https://raw.githubusercontent.com/lyst/lightfm/master/logo.png',
+    'TF-IDF': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'Cosine Similarity': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'NLP': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    
+    // Quantum Computing
+    'IBM Qiskit': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Qiskit-Logo.svg/1024px-Qiskit-Logo.svg.png',
+    'Quantum Key Distribution': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
+    'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
+    'Kyber': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
+    
+    // Tools
+    'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+    'Linux': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg',
+    'Jupyter Notebook': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg',
+    'VS Code': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+    'Postman': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg'
+  };
+
+  // UPDATED TECH DETAILS TO MATCH YOUR RESUME
+  const techDetails: Record<string, TechDetail> = {
+    // Programming Languages
     'Python': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-      intro: 'Interpreted high-level programming language known for its simplicity and versatility.',
-      proficiency: 95,
-      years: 5,
-      details: {
-        type: 'General Purpose Programming',
-        useCase: 'AI/ML Development, Backend Services, Automation',
-        strengths: ['Rapid Development', 'Extensive Libraries', 'Strong Community Support', 'Cross-Platform Compatibility'],
-        projects: ['Quantum Algorithm Simulator', 'ML-based Fraud Detection', 'REST API Microservices']
-      }
+      title: 'Python',
+      description: 'A high-level, interpreted programming language known for its simplicity and versatility. Used extensively in AI/ML, backend development, and automation.',
+      useCases: ['AI/ML Development', 'Backend Services (FastAPI, Flask)', 'Data Analysis & Automation', 'Scripting and Tooling'],
+      experience: '4+ years of experience in production environments, including ML models, backend APIs, and data processing pipelines.',
+      url: 'https://www.python.org'
     },
     'Java': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
-      intro: 'Object-oriented language designed for reliability and scalability in enterprise environments.',
-      proficiency: 90,
-      years: 4,
-      details: {
-        type: 'Enterprise Development',
-        useCase: 'Large-scale Systems, Android Apps, Financial Applications',
-        strengths: ['Platform Independence', 'Strong Memory Management', 'Multi-threading', 'Robust Security'],
-        projects: ['Banking Transaction System', 'Android E-commerce App', 'Distributed Computing Framework']
-      }
+      title: 'Java',
+      description: 'Object-oriented programming language designed for reliability and scalability in enterprise environments. Known for platform independence and strong memory management.',
+      useCases: ['Enterprise Applications', 'Android Development', 'High-concurrency Systems', 'Financial Applications'],
+      experience: '3+ years building robust applications with Java, focusing on enterprise architecture and system design.',
+      url: 'https://www.java.com'
     },
     'JavaScript': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-      intro: 'The universal scripting language for interactive web applications and server-side development.',
-      proficiency: 92,
-      years: 5,
-      details: {
-        type: 'Web Development',
-        useCase: 'Frontend Applications, Server-side (Node.js), Mobile Apps',
-        strengths: ['Ubiquitous Browser Support', 'Asynchronous Programming', 'Rich Ecosystem', 'Real-time Applications'],
-        projects: ['Real-time Dashboard', 'SPA with React', 'Node.js Microservices']
-      }
+      title: 'JavaScript',
+      description: 'The universal scripting language for interactive web applications and modern full-stack development. Powers both frontend and backend (Node.js) applications.',
+      useCases: ['Web Applications', 'Server-side Development (Node.js)', 'Real-time Applications', 'Cross-platform Development'],
+      experience: '4+ years building production applications with JavaScript across the entire stack.',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
     },
-    'C': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg',
-      intro: 'Procedural language providing low-level access to memory and system resources.',
-      proficiency: 85,
-      years: 3,
-      details: {
-        type: 'Systems Programming',
-        useCase: 'Operating Systems, Embedded Systems, Performance-critical Applications',
-        strengths: ['Memory Control', 'Execution Speed', 'Hardware Access', 'Minimal Runtime'],
-        projects: ['Custom Memory Allocator', 'Network Protocol Implementation', 'Embedded Device Drivers']
-      }
-    },
+
+    // Frontend
     'React.js': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-      intro: 'Declarative JavaScript library for building efficient and scalable user interfaces.',
-      proficiency: 94,
-      years: 4,
-      details: {
-        type: 'Frontend Library',
-        useCase: 'Single Page Applications, Progressive Web Apps, Component-based UIs',
-        strengths: ['Virtual DOM', 'Component Reusability', 'Strong Community', 'Rich Ecosystem'],
-        projects: ['Enterprise Dashboard', 'Real-time Analytics Platform', 'Admin Portal System']
-      }
+      title: 'React.js',
+      description: 'A declarative, component-based JavaScript library for building modern user interfaces with a virtual DOM for optimal performance.',
+      useCases: ['Single Page Applications', 'Progressive Web Apps', 'Complex Dashboards', 'Real-time Interfaces'],
+      experience: '3+ years building production React applications with state management, hooks, and modern React patterns.',
+      url: 'https://reactjs.org'
     },
     'Vite': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
-      intro: 'Next-generation frontend tooling providing lightning-fast development experience.',
-      proficiency: 88,
-      years: 2,
-      details: {
-        type: 'Build Tool & Dev Server',
-        useCase: 'Modern Web Development, Fast Refresh, Production Bundling',
-        strengths: ['Instant Server Start', 'Hot Module Replacement', 'Optimized Builds', 'Plugin Ecosystem'],
-        projects: ['High-performance Web App', 'Component Library', 'Static Site Generator']
-      }
+      title: 'Vite',
+      description: 'Next-generation frontend tooling that provides lightning-fast development experience with instant server start and optimized production builds.',
+      useCases: ['Modern Web Development', 'Fast Refresh Development', 'Production Bundling', 'Framework-agnostic Tooling'],
+      experience: '2+ years using Vite for rapid development and optimized production builds.',
+      url: 'https://vitejs.dev'
     },
     'TailwindCSS': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
-      intro: 'Utility-first CSS framework for rapid UI development with design consistency.',
-      proficiency: 90,
-      years: 3,
-      details: {
-        type: 'CSS Framework',
-        useCase: 'Rapid Prototyping, Responsive Design, Design System Implementation',
-        strengths: ['Developer Productivity', 'Consistent Design', 'Small Bundle Size', 'Customization'],
-        projects: ['Design System Implementation', 'Responsive E-commerce', 'Admin Dashboard']
-      }
+      title: 'TailwindCSS',
+      description: 'A utility-first CSS framework that enables rapid UI development with a design system approach directly in HTML.',
+      useCases: ['Rapid Prototyping', 'Design Systems', 'Responsive Web Design', 'Component Libraries'],
+      experience: '2+ years building modern, responsive interfaces with TailwindCSS utility classes.',
+      url: 'https://tailwindcss.com'
     },
+    'HTML5': {
+      title: 'HTML5',
+      description: 'The latest evolution of the standard markup language for creating web pages and applications, with new semantic elements and APIs.',
+      useCases: ['Web Page Structure', 'Semantic Markup', 'Web Applications', 'Cross-platform Content'],
+      experience: '5+ years writing semantic, accessible HTML for production applications.',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/HTML'
+    },
+    'CSS3': {
+      title: 'CSS3',
+      description: 'Latest version of Cascading Style Sheets with features like flexbox, grid, animations, and responsive design capabilities.',
+      useCases: ['Styling and Layout', 'Responsive Design', 'Animations and Transitions', 'Modern UI Components'],
+      experience: '5+ years creating responsive, animated interfaces with modern CSS features.',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS'
+    },
+    'Electron.js': {
+      title: 'Electron.js',
+      description: 'A framework for building cross-platform desktop applications using web technologies (HTML, CSS, JavaScript).',
+      useCases: ['Desktop Applications', 'Cross-platform Tools', 'Native-feeling Web Apps', 'Development Tools'],
+      experience: 'Experience building desktop applications with Electron.js for cross-platform deployment.',
+      url: 'https://www.electronjs.org'
+    },
+
+    // Backend
     'Node.js': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-      intro: 'JavaScript runtime built on Chrome\'s V8 engine for scalable network applications.',
-      proficiency: 92,
-      years: 4,
-      details: {
-        type: 'Runtime Environment',
-        useCase: 'Server-side Applications, Real-time Services, APIs, Microservices',
-        strengths: ['Non-blocking I/O', 'Single Programming Language', 'NPM Ecosystem', 'Scalability'],
-        projects: ['Real-time Chat Application', 'RESTful API Gateway', 'WebSocket Server']
-      }
+      title: 'Node.js',
+      description: 'JavaScript runtime built on Chrome\'s V8 engine, designed for building scalable network applications with non-blocking I/O.',
+      useCases: ['RESTful API Development', 'Real-time Applications', 'Microservices', 'Backend for Web/Mobile Apps'],
+      experience: '3+ years building production backend services and APIs with Node.js.',
+      url: 'https://nodejs.org'
     },
     'Express.js': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
-      intro: 'Minimal and flexible Node.js web application framework for robust APIs.',
-      proficiency: 90,
-      years: 4,
-      details: {
-        type: 'Web Application Framework',
-        useCase: 'REST APIs, Web Applications, Microservices, Middleware Architecture',
-        strengths: ['Minimalist', 'Middleware Support', 'Routing Flexibility', 'Large Community'],
-        projects: ['E-commerce Backend', 'Authentication Service', 'Payment Processing API']
-      }
-    },
-    'FastAPI': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg',
-      intro: 'Modern Python web framework for building APIs with automatic documentation.',
-      proficiency: 88,
-      years: 2,
-      details: {
-        type: 'API Framework',
-        useCase: 'High-performance APIs, Machine Learning APIs, Real-time Applications',
-        strengths: ['Fast Performance', 'Automatic Docs', 'Type Safety', 'Async Support'],
-        projects: ['ML Model Serving API', 'Real-time Analytics API', 'Microservices Gateway']
-      }
+      title: 'Express.js',
+      description: 'Minimal and flexible Node.js web application framework that provides robust features for building web and mobile applications.',
+      useCases: ['REST API Development', 'Middleware Architecture', 'Web Applications', 'Server-side Logic'],
+      experience: '3+ years building RESTful APIs and web applications with Express.js middleware and routing.',
+      url: 'https://expressjs.com'
     },
     'Flask': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg',
-      intro: 'Lightweight WSGI web application framework designed for simplicity and flexibility.',
-      proficiency: 85,
-      years: 3,
-      details: {
-        type: 'Micro Web Framework',
-        useCase: 'Prototyping, Small to Medium Applications, REST APIs, Learning Projects',
-        strengths: ['Simplicity', 'Flexibility', 'Minimal Overhead', 'Easy to Learn'],
-        projects: ['Prototype Dashboard', 'Simple REST API', 'Internal Tools']
-      }
+      title: 'Flask',
+      description: 'Lightweight WSGI web application framework for Python, designed for quick prototyping and building simple to complex web applications.',
+      useCases: ['Rapid Prototyping', 'REST APIs', 'Microservices', 'Web Applications'],
+      experience: '2+ years building Python web applications and APIs with Flask.',
+      url: 'https://flask.palletsprojects.com'
     },
+    'FastAPI': {
+      title: 'FastAPI',
+      description: 'Modern, fast web framework for building APIs with Python 3.7+ based on standard Python type hints, with automatic OpenAPI documentation.',
+      useCases: ['High-performance APIs', 'Microservices', 'Real-time Applications', 'Data Validation'],
+      experience: 'Experience building fast and efficient Python APIs with automatic documentation.',
+      url: 'https://fastapi.tiangolo.com'
+    },
+    'RESTful APIs': {
+      title: 'RESTful APIs',
+      description: 'Architectural style for designing networked applications using HTTP protocols and stateless operations.',
+      useCases: ['Web Service Development', 'Mobile App Backends', 'Third-party Integrations', 'Microservices Communication'],
+      experience: '4+ years designing and implementing RESTful APIs following best practices and industry standards.',
+      url: 'https://restfulapi.net'
+    },
+
+    // Databases
     'MongoDB': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-      intro: 'NoSQL document database designed for scalability and developer productivity.',
-      proficiency: 87,
-      years: 3,
-      details: {
-        type: 'Document Database',
-        useCase: 'Real-time Applications, Content Management, Mobile Apps, IoT',
-        strengths: ['Flexible Schema', 'Horizontal Scaling', 'JSON-like Documents', 'Aggregation Framework'],
-        projects: ['Real-time Analytics Platform', 'Content Management System', 'User Profile Storage']
-      }
+      title: 'MongoDB',
+      description: 'NoSQL document database designed for scalability and flexibility, using JSON-like documents with optional schemas.',
+      useCases: ['Content Management Systems', 'Real-time Analytics', 'Mobile Applications', 'Catalogs and Inventories'],
+      experience: '3+ years working with MongoDB in production, including schema design and aggregation pipelines.',
+      url: 'https://www.mongodb.com'
     },
     'Neo4j': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg',
-      intro: 'Native graph database that efficiently stores and queries connected data.',
-      proficiency: 82,
-      years: 2,
-      details: {
-        type: 'Graph Database',
-        useCase: 'Social Networks, Recommendation Engines, Fraud Detection, Network Analysis',
-        strengths: ['Relationship Queries', 'Cypher Query Language', 'ACID Compliance', 'Visualization Tools'],
-        projects: ['Social Network Analysis', 'Recommendation Engine', 'Fraud Detection System']
-      }
+      title: 'Neo4j',
+      description: 'Native graph database that stores and queries connected data efficiently, using the Cypher query language.',
+      useCases: ['Social Networks', 'Recommendation Engines', 'Fraud Detection', 'Network Analysis'],
+      experience: 'Experience with graph database modeling and complex relationship-based queries.',
+      url: 'https://neo4j.com'
     },
-    'PostgreSQL': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-      intro: 'Advanced open-source relational database with strong ACID compliance.',
-      proficiency: 89,
-      years: 4,
-      details: {
-        type: 'Relational Database',
-        useCase: 'Transactional Systems, Data Warehousing, Geospatial Data, Complex Queries',
-        strengths: ['ACID Compliance', 'JSON Support', 'Extensions', 'Strong Community'],
-        projects: ['Financial Transaction System', 'Geospatial Application', 'Analytics Platform']
-      }
+    'SQL': {
+      title: 'SQL',
+      description: 'Structured Query Language for managing and manipulating relational databases, with various implementations like PostgreSQL, MySQL.',
+      useCases: ['Relational Data Management', 'Transaction Systems', 'Data Warehousing', 'Complex Queries'],
+      experience: '4+ years working with SQL databases including schema design, optimization, and complex queries.',
+      url: 'https://en.wikipedia.org/wiki/SQL'
     },
-    'Supabase': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg',
-      intro: 'Open-source Firebase alternative with real-time capabilities and PostgreSQL backend.',
-      proficiency: 85,
-      years: 2,
-      details: {
-        type: 'Backend-as-a-Service',
-        useCase: 'Rapid Prototyping, Real-time Applications, Authentication, Serverless Functions',
-        strengths: ['Real-time Subscriptions', 'Built-in Auth', 'PostgreSQL Power', 'Open Source'],
-        projects: ['Real-time Dashboard', 'User Management System', 'Prototype Applications']
-      }
-    },
-    'IBM Qiskit': {
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Qiskit-Logo.svg/1024px-Qiskit-Logo.svg.png',
-      intro: 'Open-source SDK for working with quantum computers at the level of circuits and algorithms.',
-      proficiency: 78,
-      years: 1,
-      details: {
-        type: 'Quantum Computing SDK',
-        useCase: 'Quantum Algorithm Development, Circuit Simulation, Quantum Research',
-        strengths: ['Multiple Backends', 'Circuit Visualization', 'Algorithm Library', 'Active Development'],
-        projects: ['Quantum Algorithm Research', 'Circuit Optimization', 'Quantum State Simulation']
-      }
-    },
+
+    // Machine Learning
     'Scikit-learn': {
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg',
-      intro: 'Machine learning library for Python featuring simple and efficient tools for data analysis.',
-      proficiency: 86,
-      years: 3,
-      details: {
-        type: 'Machine Learning Library',
-        useCase: 'Predictive Analytics, Classification, Regression, Clustering, Model Evaluation',
-        strengths: ['Easy to Use', 'Comprehensive Algorithms', 'Integration with NumPy', 'Documentation'],
-        projects: ['Predictive Maintenance', 'Customer Segmentation', 'Anomaly Detection']
-      }
+      title: 'Scikit-learn',
+      description: 'Machine learning library for Python featuring simple and efficient tools for predictive data analysis and ML model building.',
+      useCases: ['Predictive Analytics', 'Classification & Regression', 'Clustering', 'Model Evaluation'],
+      experience: '2+ years building ML models with scikit-learn for various predictive tasks.',
+      url: 'https://scikit-learn.org'
     },
+    'LightFM': {
+      title: 'LightFM',
+      description: 'Python library for hybrid recommendation systems that can incorporate both user and item metadata into recommendations.',
+      useCases: ['Recommendation Systems', 'Collaborative Filtering', 'Content-based Filtering', 'Hybrid Recommenders'],
+      experience: 'Experience building recommendation engines with LightFM for personalized content delivery.',
+      url: 'https://github.com/lyst/lightfm'
+    },
+    'TF-IDF': {
+      title: 'TF-IDF',
+      description: 'Term Frequency-Inverse Document Frequency, a numerical statistic that reflects how important a word is to a document in a collection.',
+      useCases: ['Text Mining', 'Information Retrieval', 'Document Classification', 'Search Engine Relevance'],
+      experience: 'Experience implementing TF-IDF for text analysis and document similarity calculations.',
+      url: 'https://en.wikipedia.org/wiki/Tf%E2%80%93idf'
+    },
+    'Cosine Similarity': {
+      title: 'Cosine Similarity',
+      description: 'A measure of similarity between two non-zero vectors in an inner product space, commonly used in text analysis and recommendation systems.',
+      useCases: ['Document Similarity', 'Recommendation Systems', 'Clustering Algorithms', 'Pattern Recognition'],
+      experience: 'Experience implementing cosine similarity for various ML applications including recommendations.',
+      url: 'https://en.wikipedia.org/wiki/Cosine_similarity'
+    },
+    'NLP': {
+      title: 'NLP',
+      description: 'Natural Language Processing, a subfield of AI that focuses on interaction between computers and human language.',
+      useCases: ['Text Classification', 'Sentiment Analysis', 'Named Entity Recognition', 'Language Translation'],
+      experience: 'Experience with NLP techniques for text processing and analysis.',
+      url: 'https://en.wikipedia.org/wiki/Natural_language_processing'
+    },
+
+    // Quantum Computing
+    'IBM Qiskit': {
+      title: 'IBM Qiskit',
+      description: 'Open-source SDK for working with quantum computers at the level of circuits, pulses, and algorithms.',
+      useCases: ['Quantum Algorithm Development', 'Circuit Simulation', 'Quantum Research', 'Quantum State Preparation'],
+      experience: 'Experience with quantum computing concepts and Qiskit for quantum algorithm simulation.',
+      url: 'https://qiskit.org'
+    },
+    'Quantum Key Distribution': {
+      title: 'Quantum Key Distribution',
+      description: 'Secure communication method that uses quantum mechanics to ensure cryptographic key distribution security.',
+      useCases: ['Secure Communication', 'Cryptographic Protocols', 'Quantum Cryptography', 'Network Security'],
+      experience: 'Knowledge of quantum cryptography principles and QKD protocols.',
+      url: 'https://en.wikipedia.org/wiki/Quantum_key_distribution'
+    },
+    'BB84 Protocol': {
+      title: 'BB84 Protocol',
+      description: 'The first quantum cryptography protocol developed by Bennett and Brassard in 1984, using photon polarization states.',
+      useCases: ['Quantum Cryptography', 'Secure Key Exchange', 'Quantum Network Security', 'Research Applications'],
+      experience: 'Understanding of quantum cryptographic protocols and their implementations.',
+      url: 'https://en.wikipedia.org/wiki/BB84'
+    },
+    'Kyber': {
+      title: 'Kyber',
+      description: 'Post-quantum cryptographic algorithm selected by NIST for standardization, based on lattice-based cryptography.',
+      useCases: ['Post-Quantum Cryptography', 'Secure Communication', 'Key Exchange Protocols', 'Future-proof Security'],
+      experience: 'Knowledge of post-quantum cryptographic algorithms and their importance.',
+      url: 'https://pq-crystals.org/kyber/'
+    },
+
+    // Tools
     'Git': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-      intro: 'Distributed version control system for tracking changes in source code during development.',
-      proficiency: 94,
-      years: 5,
-      details: {
-        type: 'Version Control System',
-        useCase: 'Source Code Management, Collaboration, Branching Strategies, CI/CD Integration',
-        strengths: ['Branching & Merging', 'Distributed Architecture', 'Performance', 'Industry Standard'],
-        projects: ['Enterprise Codebase Management', 'Open Source Contributions', 'Team Collaboration Workflows']
-      }
+      title: 'Git',
+      description: 'Distributed version control system for tracking changes in source code during software development.',
+      useCases: ['Version Control', 'Collaborative Development', 'Branch Management', 'Code Review Workflows'],
+      experience: '4+ years using Git for version control in individual and team projects.',
+      url: 'https://git-scm.com'
     },
     'Linux': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg',
-      intro: 'Open-source Unix-like operating system based on the Linux kernel.',
-      proficiency: 88,
-      years: 5,
-      details: {
-        type: 'Operating System',
-        useCase: 'Servers, Development Environments, Containers, Embedded Systems',
-        strengths: ['Security', 'Stability', 'Customization', 'Command Line Power'],
-        projects: ['Server Administration', 'Development Environment Setup', 'Docker Containerization']
-      }
+      title: 'Linux',
+      description: 'Open-source Unix-like operating system based on the Linux kernel, widely used in servers and development environments.',
+      useCases: ['Server Administration', 'Development Environments', 'Containerization', 'System Scripting'],
+      experience: '4+ years using Linux for development, server management, and system administration.',
+      url: 'https://www.linux.org'
+    },
+    'Jupyter Notebook': {
+      title: 'Jupyter Notebook',
+      description: 'Open-source web application that allows creation and sharing of documents containing live code, equations, and visualizations.',
+      useCases: ['Data Analysis', 'Machine Learning Prototyping', 'Interactive Computing', 'Research Documentation'],
+      experience: '3+ years using Jupyter for data science, ML prototyping, and research documentation.',
+      url: 'https://jupyter.org'
     },
     'VS Code': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
-      intro: 'Free source-code editor made by Microsoft with support for debugging and extensions.',
-      proficiency: 95,
-      years: 5,
-      details: {
-        type: 'Integrated Development Environment',
-        useCase: 'Code Editing, Debugging, Version Control, Extensions',
-        strengths: ['Lightweight', 'Extensions Marketplace', 'Integrated Terminal', 'IntelliSense'],
-        projects: ['Multi-language Development', 'Team Coding Standards', 'Custom Development Workflow']
-      }
+      title: 'VS Code',
+      description: 'Free source-code editor made by Microsoft with support for debugging, Git control, syntax highlighting, and extensions.',
+      useCases: ['Code Editing', 'Debugging', 'Version Control Integration', 'Extension Ecosystem'],
+      experience: 'Primary code editor for 4+ years across all development work.',
+      url: 'https://code.visualstudio.com'
     },
     'Postman': {
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg',
-      intro: 'API platform for building and using APIs with tools for every stage of the API lifecycle.',
-      proficiency: 90,
-      years: 4,
-      details: {
-        type: 'API Development Platform',
-        useCase: 'API Testing, Documentation, Mock Servers, Automated Testing',
-        strengths: ['Collection Runner', 'Environment Variables', 'Documentation Generation', 'Team Collaboration'],
-        projects: ['API Testing Suite', 'API Documentation', 'Automated Integration Tests']
-      }
+      title: 'Postman',
+      description: 'API platform for building and testing APIs, with features for API documentation, testing, and monitoring.',
+      useCases: ['API Testing', 'API Documentation', 'Mock Servers', 'Automated Testing'],
+      experience: '3+ years using Postman for API development, testing, and documentation.',
+      url: 'https://www.postman.com'
     }
   };
 
+  // UPDATED TO MATCH YOUR RESUME STRUCTURE
   type SkillCategory = 'programming' | 'frontend' | 'backend' | 'databases' | 'ai' | 'tools';
-
   const skillsData: Record<SkillCategory, { title: string; color: string; skills: string[] }> = {
-    'programming': { title: 'Languages', color: '#007AFF', skills: ['Python', 'Java', 'JavaScript', 'C'] },
-    'frontend': { title: 'Frontend', color: '#5856D6', skills: ['React.js', 'Vite', 'TailwindCSS'] },
-    'backend': { title: 'Backend', color: '#34C759', skills: ['Node.js', 'Express.js', 'FastAPI', 'Flask'] },
-    'databases': { title: 'Databases', color: '#FF3B30', skills: ['MongoDB', 'Neo4j', 'PostgreSQL', 'Supabase'] },
-    'ai': { title: 'AI & Quantum', color: '#FF9500', skills: ['Scikit-learn', 'IBM Qiskit'] },
-    'tools': { title: 'Tools', color: '#AF52DE', skills: ['Git', 'Linux', 'VS Code', 'Postman'] }
+    programming: { title: 'Languages', color: '#007AFF', skills: ['Python', 'Java', 'JavaScript', 'C'] },
+    frontend: { title: 'Frontend', color: '#5856D6', skills: ['React.js', 'Vite', 'TailwindCSS'] },
+    backend: { title: 'Backend', color: '#34C759', skills: ['Node.js', 'Express.js', 'FastAPI', 'Flask'] },
+    databases: { title: 'Databases', color: '#FF3B30', skills: ['MongoDB', 'Neo4j', 'PostgreSQL', 'Supabase'] },
+    ai: { title: 'AI & Quantum', color: '#FF9500', skills: ['Scikit-learn', 'IBM Qiskit'] },
+    tools: { title: 'Tools', color: '#AF52DE', skills: ['Git', 'Linux', 'VS Code', 'Postman'] }
   };
 
-  const graphNodes = useMemo(() => {
+  const createLayout = (): GraphNode[] => {
     const nodes: GraphNode[] = [];
-    const centers = [
-      { id: 'center-programming', name: 'Core Languages', category: 'programming', x: 450, y: 110 },
-      { id: 'center-frontend', name: 'UI/UX Stack', category: 'frontend', x: 200, y: 220 },
-      { id: 'center-backend', name: 'Server Core', category: 'backend', x: 700, y: 220 },
-      { id: 'center-databases', name: 'Data Layer', category: 'databases', x: 700, y: 460 },
-      { id: 'center-tools', name: 'DevOps', category: 'tools', x: 200, y: 460 },
-      { id: 'center-ai', name: 'Intelligent Systems', category: 'ai', x: 450, y: 340 }
+    
+    // Center positions for each category
+    const categoryCenters = [
+      { id: 'center-programming', name: 'Programming', color: '#3b82f6', category: 'programming', x: 450, y: 150, description: 'Core programming languages and fundamentals.' },
+      { id: 'center-frontend', name: 'Frontend', color: '#8b5cf6', category: 'frontend', x: 200, y: 250, description: 'Technologies for building user interfaces and client-side applications.' },
+      { id: 'center-backend', name: 'Backend', color: '#10b981', category: 'backend', x: 700, y: 250, description: 'Server-side technologies for building APIs and application logic.' },
+      { id: 'center-databases', name: 'Databases', color: '#ef4444', category: 'databases', x: 700, y: 450, description: 'Database technologies for data storage and management.' },
+      { id: 'center-tools', name: 'Tools', color: '#f59e0b', category: 'tools', x: 200, y: 450, description: 'Development tools and environments.' },
+      { id: 'center-ai', name: 'Machine Learning', color: '#ec4899', category: 'ai', x: 350, y: 350, description: 'AI and Machine Learning technologies.' },
+      { id: 'center-quantum', name: 'Quantum Computing', color: '#06b6d4', category: 'quantum', x: 550, y: 350, description: 'Quantum computing frameworks and protocols.' }
     ];
-
-    centers.forEach(c => nodes.push({ 
-      ...c, 
-      color: '#ffffff', 
-      intro: '',
-      proficiency: 100,
-      years: 0,
-      details: { type: '', useCase: '', strengths: [], projects: [] }
-    }));
-
+    
+    categoryCenters.forEach(center => nodes.push(center));
+    
     Object.entries(skillsData).forEach(([category, data]) => {
-      const center = centers.find(c => c.category === category);
+      const center = categoryCenters.find(c => c.category === category);
       if (!center) return;
-      const radius = 110;
+      
+      const radius = category === 'programming' || category === 'databases' ? 120 : 140;
       const angleStep = (2 * Math.PI) / data.skills.length;
-      data.skills.forEach((skillName, index) => {
+      
+      data.skills.forEach((skill, index) => {
         const angle = (-Math.PI / 2) + (angleStep * index);
-        const skillInfo = techData[skillName];
         nodes.push({
-          id: skillName,
-          name: skillName,
+          id: skill,
+          name: skill,
           color: data.color,
           category,
           x: center.x + radius * Math.cos(angle),
           y: center.y + radius * Math.sin(angle),
-          intro: skillInfo?.intro || '',
-          proficiency: skillInfo?.proficiency || 0,
-          years: skillInfo?.years || 0,
-          details: skillInfo?.details || { type: '', useCase: '', strengths: [], projects: [] }
+          description: techDetails[skill]?.description || `${skill} technology`,
+          learnMoreUrl: techDetails[skill]?.url || '#'
         });
       });
     });
+    
     return nodes;
-  }, []);
-
-  const selectedNode = graphNodes.find(n => n.id === selectedSkill);
-  const hoveredNode = graphNodes.find(n => n.id === hoveredSkill);
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+  const getTechnologyConnections = (): GraphLink[] => {
+    const connections: GraphLink[] = [];
+    
+    // Programming language connections
+    connections.push(
+      { source: 'Python', target: 'Scikit-learn', strength: 0.9 },
+      { source: 'Python', target: 'Flask', strength: 0.8 },
+      { source: 'Python', target: 'FastAPI', strength: 0.8 },
+      { source: 'Python', target: 'Jupyter Notebook', strength: 0.7 },
+      { source: 'JavaScript', target: 'React.js', strength: 0.9 },
+      { source: 'JavaScript', target: 'Node.js', strength: 0.9 },
+      { source: 'JavaScript', target: 'Vite', strength: 0.7 },
+      { source: 'Java', target: 'Spring Boot', strength: 0.8 }
+    );
+    
+    // Frontend connections
+    connections.push(
+      { source: 'React.js', target: 'Vite', strength: 0.8 },
+      { source: 'React.js', target: 'TailwindCSS', strength: 0.7 },
+      { source: 'React.js', target: 'HTML5', strength: 0.8 },
+      { source: 'React.js', target: 'CSS3', strength: 0.8 },
+      { source: 'HTML5', target: 'CSS3', strength: 0.9 }
+    );
+    
+    // Backend connections
+    connections.push(
+      { source: 'Node.js', target: 'Express.js', strength: 0.9 },
+      { source: 'Node.js', target: 'RESTful APIs', strength: 0.8 },
+      { source: 'Python', target: 'Flask', strength: 0.8 },
+      { source: 'Python', target: 'FastAPI', strength: 0.8 }
+    );
+    
+    // Database connections
+    connections.push(
+      { source: 'Node.js', target: 'MongoDB', strength: 0.8 },
+      { source: 'Python', target: 'MongoDB', strength: 0.7 },
+      { source: 'Python', target: 'SQL', strength: 0.7 },
+      { source: 'Express.js', target: 'MongoDB', strength: 0.8 }
+    );
+    
+    // ML connections
+    connections.push(
+      { source: 'Python', target: 'Scikit-learn', strength: 0.9 },
+      { source: 'Scikit-learn', target: 'TF-IDF', strength: 0.7 },
+      { source: 'Scikit-learn', target: 'Cosine Similarity', strength: 0.7 },
+      { source: 'TF-IDF', target: 'NLP', strength: 0.8 },
+      { source: 'LightFM', target: 'Cosine Similarity', strength: 0.7 }
+    );
+    
+    // Tool connections
+    connections.push(
+      { source: 'Git', target: 'VS Code', strength: 0.8 },
+      { source: 'VS Code', target: 'Python', strength: 0.7 },
+      { source: 'VS Code', target: 'JavaScript', strength: 0.7 },
+      { source: 'Postman', target: 'RESTful APIs', strength: 0.8 },
+      { source: 'Jupyter Notebook', target: 'Python', strength: 0.8 }
+    );
+    
+    // Connect skills to their category centers
+    Object.values(skillsData).forEach(categoryData => {
+      categoryData.skills.forEach(skill => {
+        connections.push({
+          source: skill,
+          target: `center-${categoryData.title.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-')}`,
+          strength: 0.5
+        });
+      });
+    });
+    
+    // Connect category centers
+    connections.push(
+      { source: 'center-programming', target: 'center-frontend', strength: 0.7 },
+      { source: 'center-programming', target: 'center-backend', strength: 0.8 },
+      { source: 'center-programming', target: 'center-ai', strength: 0.6 },
+      { source: 'center-frontend', target: 'center-backend', strength: 0.6 },
+      { source: 'center-backend', target: 'center-databases', strength: 0.8 },
+      { source: 'center-databases', target: 'center-tools', strength: 0.5 },
+      { source: 'center-tools', target: 'center-frontend', strength: 0.5 },
+      { source: 'center-ai', target: 'center-quantum', strength: 0.4 },
+      { source: 'center-programming', target: 'center-tools', strength: 0.6 }
+    );
+    
+    return connections;
+  };
+
+  useEffect(() => {
+    setGraphData({ nodes: createLayout(), links: getTechnologyConnections() });
+    const timer = setTimeout(() => setIsInitialAnimation(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleNodeClick = (nodeId: string) => { setSelectedSkill(nodeId); setShowInfo(true); };
+  const handleMouseEnter = (nodeId: string) => { setHoveredSkill(nodeId); };
+  const handleMouseLeave = () => { setHoveredSkill(null); };
+  const closeInfoPanel = () => { setShowInfo(false); setSelectedSkill(null); };
+
+  const getConnectedNodes = (nodeId: string): string[] => {
+    const connections = graphData.links.filter(link => link.source === nodeId || link.target === nodeId);
+    const connectedNodes = new Set<string>();
+    connections.forEach(link => {
+      if (link.source === nodeId) connectedNodes.add(link.target);
+      if (link.target === nodeId) connectedNodes.add(link.source);
+    });
+    return Array.from(connectedNodes);
+  };
+
+  const filteredNodes = graphData.nodes.filter(node => node.id.startsWith('center-') || node.category === activeCategory);
+  const filteredLinks = graphData.links.filter(link => {
+    const sourceNode = graphData.nodes.find(n => n.id === link.source);
+    const targetNode = graphData.nodes.find(n => n.id === link.target);
+    return sourceNode?.category === activeCategory || targetNode?.category === activeCategory || sourceNode?.id.startsWith('center-') || targetNode?.id.startsWith('center-');
+  });
+
+  const selectedNode = selectedSkill ? graphData.nodes.find(n => n.id === selectedSkill) : null;
+  const connectedNodes = selectedSkill ? getConnectedNodes(selectedSkill) : [];
+  const needsWhiteBackground = ['Python', 'Java', 'JavaScript', 'React.js', 'Node.js', 'Express.js', 'Flask', 'FastAPI', 'MongoDB', 'Neo4j', 'SQL', 'Scikit-learn', 'LightFM', 'IBM Qiskit', 'Git', 'Linux', 'VS Code', 'Postman'];
+
+  // Information Panel Component
+  const InformationPanel = () => {
+    if (!selectedSkill || !showInfo || !selectedNode) return null;
+
+    const isCenterNode = selectedNode.id.startsWith('center-');
+    const detail = techDetails[selectedSkill];
+
+    return (
+      <div 
+        className="info-panel"
+        style={{
+          position: 'absolute',
+          right: '1.5rem',
+          top: '1.5rem',
+          height: 'auto',
+          maxHeight: 'calc(100% - 3rem)',
+          width: '380px',
+          background: theme.cardBg,
+          borderRadius: '24px',
+          border: `1px solid ${theme.border}`,
+          boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
+          zIndex: 2000,
+          backdropFilter: 'blur(30px)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          animation: 'fadeInPanel 0.3s ease-out'
+        }}
+      >
+        {/* Fixed Header */}
+        <div style={{ 
+          padding: '1.5rem', 
+          borderBottom: `1px solid ${theme.border}`,
+          flexShrink: 0 
+        }}>
+          <button
+            onClick={closeInfoPanel}
+            style={{
+              position: 'absolute', top: '1rem', right: '1.2rem',
+              background: 'rgba(255,255,255,0.05)', border: 'none',
+              color: '#fff', cursor: 'pointer', width: '32px', height: '32px', borderRadius: '50%'
+            }}
+          >✕</button>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ 
+              width: '48px', height: '48px', borderRadius: '12px', 
+              background: isCenterNode ? selectedNode.color : 'white',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px'
+            }}>
+              <img 
+                src={isCenterNode ? categoryIcons[selectedNode.category] : techIcons[selectedNode.name]} 
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                alt="" 
+              />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: theme.text, margin: 0 }}>{selectedNode.name}</h3>
+              <span style={{ fontSize: '0.8rem', color: selectedNode.color, fontWeight: 600 }}>
+                {isCenterNode ? 'Category' : 'Technology'}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Scrollable Body */}
+        <div style={{ 
+          flex: '1 1 auto',
+          overflowY: 'auto', 
+          padding: '1.5rem' 
+        }}>
+          <h4 style={styles.detailLabel}>Description</h4>
+          <p style={styles.detailText}>{detail ? detail.description : selectedNode.description}</p>
+          
+          {detail?.useCases && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <h4 style={styles.detailLabel}>Primary Use Cases</h4>
+              <ul style={{ paddingLeft: '1.2rem', color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
+                {detail.useCases.map((u, i) => <li key={i}>{u}</li>)}
+              </ul>
+            </div>
+          )}
+          
+          {detail?.experience && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <h4 style={styles.detailLabel}>Experience</h4>
+              <p style={styles.detailText}>{detail.experience}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Fixed Footer */}
+        {(detail?.url || selectedNode.learnMoreUrl) && (
+          <div style={{ 
+            padding: '1.25rem', 
+            borderTop: `1px solid ${theme.border}`, 
+            background: 'rgba(0,0,0,0.2)', 
+            flexShrink: 0 
+          }}>
+            <button 
+              onClick={() => window.open(detail?.url || selectedNode!.learnMoreUrl, '_blank')} 
+              style={styles.learnMoreBtn}
+            >
+              📚 Learn More
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderGraph = () => {
+    return (
+      <svg width="100%" height="100%" viewBox="0 0 900 700" style={{ background: `radial-gradient(circle at center, ${theme.cardBg}80 0%, ${theme.bg} 100%)`, borderRadius: '12px', overflow: 'visible' }}>
+        <defs>
+          <filter id="node-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="2" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="selected-glow"><feGaussianBlur in="SourceGraphic" stdDeviation="4" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        {filteredLinks.map((link, index) => {
+          const sourceNode = filteredNodes.find(n => n.id === link.source);
+          const targetNode = filteredNodes.find(n => n.id === link.target);
+          if (!sourceNode || !targetNode) return null;
+          const isSelectedLink = selectedSkill && (selectedSkill === link.source || selectedSkill === link.target);
+          return (
+            <line key={`${link.source}-${link.target}-${index}`} x1={sourceNode.x} y1={sourceNode.y} x2={targetNode.x} y2={targetNode.y} stroke={isSelectedLink ? theme.accent : `${theme.accent}20`} strokeWidth={isSelectedLink ? 4 : link.strength * 2} opacity={isSelectedLink ? 0.9 : 0.3} style={{ transition: '0.3s' }} />
+          );
+        })}
+        {filteredNodes.map((node) => {
+          const isCenterNode = node.id.startsWith('center-');
+          const isSelected = selectedSkill === node.id;
+          const radius = isCenterNode ? 40 : 22;
+          return (
+            <g key={node.id} className="graph-node-group" transform={`translate(${node.x}, ${node.y})`} onClick={() => handleNodeClick(node.id)}>
+              {isSelected && (<circle r={radius + 15} fill={node.color} opacity="0.2" filter="url(#selected-glow)" />)}
+              {needsWhiteBackground.includes(node.name) && !isCenterNode && (<circle r={radius - 4} fill="white" opacity="0.9" />)}
+              <circle className="node-circle" r={radius} fill={node.color} stroke={isSelected ? 'white' : theme.border} strokeWidth={isSelected ? 4 : 2} filter="url(#node-glow)" style={{ transition: '0.2s' }} />
+              {!isCenterNode && techIcons[node.name] && (<image href={techIcons[node.name]} x="-14" y="-14" width="28" height="28" style={{ pointerEvents: 'none' }} />)}
+              {isCenterNode && categoryIcons[node.category] && (<image href={categoryIcons[node.category]} x="-18" y="-18" width="36" height="36" style={{ pointerEvents: 'none' }} />)}
+              <text textAnchor="middle" y={radius + 18} fill="#fff" fontSize="10" style={{ pointerEvents: 'none', opacity: 0.7 }}>
+                {isCenterNode ? node.name : node.name.length > 12 ? node.name.substring(0, 10) + '...' : node.name}
+              </text>
+              {isSelected && (<circle r={radius + 6} fill="transparent" stroke={theme.accent} strokeWidth="2" strokeDasharray="5,5" opacity="0.8" style={{ animation: 'rotate 6s linear infinite' }} />)}
+            </g>
+          );
+        })}
+      </svg>
+    );
   };
 
   return (
-    <section id="skills" style={{ ...styles.sectionMain, backgroundColor: theme.bg }}>
-      <div style={styles.container}>
-        <div style={styles.layout}>
-          {/* LEFT NAVIGATION SIDEBAR - Apple Style */}
-          <motion.aside 
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            style={{ ...styles.sidebar, background: theme.cardBg }}
-          >
-            <div style={styles.sidebarHeader}>
-              <span style={styles.label}>TECH STACK</span>
-              <div style={styles.systemStatus}>
-                <div style={styles.statusDot}></div>
-                <span style={styles.statusText}>ACTIVE</span>
-              </div>
-            </div>
-            
-            {(Object.keys(skillsData) as SkillCategory[]).map((category: SkillCategory) => (
-              <motion.button
-                key={category}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => { setActiveCategory(category); setSelectedSkill(skillsData[category].skills[0]); }}
+    <section id="skills" style={{ padding: '80px 2rem', backgroundColor: theme.bg, minHeight: '100vh', position: 'relative' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: theme.text }}>Technical Stack</h1>
+          <p style={{ color: theme.textSecondary }}>Click on any node to see detailed information</p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
+          <div style={{ background: theme.cardBg, borderRadius: '20px', padding: '2rem', border: `1px solid ${theme.border}` }}>
+            <h3 style={{ color: theme.accent, fontSize: '0.9rem', marginBottom: '1rem', textTransform: 'uppercase' }}>CATEGORIES</h3>
+            {Object.entries(skillsData).map(([key, data]) => (
+              <button 
+                key={key} 
+                onClick={() => setActiveCategory(key)} 
                 style={{ 
-                  ...styles.navBtn,
-                  color: activeCategory === category ? '#ffffff' : 'rgba(255,255,255,0.5)',
-                  background: activeCategory === category ? skillsData[category].color : 'transparent',
-                  borderLeft: activeCategory === category ? `4px solid ${skillsData[category].color}` : '4px solid transparent'
+                  display: 'flex', 
+                  width: '100%', 
+                  padding: '12px 16px', 
+                  background: activeCategory === key ? `${theme.accent}20` : 'transparent', 
+                  color: activeCategory === key ? theme.accent : '#aaa', 
+                  border: 'none', 
+                  textAlign: 'left', 
+                  cursor: 'pointer', 
+                  borderRadius: '10px', 
+                  fontSize: '0.9rem', 
+                  fontWeight: 600,
+                  marginBottom: '8px',
+                  transition: 'all 0.3s ease',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
                 }}
               >
-                <div style={styles.navBtnContent}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ ...styles.categoryDot, backgroundColor: skillsData[category].color }}></div>
-                    <span style={styles.navBtnText}>{skillsData[category].title}</span>
-                  </div>
-                  <div style={styles.skillCount}>{skillsData[category].skills.length}</div>
-                </div>
-              </motion.button>
-            ))}
-          </motion.aside>
-
-          {/* MAIN VISUALIZATION AREA */}
-          <div style={{ ...styles.canvas, borderColor: theme.border }}>
-            <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 900 600">
-              <defs>
-                <filter id="appleGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
-                  <feFlood floodColor="currentColor" floodOpacity="0.3" result="color"/>
-                  <feComposite in="color" in2="blur" operator="in" result="glow"/>
-                  <feMerge>
-                    <feMergeNode in="glow"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-                
-                <linearGradient id="proficiencyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#007AFF" />
-                  <stop offset="100%" stopColor="#34C759" />
-                </linearGradient>
-              </defs>
-
-              {/* Connection lines */}
-              {graphNodes
-                .filter(n => !n.id.startsWith('center-') && n.category === activeCategory)
-                .map(node => {
-                  const center = graphNodes.find(c => c.id === `center-${node.category}`);
-                  if (!center) return null;
-                  return (
-                    <motion.line
-                      key={`line-${node.id}`}
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      x1={node.x} y1={node.y} 
-                      x2={center.x} y2={center.y}
-                      stroke={node.color} 
-                      strokeWidth="1.5" 
-                      opacity={hoveredSkill === node.id ? 0.4 : 0.15}
-                      strokeDasharray="5,5"
-                    />
-                  );
-                })}
-
-              {/* Skill nodes */}
-              {graphNodes
-                .filter(n => n.id.startsWith('center-') || n.category === activeCategory)
-                .map(node => {
-                  const isCenter = node.id.startsWith('center-');
-                  const isSelected = selectedSkill === node.id;
-                  const isHovered = hoveredSkill === node.id;
-                  const radius = isCenter ? 28 : 36;
-                  const skillInfo = techData[node.name];
-                  
-                  return (
-                    <g key={node.id} style={{ cursor: 'pointer' }}>
-                      {/* Outer glow effect */}
-                      {isSelected && (
-                        <circle 
-                          cx={node.x} 
-                          cy={node.y} 
-                          r={radius + 15} 
-                          fill={node.color} 
-                          opacity="0.1"
-                          filter="url(#appleGlow)"
-                        />
-                      )}
-                      
-                      {/* Connection lines on hover */}
-                      {isHovered && !isCenter && (
-                        <line 
-                          x1={node.x} 
-                          y1={node.y} 
-                          x2={graphNodes.find(c => c.id === `center-${node.category}`)?.x || node.x}
-                          y2={graphNodes.find(c => c.id === `center-${node.category}`)?.y || node.y}
-                          stroke={node.color}
-                          strokeWidth="2"
-                          opacity="0.3"
-                          strokeDasharray="none"
-                        />
-                      )}
-                      
-                      {/* Main node circle */}
-                      <motion.circle
-                        onClick={() => setSelectedSkill(node.id)}
-                        onMouseEnter={() => setHoveredSkill(node.id)}
-                        onMouseLeave={() => setHoveredSkill(null)}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ 
-                          scale: isHovered ? 1.1 : 1,
-                          opacity: 1
-                        }}
-                        transition={{ 
-                          type: "spring", 
-                          stiffness: 260, 
-                          damping: 20,
-                          scale: { duration: 0.2 }
-                        }}
-                        cx={node.x} 
-                        cy={node.y} 
-                        r={radius}
-                        fill={isCenter ? "rgba(0,0,0,0.3)" : "#080808"}
-                        stroke={isSelected ? theme.accent : node.color}
-                        strokeWidth={isSelected ? 2.5 : isHovered ? 2 : 1.5}
-                        style={{ 
-                          filter: isSelected || isHovered ? "url(#appleGlow)" : "none",
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease'
-                        }}
-                      />
-                      
-                      {/* Center node text */}
-                      {isCenter && (
-                        <text 
-                          x={node.x} 
-                          y={node.y} 
-                          textAnchor="middle" 
-                          fill="#ffffff" 
-                          fontSize="8" 
-                          fontWeight="800" 
-                          opacity="0.5"
-                          letterSpacing="0.5px"
-                        >
-                          {node.name.toUpperCase()}
-                        </text>
-                      )}
-                      
-                      {/* Skill icon */}
-                      {!isCenter && skillInfo?.icon && (
-                        <image 
-                          href={skillInfo.icon} 
-                          x={node.x - 20} 
-                          y={node.y - 20} 
-                          width="40" 
-                          height="40"
-                          style={{ 
-                            filter: isSelected ? 'brightness(1.2)' : 'brightness(1)',
-                            transition: 'filter 0.3s ease'
-                          }}
-                        />
-                      )}
-                      
-                      {/* Skill name label */}
-                      <text 
-                        x={node.x} 
-                        y={node.y + radius + 20} 
-                        textAnchor="middle" 
-                        fill="#ffffff" 
-                        fontSize="11" 
-                        fontWeight="600"
-                        opacity={isSelected ? 1 : isHovered ? 0.8 : 0.6}
-                        style={{ pointerEvents: 'none' }}
-                      >
-                        {node.name}
-                      </text>
-                      
-                      {/* Proficiency indicator */}
-                      {!isCenter && isHovered && (
-                        <g>
-                          <circle 
-                            cx={node.x} 
-                            cy={node.y - radius - 15} 
-                            r="12" 
-                            fill="#080808" 
-                            stroke={node.color}
-                            strokeWidth="1"
-                          />
-                          <text 
-                            x={node.x} 
-                            y={node.y - radius - 11} 
-                            textAnchor="middle" 
-                            fill="#ffffff" 
-                            fontSize="8" 
-                            fontWeight="700"
-                          >
-                            {skillInfo?.proficiency || 0}%
-                          </text>
-                        </g>
-                      )}
-                    </g>
-                  );
-                })}
-            </svg>
-          </div>
-
-          {/* RIGHT DETAIL PANEL - Enhanced Apple Style */}
-          <motion.aside 
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ ...styles.detailPanel, background: theme.cardBg }}
-          >
-            <div style={styles.panelHeader}>
-              <span style={styles.label}>TECHNICAL SPECIFICATION</span>
-              <div style={styles.techBadge}>
-                <span style={{ fontSize: '9px', fontWeight: 700, color: theme.accent }}>
-                  {selectedNode?.category.toUpperCase() || 'SELECTED'}
+                <span>{data.title}</span>
+                <span style={{ 
+                  fontSize: '0.8rem', 
+                  background: 'rgba(255,255,255,0.1)', 
+                  padding: '2px 8px', 
+                  borderRadius: '12px' 
+                }}>
+                  {data.skills.length}
                 </span>
-              </div>
-            </div>
-            
-            <AnimatePresence mode="wait">
-              {selectedNode && !selectedNode.id.startsWith('center-') && techData[selectedNode.name] ? (
-                <motion.div
-                  key={selectedNode.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  style={styles.detailContent}
-                >
-                  {/* Header with icon and title */}
-                  <div style={styles.detailHeader}>
-                    <div style={{ 
-                      ...styles.iconContainer,
-                      background: `linear-gradient(135deg, ${selectedNode.color}20, ${selectedNode.color}40)`,
-                      borderColor: selectedNode.color
-                    }}>
-                      <img 
-                        src={techData[selectedNode.name].icon} 
-                        alt={selectedNode.name}
-                        style={styles.techIcon}
-                      />
-                    </div>
-                    <div style={styles.titleContainer}>
-                      <h3 style={styles.techTitle}>{selectedNode.name}</h3>
-                      <span style={{ 
-                        ...styles.techType, 
-                        color: selectedNode.color,
-                        backgroundColor: `${selectedNode.color}15`
-                      }}>
-                        {techData[selectedNode.name].details.type}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Description */}
-                  <p style={styles.description}>
-                    {selectedNode.intro}
-                  </p>
-                  
-                  {/* Stats */}
-                  <div style={styles.statsGrid}>
-                    <div style={styles.statItem}>
-                      <div style={styles.statLabel}>PROFICIENCY</div>
-                      <div style={styles.statValue}>
-                        <div style={styles.progressBar}>
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            animate={{ width: `${selectedNode.proficiency}%` }}
-                            transition={{ duration: 1, delay: 0.2 }}
-                            style={{ 
-                              ...styles.progressFill, 
-                              backgroundColor: selectedNode.color 
-                            }}
-                          />
-                        </div>
-                        <span style={styles.percentage}>{selectedNode.proficiency}%</span>
-                      </div>
-                    </div>
-                    <div style={styles.statItem}>
-                      <div style={styles.statLabel}>EXPERIENCE</div>
-                      <div style={styles.statValue}>
-                        <div style={styles.yearsBadge}>
-                          {selectedNode.years} {selectedNode.years === 1 ? 'YEAR' : 'YEARS'}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Use Case */}
-                  <div style={styles.section}>
-                    <div style={styles.sectionHeader}>
-                      <span style={styles.sectionTitle}>PRIMARY USE CASE</span>
-                    </div>
-                    <div style={styles.useCase}>
-                      {techData[selectedNode.name].details.useCase}
-                    </div>
-                  </div>
-                  
-                  {/* Strengths */}
-                  <div style={styles.section}>
-                    <div style={styles.sectionHeader}>
-                      <span style={styles.sectionTitle}>KEY STRENGTHS</span>
-                    </div>
-                    <div style={styles.strengthsGrid}>
-                      {techData[selectedNode.name].details.strengths.map((strength: string, index: number) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          style={styles.strengthItem}
-                        >
-                          <div style={{ ...styles.strengthDot, backgroundColor: selectedNode.color }}></div>
-                          <span style={styles.strengthText}>{strength}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Project Applications */}
-                  <div style={styles.section}>
-                    <div style={styles.sectionHeader}>
-                      <span style={styles.sectionTitle}>PROJECT APPLICATIONS</span>
-                    </div>
-                    <div style={styles.projectsList}>
-                      {techData[selectedNode.name].details.projects.map((project: string, index: number) => (
-                        <div key={index} style={styles.projectItem}>
-                          <div style={styles.projectMarker}>•</div>
-                          <span style={styles.projectText}>{project}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  style={styles.idleState}
-                >
-                  <div style={styles.idleIcon}>💻</div>
-                  <h4 style={styles.idleTitle}>SELECT A TECHNOLOGY</h4>
-                  <p style={styles.idleText}>
-                    Click on any technology node to view detailed specifications, use cases, and proficiency metrics.
-                  </p>
-                  <div style={styles.idleHint}>
-                    <span style={styles.hintText}>Hover over nodes for quick preview</span>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.aside>
+              </button>
+            ))}
+          </div>
+          <div style={{ background: theme.cardBg, borderRadius: '20px', border: `1px solid ${theme.border}`, position: 'relative', height: '700px', overflow: 'hidden' }}>
+            {renderGraph()}
+            <InformationPanel />
+          </div>
         </div>
       </div>
+      <style>{`
+        .graph-node-group { cursor: pointer; }
+        .graph-node-group:hover .node-circle { transform: scale(1.1); filter: brightness(1.2); }
+        @keyframes fadeInPanel { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
     </section>
   );
 };
 
 const styles = {
-  sectionMain: { 
-    minHeight: '100vh', 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    padding: '40px 0',
-    overflow: 'hidden'
+  detailLabel: { 
+    fontSize: '0.7rem', 
+    fontWeight: 800, 
+    color: '#3b82f6', 
+    textTransform: 'uppercase' as const, 
+    letterSpacing: '0.1em', 
+    marginBottom: '0.5rem' 
   },
-  container: { 
-    maxWidth: '1400px', 
+  detailText: { 
+    fontSize: '0.95rem', 
+    color: 'rgba(255,255,255,0.8)', 
+    lineHeight: 1.6, 
+    margin: 0 
+  },
+  learnMoreBtn: { 
+    padding: '0.8rem', 
+    background: '#3b82f6', 
+    border: 'none', 
+    borderRadius: '10px', 
+    color: 'white', 
+    fontWeight: 700, 
+    cursor: 'pointer', 
     width: '100%', 
-    padding: '0 30px' 
-  },
-  layout: { 
-    display: 'grid', 
-    gridTemplateColumns: '200px 1fr 380px', 
-    gap: '25px', 
-    height: '680px' 
-  },
-  sidebar: { 
-    padding: '24px', 
-    borderRadius: '20px', 
-    border: '1px solid rgba(255,255,255,0.05)', 
-    backdropFilter: 'blur(40px)',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-    display: 'flex',
-    flexDirection: 'column' as const
-  },
-  detailPanel: {
-    padding: '24px',
-    borderRadius: '20px',
-    border: '1px solid rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(40px)',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-    overflow: 'hidden'
-  },
-  sidebarHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '30px'
-  },
-  label: { 
-    fontSize: '10px', 
-    fontWeight: 900, 
-    color: 'rgba(255,255,255,0.3)', 
-    letterSpacing: '1.5px', 
-    display: 'block',
-    textTransform: 'uppercase' as const
-  },
-  systemStatus: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px'
-  },
-  statusDot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%',
-    backgroundColor: '#34C759',
-    animation: 'pulse 2s infinite'
-  },
-  statusText: {
-    fontSize: '9px',
-    fontWeight: 700,
-    color: 'rgba(255,255,255,0.4)',
-    letterSpacing: '0.5px'
-  },
-  navBtn: {
-    width: '100%',
-    padding: '16px 18px',
-    border: 'none',
-    borderRadius: '12px',
-    textAlign: 'left' as const,
-    fontSize: '13px',
-    fontWeight: 600,
-    cursor: 'pointer',
-    marginBottom: '8px',
-    transition: 'all 0.3s ease',
-    background: 'transparent'
-  },
-  navBtnContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  navBtnText: {
-    fontSize: '13px',
-    fontWeight: 600
-  },
-  categoryDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%'
-  },
-  skillCount: {
-    fontSize: '11px',
-    fontWeight: 700,
-    color: 'rgba(255,255,255,0.3)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    padding: '2px 8px',
-    borderRadius: '10px'
-  },
-  canvas: { 
-    background: 'linear-gradient(135deg, #080808 0%, #0a0a0a 100%)', 
-    borderRadius: '24px', 
-    border: '1px solid rgba(255,255,255,0.03)', 
-    position: 'relative' as const, 
-    overflow: 'hidden',
-    boxShadow: 'inset 0 2px 20px rgba(0, 0, 0, 0.5)'
-  },
-  panelHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '30px'
-  },
-  techBadge: {
-    padding: '4px 10px',
-    borderRadius: '6px',
-    backgroundColor: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.05)'
-  },
-  detailContent: {
-    height: '100%',
-    overflowY: 'auto' as const,
-    paddingRight: '8px'
-  },
-  detailHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
-    marginBottom: '24px'
-  },
-  iconContainer: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '14px',
-    border: '1px solid',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backdropFilter: 'blur(10px)'
-  },
-  techIcon: {
-    width: '32px',
-    height: '32px',
-    filter: 'brightness(1.1)'
-  },
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '6px'
-  },
-  techTitle: {
-    color: '#ffffff',
-    margin: 0,
-    fontSize: '22px',
-    fontWeight: 700,
-    letterSpacing: '-0.3px'
-  },
-  techType: {
-    fontSize: '10px',
-    fontWeight: 700,
-    padding: '4px 10px',
-    borderRadius: '12px',
-    width: 'fit-content',
-    letterSpacing: '0.5px'
-  },
-  description: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: '14px',
-    lineHeight: '1.6',
-    margin: '0 0 28px 0'
-  },
-  statsGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '20px',
-    marginBottom: '32px'
-  },
-  statItem: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '8px'
-  },
-  statLabel: {
-    fontSize: '10px',
-    color: 'rgba(255,255,255,0.4)',
-    fontWeight: 700,
-    letterSpacing: '0.5px'
-  },
-  statValue: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px'
-  },
-  progressBar: {
-    flex: 1,
-    height: '6px',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: '3px',
-    overflow: 'hidden'
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: '3px',
-    transition: 'width 0.3s ease'
-  },
-  percentage: {
-    fontSize: '13px',
-    fontWeight: 700,
-    color: '#ffffff',
-    minWidth: '35px'
-  },
-  yearsBadge: {
-    fontSize: '13px',
-    fontWeight: 700,
-    color: '#ffffff',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    padding: '6px 12px',
-    borderRadius: '8px'
-  },
-  section: {
-    marginBottom: '28px'
-  },
-  sectionHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '14px'
-  },
-  sectionTitle: {
-    fontSize: '10px',
-    color: 'rgba(255,255,255,0.4)',
-    fontWeight: 700,
-    letterSpacing: '0.5px'
-  },
-  useCase: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: '13px',
-    lineHeight: '1.5',
-    backgroundColor: 'rgba(255,255,255,0.02)',
-    padding: '14px',
-    borderRadius: '10px',
-    border: '1px solid rgba(255,255,255,0.03)'
-  },
-  strengthsGrid: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '10px'
-  },
-  strengthItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px'
-  },
-  strengthDot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%'
-  },
-  strengthText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: '13px',
-    flex: 1
-  },
-  projectsList: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '10px'
-  },
-  projectItem: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '10px'
-  },
-  projectMarker: {
-    color: 'rgba(255,255,255,0.3)',
-    fontSize: '14px',
-    marginTop: '2px'
-  },
-  projectText: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: '12px',
-    lineHeight: '1.5',
-    flex: 1
-  },
-  idleState: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    textAlign: 'center' as const,
-    padding: '40px 20px'
-  },
-  idleIcon: {
-    fontSize: '48px',
-    marginBottom: '20px',
-    opacity: 0.3
-  },
-  idleTitle: {
-    color: 'rgba(255,255,255,0.4)',
-    fontSize: '16px',
-    fontWeight: 700,
-    marginBottom: '12px',
-    letterSpacing: '0.5px'
-  },
-  idleText: {
-    color: 'rgba(255,255,255,0.2)',
-    fontSize: '13px',
-    lineHeight: '1.6',
-    maxWidth: '280px',
-    marginBottom: '24px'
-  },
-  idleHint: {
-    padding: '8px 16px',
-    backgroundColor: 'rgba(255,255,255,0.02)',
-    borderRadius: '8px',
-    border: '1px solid rgba(255,255,255,0.03)'
-  },
-  hintText: {
-    color: 'rgba(255,255,255,0.15)',
-    fontSize: '11px',
-    fontWeight: 600,
-    letterSpacing: '0.5px'
+    transition: '0.3s',
+    '&:hover': {
+      background: '#2563eb'
+    }
   }
 };
 
-// Add keyframes for pulse animation
-const styleSheet = document.styleSheets[0];
-styleSheet.insertRule(`
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-`, styleSheet.cssRules.length);
-
 export default Skills;
+
