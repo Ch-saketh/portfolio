@@ -52,6 +52,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
     'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg',
     'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
+    'C': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg',
     
     // Frontend - REMOVED HTML5 & CSS3
     'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
@@ -69,7 +70,8 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     // Databases
     'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg',
     'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/neo4j/neo4j-original.svg',
-    'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
+    'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
+    'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg',
     
     // Machine Learning - REMOVED LightFM
     'Scikit-learn': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg',
@@ -77,14 +79,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'Cosine Similarity': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg',
     'NLP': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg',
     
-    // Quantum Computing - FIXED LOGOS
-    'IBM Qiskit': 'https://qiskit.org/textbook/assets/images/logo.png',
-    'Quantum Key Distribution': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg',
-    'BB84 Protocol': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
-    'Kyber': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
+    // Quantum Computing - Official Company Logos
+    'IBM Qiskit': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
+    'Quantum Key Distribution': 'https://cdn-icons-png.flaticon.com/512/4436/4436481.png',
+    'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'Kyber': 'https://cdn-icons-png.flaticon.com/512/3050/3050159.png',
     
-    // Tools - REMOVED Linux
+    // Tools
     'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg',
+    'Linux': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg',
     'Jupyter Notebook': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg',
     'VS Code': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg',
     'Postman': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg'
