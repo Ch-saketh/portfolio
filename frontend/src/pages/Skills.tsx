@@ -736,8 +736,8 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 <>
                   <circle 
                     r={isCenterNode ? 20 : 16} 
-                    fill="rgba(255, 255, 255, 0.25)" 
-                    opacity="0.8"
+                    fill="rgba(255, 255, 255, 0.08)" 
+                    opacity="0.6"
                   />
                   <image 
                     href={iconUrl} 
@@ -748,7 +748,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     style={{ 
                       pointerEvents: 'none',
                       borderRadius: '50%',
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                      filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.2))'
                     }} 
                     onError={(e) => {
                       // Hide broken images
