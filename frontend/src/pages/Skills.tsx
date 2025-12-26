@@ -35,66 +35,62 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [graphData, setGraphData] = useState<{ nodes: GraphNode[], links: GraphLink[] }>({ nodes: [], links: [] });
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
-  // ONLY YOUR EXACT CATEGORIES
+  // Category icons - using working URLs
   const categoryIcons: Record<string, string> = {
-    'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-    'frontend': 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png',
-    'backend': 'https://cdn-icons-png.flaticon.com/512/1086/1086581.png',
-    'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-    'ml': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/code/code-original.svg',
+    'frontend': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
+    'backend': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
+    'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg',
+    'ml': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg',
     'quantum': 'https://qiskit.org/textbook/assets/images/logo.png',
-    'tools': 'https://cdn-icons-png.flaticon.com/512/3248/3248193.png'
+    'tools': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg'
   };
 
-  // ONLY YOUR EXACT TECH STACK - NO EXTRAS
+  // FIXED LOGOS WITH WORKING URLs
   const techIcons: Record<string, string> = {
-    // Programming Languages - ONLY 3
-    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-    'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
-    'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+    // Programming Languages
+    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
+    'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg',
+    'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
     
-    // Frontend - ONLY 6
-    'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    'Vite': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
-    'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
-    'HTML5': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
-    'CSS3': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
-    'Electron.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg',
+    // Frontend - REMOVED HTML5 & CSS3
+    'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
+    'Vite': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg',
+    'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+    'Electron.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg',
     
-    // Backend - ONLY 5
-    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-    'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
-    'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg',
+    // Backend - FIXED LOGOS
+    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
+    'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original-wordmark.svg',
+    'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg',
     'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',
-    'RESTful APIs': 'https://cdn-icons-png.flaticon.com/512/2165/2165004.png',
+    'RESTful APIs': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg',
     
-    // Databases - ONLY 3
-    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-    'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg',
-    'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+    // Databases
+    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg',
+    'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/neo4j/neo4j-original.svg',
+    'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
     
-    // Machine Learning - ONLY 5
-    'Scikit-learn': 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg',
-    'LightFM': 'https://raw.githubusercontent.com/lyst/lightfm/master/logo.png',
-    'TF-IDF': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
-    'Cosine Similarity': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
-    'NLP': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    // Machine Learning - REMOVED LightFM
+    'Scikit-learn': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg',
+    'TF-IDF': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg',
+    'Cosine Similarity': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg',
+    'NLP': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg',
     
-    // Quantum Computing - ONLY 4
+    // Quantum Computing - FIXED LOGOS
     'IBM Qiskit': 'https://qiskit.org/textbook/assets/images/logo.png',
-    'Quantum Key Distribution': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
-    'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
-    'Kyber': 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png',
+    'Quantum Key Distribution': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg',
+    'BB84 Protocol': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
+    'Kyber': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
     
-    // Tools - ONLY 5
-    'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-    'Linux': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg',
-    'Jupyter Notebook': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg',
-    'VS Code': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
-    'Postman': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg'
+    // Tools - REMOVED Linux
+    'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg',
+    'Jupyter Notebook': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg',
+    'VS Code': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg',
+    'Postman': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg'
   };
 
-  // Tech details - ONLY YOUR EXACT STACK
+  // Tech details
   const techDetails: Record<string, TechDetail> = {
     // Programming Languages
     'Python': {
@@ -140,20 +136,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       useCases: ['Rapid Prototyping', 'Design Systems', 'Responsive Design'],
       experience: '2+ years',
       url: 'https://tailwindcss.com'
-    },
-    'HTML5': {
-      title: 'HTML5',
-      description: 'Latest markup language for web pages and applications.',
-      useCases: ['Web Page Structure', 'Semantic Markup', 'Web Applications'],
-      experience: '5+ years',
-      url: 'https://developer.mozilla.org/en-US/docs/Web/HTML'
-    },
-    'CSS3': {
-      title: 'CSS3',
-      description: 'Latest CSS with modern layout and animation features.',
-      useCases: ['Styling and Layout', 'Responsive Design', 'Animations'],
-      experience: '5+ years',
-      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS'
     },
     'Electron.js': {
       title: 'Electron.js',
@@ -231,13 +213,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       experience: '2+ years',
       url: 'https://scikit-learn.org'
     },
-    'LightFM': {
-      title: 'LightFM',
-      description: 'Python library for hybrid recommendation systems.',
-      useCases: ['Recommendation Systems', 'Collaborative Filtering'],
-      experience: 'Building recommendation engines',
-      url: 'https://github.com/lyst/lightfm'
-    },
     'TF-IDF': {
       title: 'TF-IDF',
       description: 'Statistical measure for word importance.',
@@ -298,13 +273,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       experience: '4+ years',
       url: 'https://git-scm.com'
     },
-    'Linux': {
-      title: 'Linux',
-      description: 'Open-source operating system.',
-      useCases: ['Server Administration', 'Development Environments'],
-      experience: '4+ years',
-      url: 'https://www.linux.org'
-    },
     'Jupyter Notebook': {
       title: 'Jupyter Notebook',
       description: 'Web app for code and visualizations.',
@@ -328,7 +296,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     }
   };
 
-  // ONLY YOUR EXACT 7 CATEGORIES WITH EXACT TECHNOLOGIES
+  // UPDATED CATEGORIES
   const skillsData = {
     'programming': {
       title: 'Programming',
@@ -344,8 +312,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
         { name: 'React.js', color: '#61DAFB' },
         { name: 'Vite', color: '#646CFF' },
         { name: 'TailwindCSS', color: '#38B2AC' },
-        { name: 'HTML5', color: '#E34F26' },
-        { name: 'CSS3', color: '#1572B6' },
         { name: 'Electron.js', color: '#47848F' }
       ]
     },
@@ -371,7 +337,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       title: 'Machine Learning',
       skills: [
         { name: 'Scikit-learn', color: '#F7931E' },
-        { name: 'LightFM', color: '#FF6B35' },
         { name: 'TF-IDF', color: '#3D5AFE' },
         { name: 'Cosine Similarity', color: '#3D5AFE' },
         { name: 'NLP', color: '#3D5AFE' }
@@ -390,7 +355,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       title: 'Tools',
       skills: [
         { name: 'Git', color: '#F05032' },
-        { name: 'Linux', color: '#FCC624' },
         { name: 'Jupyter Notebook', color: '#F37626' },
         { name: 'VS Code', color: '#007ACC' },
         { name: 'Postman', color: '#FF6C37' }
@@ -401,7 +365,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const createLayout = (): GraphNode[] => {
     const nodes: GraphNode[] = [];
     
-    // Optimized center positions for 7 categories
+    // Optimized center positions
     const categoryCenters = [
       { id: 'center-programming', name: 'Programming', color: '#3b82f6', category: 'programming', x: 450, y: 120 },
       { id: 'center-frontend', name: 'Frontend', color: '#8b5cf6', category: 'frontend', x: 180, y: 220 },
@@ -423,7 +387,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       const center = categoryCenters.find(c => c.category === category);
       if (!center) return;
       
-      // Calculate radius based on number of skills
       const radius = 80 + (data.skills.length * 10);
       const angleStep = (2 * Math.PI) / data.skills.length;
       
@@ -577,6 +540,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     objectFit: 'contain' 
                   }} 
                   alt={selectedNode.name} 
+                  onError={(e) => {
+                    // Fallback text if image fails
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `<div style="color: ${isCenterNode ? '#fff' : '#000'}; font-weight: bold; font-size: 18px;">${selectedNode.name.charAt(0)}</div>`;
+                      parent.style.background = selectedNode.color;
+                    }
+                  }}
                 />
               )}
             </div>
@@ -747,6 +719,11 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                     pointerEvents: 'none',
                     borderRadius: '50%'
                   }} 
+                  onError={(e) => {
+                    // Hide broken images
+                    const target = e.target as SVGImageElement;
+                    target.style.display = 'none';
+                  }}
                 />
               )}
               
