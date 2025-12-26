@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface SkillsProps { theme: any; }
 
@@ -9,41 +9,40 @@ interface GraphNode {
   category: string;
   x: number;
   y: number;
-  description?: string;
-  url?: string;
+  intro?: string;
 }
 
 const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState<string>('programming');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
 
-  const techData: Record<string, { icon: string; url: string; desc: string }> = {
-    'Python': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', url: 'https://www.python.org/', desc: 'Core language for AI/ML and backend architecture.' },
-    'Java': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', url: 'https://www.java.com/', desc: 'Enterprise-grade logic and systems engineering.' },
-    'JavaScript': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org', desc: 'Core web engine for interactive environments.' },
-    'C': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg', url: 'https://en.cppreference.com/w/c', desc: 'Low-level systems and foundational logic.' },
-    'React.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', url: 'https://react.dev/', desc: 'Declarative UI library for complex interfaces.' },
-    'Vite': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg', url: 'https://vitejs.dev/', desc: 'High-speed frontend build tooling.' },
-    'TailwindCSS': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', url: 'https://tailwindcss.com/', desc: 'Utility-first CSS framework for modern design.' },
-    'Node.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', url: 'https://nodejs.org/', desc: 'High-performance JavaScript runtime.' },
-    'Express.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', url: 'https://expressjs.com/', desc: 'Lightweight web framework for Node.js.' },
-    'FastAPI': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg', url: 'https://fastapi.tiangolo.com/', desc: 'Modern, high-speed Python API framework.' },
-    'Flask': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', desc: 'Micro web framework for rapid development.' },
-    'MongoDB': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', url: 'https://www.mongodb.com/', desc: 'Scalable NoSQL document database.' },
-    'Neo4j': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg', url: 'https://neo4j.com/', desc: 'Native graph database for relationship mapping.' },
-    'PostgreSQL': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', url: 'https://www.postgresql.org/', desc: 'Advanced relational database engine.' },
-    'Supabase': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg', url: 'https://supabase.com/', desc: 'Open-source Firebase alternative.' },
-    'IBM Qiskit': { icon: 'https://avatars.githubusercontent.com/u/31031201?s=200&v=4', url: 'https://qiskit.org/', desc: 'Quantum Computing SDK for algorithm design.' },
-    'Scikit-learn': { icon: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg', url: 'https://scikit-learn.org/', desc: 'Machine learning library for Python.' },
-    'Git': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', url: 'https://git-scm.com/', desc: 'Distributed version control system.' },
-    'Linux': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', url: 'https://linux.org/', desc: 'Robust open-source operating system.' },
-    'VS Code': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', url: 'https://code.visualstudio.com/', desc: 'Industry-standard development environment.' },
-    'Postman': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', url: 'https://postman.com/', desc: 'API development and testing platform.' }
+  const techData: Record<string, { icon: string; intro: string }> = {
+    'Python': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', intro: 'An interpreted high-level programming language that serves as the backbone for AI, data science, and modern backend engineering.' },
+    'Java': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', intro: 'A robust, class-based object-oriented language designed for high-performance enterprise systems and scalable architecture.' },
+    'JavaScript': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', intro: 'The engine of the modern web, enabling complex interactivity and high-performance client-side logic.' },
+    'C': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg', intro: 'The foundational language of computing, used for systems programming, performance-critical logic, and hardware interfacing.' },
+    'React.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', intro: 'A declarative component-based library that revolutionized user interface development through efficient state management.' },
+    'Vite': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg', intro: 'A lightning-fast build tool that leverages native ES modules to provide a superior developer experience and optimized production builds.' },
+    'TailwindCSS': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', intro: 'A utility-first styling framework that allows for rapid, modular design systems directly within the markup.' },
+    'Node.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', intro: 'A cross-platform JavaScript runtime environment that executes code outside the browser, perfect for scalable network apps.' },
+    'Express.js': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', intro: 'A minimalist web framework for Node.js, providing a robust set of features for web and mobile application development.' },
+    'FastAPI': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg', intro: 'A modern, high-performance web framework for building APIs with Python 3.7+ based on standard Python type hints.' },
+    'Flask': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', intro: 'A lightweight WSGI web application framework designed to make getting started quick and easy, with the ability to scale up.' },
+    'MongoDB': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', intro: 'A leading NoSQL database designed for ease of development and scaling, using a document-oriented data model.' },
+    'Neo4j': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/neo4j/neo4j-original.svg', intro: 'A high-performance graph database that treats relationships as first-class citizens, ideal for complex data mapping.' },
+    'PostgreSQL': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', intro: 'A powerful, open-source object-relational database system with over 30 years of active development.' },
+    'Supabase': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg', intro: 'An open-source Firebase alternative providing a complete backend solution with database, auth, and real-time capabilities.' },
+    'IBM Qiskit': { icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Qiskit-Logo.svg/1024px-Qiskit-Logo.svg.png', intro: 'An open-source SDK for working with quantum computers at the level of circuits, pulses, and algorithms.' },
+    'Scikit-learn': { icon: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg', intro: 'Simple and efficient tools for predictive data analysis, built on NumPy, SciPy, and matplotlib.' },
+    'Git': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', intro: 'A distributed version control system for tracking changes in source code during software development.' },
+    'Linux': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', intro: 'A family of open-source Unix-like operating systems that serve as the foundation for the world\'s servers and infrastructure.' },
+    'VS Code': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', intro: 'A streamlined code editor with support for development operations like debugging, task running, and version control.' },
+    'Postman': { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', intro: 'An API platform for developers to design, build, test, and iterate on their APIs efficiently.' }
   };
 
   const skillsData = {
-    'programming': { title: 'Languages', color: '#8E8E93', skills: ['Python', 'Java', 'JavaScript', 'C'] },
-    'frontend': { title: 'Frontend', color: '#007AFF', skills: ['React.js', 'Vite', 'TailwindCSS'] },
+    'programming': { title: 'Languages', color: '#007AFF', skills: ['Python', 'Java', 'JavaScript', 'C'] },
+    'frontend': { title: 'Frontend', color: '#5856D6', skills: ['React.js', 'Vite', 'TailwindCSS'] },
     'backend': { title: 'Backend', color: '#34C759', skills: ['Node.js', 'Express.js', 'FastAPI', 'Flask'] },
     'databases': { title: 'Databases', color: '#FF3B30', skills: ['MongoDB', 'Neo4j', 'PostgreSQL', 'Supabase'] },
     'ai': { title: 'AI & Quantum', color: '#FF9500', skills: ['Scikit-learn', 'IBM Qiskit'] },
@@ -53,20 +52,20 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const graphNodes = useMemo(() => {
     const nodes: GraphNode[] = [];
     const centers = [
-      { id: 'center-programming', name: 'Languages', category: 'programming', x: 450, y: 120 },
-      { id: 'center-frontend', name: 'Frontend', category: 'frontend', x: 220, y: 240 },
-      { id: 'center-backend', name: 'Backend', category: 'backend', x: 680, y: 240 },
-      { id: 'center-databases', name: 'Databases', category: 'databases', x: 680, y: 440 },
-      { id: 'center-tools', name: 'Tools', category: 'tools', x: 220, y: 440 },
-      { id: 'center-ai', name: 'AI & Quantum', category: 'ai', x: 450, y: 320 }
+      { id: 'center-programming', name: 'Langs', category: 'programming', x: 450, y: 110 },
+      { id: 'center-frontend', name: 'UI/UX', category: 'frontend', x: 200, y: 220 },
+      { id: 'center-backend', name: 'Core', category: 'backend', x: 700, y: 220 },
+      { id: 'center-databases', name: 'Data', category: 'databases', x: 700, y: 460 },
+      { id: 'center-tools', name: 'DevOps', category: 'tools', x: 200, y: 460 },
+      { id: 'center-ai', name: 'ML/Q', category: 'ai', x: 450, y: 340 }
     ];
 
-    centers.forEach(c => nodes.push({ ...c, color: skillsData[c.category as keyof typeof skillsData].color }));
+    centers.forEach(c => nodes.push({ ...c, color: '#fff', intro: '' }));
 
     Object.entries(skillsData).forEach(([category, data]) => {
       const center = centers.find(c => c.category === category);
       if (!center) return;
-      const radius = 95; // Compacted for zero-scroll
+      const radius = 90; 
       const angleStep = (2 * Math.PI) / data.skills.length;
       data.skills.forEach((skillName, index) => {
         const angle = (-Math.PI / 2) + (angleStep * index);
@@ -77,8 +76,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           category,
           x: center.x + radius * Math.cos(angle),
           y: center.y + radius * Math.sin(angle),
-          description: techData[skillName]?.desc,
-          url: techData[skillName]?.url
+          intro: techData[skillName]?.intro
         });
       });
     });
@@ -91,14 +89,14 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     <section id="skills" style={{ ...styles.section, backgroundColor: theme.bg }}>
       <div style={styles.container}>
         <div style={styles.layout}>
-          {/* LEFT: NAV */}
+          {/* SIDEBAR NAVIGATION */}
           <aside style={{ ...styles.sidebar, background: theme.cardBg }}>
             <span style={styles.label}>REGISTRY</span>
             {Object.keys(skillsData).map(cat => (
-              <button key={cat} onClick={() => setActiveCategory(cat)}
+              <button key={cat} onClick={() => {setActiveCategory(cat); setSelectedSkill(null);}}
                 style={{ ...styles.navBtn, 
-                  color: activeCategory === cat ? theme.accent : 'rgba(255,255,255,0.3)',
-                  background: activeCategory === cat ? `${theme.accent}15` : 'transparent'
+                  color: activeCategory === cat ? theme.accent : 'rgba(255,255,255,0.25)',
+                  background: activeCategory === cat ? `${theme.accent}10` : 'transparent'
                 }}
               >
                 {cat.toUpperCase()}
@@ -106,55 +104,73 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
             ))}
           </aside>
 
-          {/* CENTER: CANVAS */}
+          {/* CENTRAL GRAPH */}
           <div style={{ ...styles.canvas, borderColor: theme.border }}>
             <svg width="100%" height="100%" viewBox="0 0 900 600">
+              <defs>
+                <filter id="glow"><feGaussianBlur stdDeviation="3.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+
               {graphNodes.filter(n => !n.id.startsWith('center-') && n.category === activeCategory).map(node => (
                 <line key={node.id} x1={node.x} y1={node.y} 
                   x2={graphNodes.find(c => c.id === `center-${node.category}`)?.x}
                   y2={graphNodes.find(c => c.id === `center-${node.category}`)?.y}
-                  stroke={theme.accent} strokeWidth="1" opacity="0.1" 
+                  stroke={node.color} strokeWidth="1" opacity="0.12" 
                 />
               ))}
 
               {graphNodes.filter(n => n.id.startsWith('center-') || n.category === activeCategory).map(node => {
                 const isCenter = node.id.startsWith('center-');
                 const isSelected = selectedSkill === node.id;
-                const radius = isCenter ? 32 : 24;
+                const radius = isCenter ? 28 : 32; // Bigger Logos
                 return (
                   <g key={node.id} onClick={() => setSelectedSkill(node.id)} style={{ cursor: 'pointer' }}>
-                    <circle cx={node.x} cy={node.y} r={radius + 6} fill={node.color} opacity={isSelected ? 0.3 : 0.05} />
-                    <circle cx={node.x} cy={node.y} r={radius} fill="#0a0a0c" stroke={isSelected ? theme.accent : `${node.color}50`} strokeWidth={isSelected ? 2 : 1} />
+                    <circle cx={node.x} cy={node.y} r={radius + 8} fill={node.color} opacity={isSelected ? 0.25 : 0.03} />
+                    <circle cx={node.x} cy={node.y} r={radius} fill="#050505" stroke={isSelected ? theme.accent : `${node.color}40`} strokeWidth={isSelected ? 2 : 1} filter={isSelected ? "url(#glow)" : ""} />
+                    
                     {!isCenter && techData[node.name] && (
-                      <image href={techData[node.name].icon} x={node.x - 12} y={node.y - 12} width="24" height="24" />
+                      <image href={techData[node.name].icon} x={node.x - 18} y={node.y - 18} width="36" height="36" />
                     )}
+                    
                     {isCenter && (
-                      <text x={node.x} y={node.y + 4} textAnchor="middle" fill="#fff" fontSize="8" fontWeight="800" opacity="0.4">{node.name.substring(0, 3)}</text>
+                      <text x={node.x} y={node.y + 4} textAnchor="middle" fill="#fff" fontSize="7" fontWeight="900" opacity="0.2" letterSpacing="1px">{node.name.toUpperCase()}</text>
                     )}
-                    <text x={node.x} y={node.y + radius + 15} textAnchor="middle" fill="#fff" fontSize="9" fontWeight="600" opacity="0.7">{node.name}</text>
+                    <text x={node.x} y={node.y + radius + 15} textAnchor="middle" fill="#fff" fontSize="9" fontWeight="700" opacity={isSelected ? 1 : 0.4}>{node.name}</text>
                   </g>
                 );
               })}
             </svg>
           </div>
 
-          {/* RIGHT: INFO PANEL */}
-          <aside style={{ ...styles.sidebar, width: '280px', background: theme.cardBg }}>
-            <span style={styles.label}>SPECIFICATIONS</span>
+          {/* TECHNICAL BRIEF (RIGHT PANEL) */}
+          <aside style={{ ...styles.sidebar, width: '300px', background: theme.cardBg }}>
+            <span style={styles.label}>TECHNICAL BRIEF</span>
             {selectedNode && !selectedNode.id.startsWith('center-') ? (
-              <div style={styles.specContent}>
-                <h3 style={{ color: theme.accent, margin: '0 0 10px 0', fontSize: '18px' }}>{selectedNode.name}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', lineHeight: '1.6' }}>{selectedNode.description}</p>
-                <button onClick={() => window.open(selectedNode.url, '_blank')} style={styles.linkBtn}>
-                  Official Documentation ↗
-                </button>
-                <div style={styles.footer}>
-                  <span>ENGINE_STATUS: NOMINAL</span>
-                  <span>ID: {selectedNode.id.toUpperCase()}</span>
+              <div style={styles.infoContent}>
+                <div style={styles.infoTitleBlock}>
+                  <div style={{...styles.iconGlow, backgroundColor: `${selectedNode.color}20`, borderColor: selectedNode.color }}>
+                    <img src={techData[selectedNode.name].icon} style={{ width: '28px' }} alt="" />
+                  </div>
+                  <h3 style={{ color: '#fff', margin: 0, fontSize: '18px', fontWeight: 700 }}>{selectedNode.name}</h3>
+                </div>
+                
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', lineHeight: '1.7', marginTop: '20px' }}>
+                  {selectedNode.intro}
+                </p>
+
+                <div style={styles.systemMetrics}>
+                  <div style={styles.metricItem}>
+                    <span style={styles.metricLabel}>LAYER</span>
+                    <span style={styles.metricVal}>{selectedNode.category.toUpperCase()}</span>
+                  </div>
+                  <div style={styles.metricItem}>
+                    <span style={styles.metricLabel}>STATUS</span>
+                    <span style={{...styles.metricVal, color: theme.accent }}>ACTIVE</span>
+                  </div>
                 </div>
               </div>
             ) : (
-              <div style={styles.emptyState}>FETCHING_DATA...</div>
+              <div style={styles.idleState}>SELECT MODULE FOR SYSTEM SPECS</div>
             )}
           </aside>
         </div>
@@ -165,16 +181,20 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
 const styles = {
   section: { height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  container: { maxWidth: '1300px', width: '100%', padding: '0 20px' },
-  layout: { display: 'grid', gridTemplateColumns: '180px 1fr 280px', gap: '20px', height: '600px' },
-  sidebar: { padding: '20px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(30px)' },
-  label: { fontSize: '8px', fontWeight: 900, color: 'rgba(255,255,255,0.2)', letterSpacing: '2px', display: 'block', marginBottom: '20px' },
-  navBtn: { width: '100%', padding: '12px', border: 'none', borderRadius: '12px', textAlign: 'left' as const, fontSize: '10px', fontWeight: 800, cursor: 'pointer', marginBottom: '6px', transition: '0.2s' },
-  canvas: { background: '#000', borderRadius: '32px', border: '1px solid', position: 'relative' as const, boxShadow: 'inset 0 0 80px rgba(0,0,0,0.8)' },
-  specContent: { animation: 'fadeIn 0.4s ease-out' },
-  linkBtn: { marginTop: '20px', padding: '10px', width: '100%', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: '#fff', fontSize: '10px', fontWeight: 700, cursor: 'pointer' },
-  footer: { marginTop: '40px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', display: 'flex', flexDirection: 'column' as const, gap: '4px', fontSize: '8px', color: 'rgba(255,255,255,0.15)', letterSpacing: '1px' },
-  emptyState: { color: 'rgba(255,255,255,0.1)', fontSize: '10px', textAlign: 'center' as const, marginTop: '100px', letterSpacing: '1px' }
+  container: { maxWidth: '1400px', width: '100%', padding: '0 30px' },
+  layout: { display: 'grid', gridTemplateColumns: '160px 1fr 300px', gap: '25px', height: '580px' },
+  sidebar: { padding: '24px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.04)', backdropFilter: 'blur(40px)', position: 'relative' as const },
+  label: { fontSize: '9px', fontWeight: 900, color: 'rgba(255,255,255,0.15)', letterSpacing: '2px', display: 'block', marginBottom: '30px' },
+  navBtn: { width: '100%', padding: '14px', border: 'none', borderRadius: '15px', textAlign: 'left' as const, fontSize: '11px', fontWeight: 700, cursor: 'pointer', marginBottom: '10px', transition: '0.3s' },
+  canvas: { background: '#000', borderRadius: '40px', border: '1px solid', position: 'relative' as const, overflow: 'hidden' },
+  infoContent: { animation: 'fadeIn 0.5s ease-out' },
+  infoTitleBlock: { display: 'flex', alignItems: 'center', gap: '15px' },
+  iconGlow: { width: '48px', height: '48px', borderRadius: '14px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  systemMetrics: { marginTop: '40px', display: 'flex', flexDirection: 'column' as const, gap: '15px' },
+  metricItem: { display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.03)', paddingBottom: '10px' },
+  metricLabel: { fontSize: '9px', color: 'rgba(255,255,255,0.2)', fontWeight: 800 },
+  metricVal: { fontSize: '10px', color: '#fff', fontWeight: 700 },
+  idleState: { color: 'rgba(255,255,255,0.05)', fontSize: '11px', textAlign: 'center' as const, marginTop: '120px', letterSpacing: '1px', fontWeight: 700 }
 };
 
 export default Skills;
