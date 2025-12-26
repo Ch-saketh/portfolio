@@ -35,15 +35,26 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
   const [graphData, setGraphData] = useState<{ nodes: GraphNode[], links: GraphLink[] }>({ nodes: [], links: [] });
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
-  // Category icons - using working URLs
+  // Category icons - Official company logos
   const categoryIcons: Record<string, string> = {
-    'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/code/code-original.svg',
+    'programming': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
     'frontend': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
     'backend': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
-    'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg',
+    'databases': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
     'ml': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg',
-    'quantum': 'https://qiskit.org/textbook/assets/images/logo.png',
+    'quantum': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
     'tools': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg'
+  };
+
+  // Category background colors for visual distinction
+  const categoryColors: Record<string, string> = {
+    'programming': '#3776AB',
+    'frontend': '#61DAFB',
+    'backend': '#339933',
+    'databases': '#13AA52',
+    'ml': '#FF6F00',
+    'quantum': '#6D28D9',
+    'tools': '#F1502F'
   };
 
   // FIXED LOGOS WITH WORKING URLs
@@ -54,15 +65,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
     'C': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg',
     
-    // Frontend - REMOVED HTML5 & CSS3
+    // Frontend
     'React.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
     'Vite': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg',
-    'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+    'TailwindCSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-plain.svg',
     'Electron.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg',
     
-    // Backend - FIXED LOGOS
+    // Backend
     'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
-    'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original-wordmark.svg',
+    'Express.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg',
     'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg',
     'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',
     'RESTful APIs': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg',
@@ -71,6 +82,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg',
     'Neo4j': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/neo4j/neo4j-original.svg',
     'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
+    'SQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg',
     'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg',
     
     // Machine Learning - REMOVED LightFM
@@ -81,8 +93,9 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     
     // Quantum Computing - Official Company Logos
     'IBM Qiskit': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
-    'Quantum Key Distribution': 'https://cdn-icons-png.flaticon.com/512/4436/4436481.png',
-    'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/2103/2103791.png',
+    'Quantum Computing': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/qiskit/qiskit-original.svg',
+    'Quantum Key Distribution': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/security/security-original.svg',
+    'BB84 Protocol': 'https://cdn-icons-png.flaticon.com/512/4436/4436481.png',
     'Kyber': 'https://cdn-icons-png.flaticon.com/512/3050/3050159.png',
     
     // Tools
