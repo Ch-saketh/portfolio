@@ -705,9 +705,17 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               
               {needsWhiteBackground.includes(node.name) && !isCenterNode && (
                 <circle 
-                  r={radius - 4} 
+                  r={radius - 2} 
                   fill="white" 
-                  opacity="0.9" 
+                  opacity="0.95" 
+                />
+              )}
+              
+              {!needsWhiteBackground.includes(node.name) && !isCenterNode && (
+                <circle 
+                  r={radius - 2} 
+                  fill="#ffffff" 
+                  opacity="0.15" 
                 />
               )}
               
@@ -715,8 +723,8 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 className="node-circle" 
                 r={radius} 
                 fill={node.color} 
-                stroke={isSelected ? 'white' : theme.border} 
-                strokeWidth={isSelected ? 4 : 2} 
+                stroke={isSelected ? 'white' : 'rgba(255,255,255,0.3)'} 
+                strokeWidth={isSelected ? 4 : 2.5} 
                 filter="url(#node-glow)" 
                 style={{ 
                   transition: '0.2s',
@@ -725,22 +733,30 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
               />
               
               {iconUrl && (
-                <image 
-                  href={iconUrl} 
-                  x={isCenterNode ? -18 : -14} 
-                  y={isCenterNode ? -18 : -14} 
-                  width={isCenterNode ? 36 : 28} 
-                  height={isCenterNode ? 36 : 28} 
-                  style={{ 
-                    pointerEvents: 'none',
-                    borderRadius: '50%'
-                  }} 
-                  onError={(e) => {
-                    // Hide broken images
-                    const target = e.target as SVGImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                <>
+                  <circle 
+                    r={isCenterNode ? 20 : 16} 
+                    fill="rgba(255, 255, 255, 0.25)" 
+                    opacity="0.8"
+                  />
+                  <image 
+                    href={iconUrl} 
+                    x={isCenterNode ? -18 : -14} 
+                    y={isCenterNode ? -18 : -14} 
+                    width={isCenterNode ? 36 : 28} 
+                    height={isCenterNode ? 36 : 28} 
+                    style={{ 
+                      pointerEvents: 'none',
+                      borderRadius: '50%',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                    }} 
+                    onError={(e) => {
+                      // Hide broken images
+                      const target = e.target as SVGImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </>
               )}
               
               <text 
