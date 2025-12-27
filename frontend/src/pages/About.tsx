@@ -20,7 +20,6 @@ interface AboutProps {
 const About: React.FC<AboutProps> = ({ theme }) => {
   const [showResume, setShowResume] = useState(false);
 
-  // Email logic for the main CTA buttons
   const handleContactMe = () => {
     window.location.href = "mailto:chokkapusaketh@gmail.com?subject=Collaboration Inquiry";
   };
@@ -28,7 +27,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   return (
     <section id="about" style={styles.section}>
       <div style={styles.mainContainer} className="about-main-container">
-        {/* LEFT COLUMN: IDENTITY & PROJECTS */}
+        {/* IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left about-left-col">
           <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge">
             <div className="status-orb" style={{ background: theme.accent }} />
@@ -73,7 +72,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: 3D PROFILE CARD */}
+        {/* 3D PROFILE CARD */}
         <div style={styles.rightColumn} className="reveal-right about-right-col">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper} className="about-card-wrapper">
@@ -100,11 +99,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
                 <button onClick={() => setShowResume(false)} style={styles.closeBtn}>✕</button>
               </div>
             </div>
-            <iframe
-              src={`${resumeFile}#toolbar=0`}
-              title="Resume Viewer"
-              style={styles.iframe}
-            />
+            <iframe src={`${resumeFile}#toolbar=0`} title="Resume Viewer" style={styles.iframe} />
           </div>
         </div>
       )}
@@ -114,7 +109,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Centering and Raising the Name */
         .pc-details {
           margin-top: 14px !important; 
           text-align: center !important;
@@ -124,7 +118,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           align-items: center !important;
         }
 
-        /* Glass footer containment */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
@@ -140,50 +133,22 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-        /* MOBILE VIEW OPTIMIZATION (ONLY FOR MOBILE) */
+        /* MOBILE VIEW OPTIMIZATION */
         @media (max-width: 768px) {
           .about-main-container {
             display: flex !important;
             flex-direction: column !important;
-            padding: 40px 20px !important;
-            gap: 2rem !important;
+            padding: 20px 20px 60px 20px !important;
+            gap: 1.5rem !important;
             text-align: center !important;
           }
-
-          .about-right-col {
-            order: 1 !important; /* Move Profile Card to top */
-            margin-top: 0 !important;
-          }
-
-          .about-left-col {
-            order: 2 !important; /* Text below card */
-            margin-top: 0 !important;
-            align-items: center !important;
-          }
-
-          .about-card-wrapper {
-            margin-top: 0 !important;
-            transform: scale(0.9) !important;
-          }
-
-          .about-badge {
-            margin: 0 auto !important;
-          }
-
-          .about-bento {
-            grid-template-columns: 1fr !important; /* Stack bento boxes */
-            text-align: left !important;
-          }
-
-          .about-buttons {
-            justify-content: center !important;
-          }
-
-          #about {
-            padding: 0 !important;
-            min-height: auto !important;
-          }
-          
+          .about-right-col { order: 1 !important; margin-top: 0 !important; }
+          .about-left-col { order: 2 !important; margin-top: 0 !important; align-items: center !important; }
+          .about-card-wrapper { margin-top: 0 !important; transform: scale(0.8) !important; }
+          .about-badge { margin: 0 auto !important; }
+          .about-bento { grid-template-columns: 1fr !important; text-align: left !important; width: 100%; }
+          .about-buttons { justify-content: center !important; }
+          #about { min-height: auto !important; padding-top: 80px !important; padding-bottom: 40px !important; }
           .reveal-right { opacity: 1 !important; }
         }
       `}</style>
@@ -201,8 +166,8 @@ const styles = {
     background: 'transparent',
     overflow: 'hidden',
     position: 'relative' as const,
-    paddingTop: '60px',
-    paddingBottom: '80px',
+    paddingTop: '40px', // Reduced to allow upward shift
+    paddingBottom: '100px', // Added breathing room at bottom
   },
   mainContainer: {
     maxWidth: '1200px',
@@ -213,17 +178,23 @@ const styles = {
     gap: '5rem',
     alignItems: 'center',
     zIndex: 10,
-    padding: '4rem',
+    padding: '2rem 4rem',
   },
-  leftColumn: { display: 'flex', flexDirection: 'column' as const, gap: '1.4rem', justifyContent: 'center', marginTop: '-40px' },
+  leftColumn: { 
+    display: 'flex', 
+    flexDirection: 'column' as const, 
+    gap: '1.4rem', 
+    justifyContent: 'center', 
+    marginTop: '-80px' // Increased negative margin to pull text up
+  },
   badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
   badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
   heroTitle: { fontSize: '3.8rem', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
   description: { fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '520px', margin: 0 },
-  bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.2rem', marginTop: '1rem' },
+  bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.2rem', marginTop: '0.5rem' },
   bentoTitle: { fontSize: '11px', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: '13px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 },
-  buttonGroup: { display: 'flex', gap: '1.5rem', marginTop: '1.5rem', flexWrap: 'wrap' as const },
+  buttonGroup: { display: 'flex', gap: '1.5rem', marginTop: '1rem', flexWrap: 'wrap' as const },
   ctaBase: { padding: '14px 32px', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
@@ -232,39 +203,13 @@ const styles = {
     width: '360px',
     maxWidth: '100%',
     transform: 'scale(0.85)',
-    marginTop: '-60px'
+    marginTop: '-100px' // Increased negative margin to pull card up
   },
   cardGlow: { position: 'absolute' as const, width: '100%', height: '100%', filter: 'blur(100px)', opacity: 0.15, zIndex: -1 },
 
-  modalOverlay: {
-    position: 'fixed' as const,
-    inset: 0,
-    background: 'rgba(0, 0, 0, 0.85)',
-    backdropFilter: 'blur(10px)',
-    zIndex: 10000,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '80px 40px 40px 40px',
-  },
-  modalContent: {
-    width: '100%',
-    maxWidth: '1000px',
-    height: '85vh',
-    background: '#111',
-    borderRadius: '24px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    overflow: 'hidden',
-  },
-  modalHeader: {
-    padding: '20px 30px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+  modalOverlay: { position: 'fixed' as const, inset: 0, background: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(10px)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 40px 40px 40px' },
+  modalContent: { width: '100%', maxWidth: '1000px', height: '85vh', background: '#111', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'column' as const, overflow: 'hidden' },
+  modalHeader: { padding: '20px 30px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   modalActions: { display: 'flex', gap: '15px', alignItems: 'center' },
   iframe: { width: '100%', flex: 1, border: 'none' },
   closeBtn: { background: 'transparent', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', padding: '5px' },
