@@ -26,13 +26,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   };
 
   return (
-    <section id="about" style={styles.section} className="about-section-container">
-      <div style={styles.mainContainer} className="about-main-wrapper">
+    <section id="about" style={styles.section} className="about-section-wrapper">
+      <div style={styles.mainContainer} className="main-container-responsive">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
-        <div style={styles.leftColumn} className="reveal-left about-content-stack">
+        <div style={styles.leftColumn} className="reveal-left left-col-responsive">
           
-          {/* Mobile Header Frame */}
-          <div className="mobile-header-group">
+          <div className="mobile-header-frame">
             <div style={{ ...styles.badge, borderColor: theme.border }} className="mobile-badge-centered">
               <div className="status-orb" style={{ background: theme.accent }} />
               <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
@@ -57,7 +56,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <p style={styles.description} className="mobile-desc-centered">
+          {/* Description - Made compact for mobile visibility */}
+          <p style={styles.description} className="mobile-desc-compact">
             Focused on building scalable web applications and AI-driven systems,
             with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
             <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied
@@ -91,8 +91,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: 3D PROFILE CARD (Desktop Original Position) */}
-        <div style={styles.rightColumn} className="reveal-right desktop-card-pos">
+        {/* RIGHT COLUMN: Original Desktop Card Position */}
+        <div style={styles.rightColumn} className="reveal-right desktop-only-card">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
             <ProfileCard
@@ -159,67 +159,66 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .mobile-card-frame { display: none; }
 
         @media (max-width: 768px) {
-          .desktop-card-pos { display: none !important; }
-          .mobile-card-frame { 
-            display: flex !important; 
-            justify-content: center !important; 
-            width: 100% !important; 
-            margin: -25px 0 10px 0 !important; /* Pull card up closer to name */
-            box-sizing: border-box !important;
-          }
+          .desktop-only-card { display: none !important; }
+          .about-section-wrapper { overflow-x: hidden !important; }
 
-          .about-main-wrapper {
+          .main-container-responsive {
             display: flex !important;
             flex-direction: column !important;
-            padding: 20px 10px !important;
-            width: 100% !important;
+            padding: 10px 16px !important; /* Reduced top padding */
           }
 
-          .about-content-stack {
+          .left-col-responsive {
             margin-top: 0 !important;
             align-items: center !important;
             text-align: center !important;
           }
 
-          .mobile-header-group {
-            margin-top: 50px !important; /* Move Name/Badge down slightly */
+          .mobile-header-frame {
+            margin-top: 40px !important;
           }
 
           .mobile-badge-centered { margin: 0 auto !important; }
+          .mobile-name-title { font-size: 2rem !important; margin-top: 8px !important; }
 
-          .mobile-name-title {
-            font-size: 2.2rem !important;
-            margin-top: 10px !important;
+          /* Profile Card Shifted Up (Y-axis) and Centered (X-axis) */
+          .mobile-card-frame { 
+            display: flex !important; 
+            justify-content: center !important; 
+            width: 100% !important; 
+            margin: -40px 0 0 0 !important; /* Large negative margin to move up */
+            padding: 0 !important;
           }
 
           .mobile-profile-card {
             margin: 0 auto !important;
-            transform: scale(0.8) !important;
+            transform: scale(0.75) !important; /* Scale down to ensure visibility */
             width: 100% !important;
-            max-width: 350px !important; /* Prevent overlapping right edge */
+            max-width: 300px !important; /* Prevents overlapping edges */
+            left: 0 !important;
+            right: 0 !important;
+            position: relative !important;
           }
 
-          .mobile-desc-centered {
-             margin: 0 auto 20px auto !important;
+          /* Tighten description for one-frame visibility */
+          .mobile-desc-compact {
+             margin: -10px auto 15px auto !important;
              text-align: center !important;
-             font-size: 0.95rem !important;
+             font-size: 0.9rem !important;
              max-width: 90% !important;
+             line-height: 1.5 !important;
           }
 
           .mobile-bento-grid {
             grid-template-columns: 1fr !important;
-            text-align: left !important;
             width: 100% !important;
+            margin-top: 5px !important;
           }
 
           .mobile-btns-centered {
             justify-content: center !important;
-            margin-top: 20px !important;
-            padding-bottom: 60px;
-          }
-
-          .about-section-container {
-            overflow-x: hidden !important; /* Prevents horizontal scroll */
+            padding-bottom: 50px;
+            margin-top: 10px !important;
           }
 
           #about { min-height: auto !important; }
@@ -262,7 +261,7 @@ const styles = {
   bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'clamp(0.6rem, 2vw, 1.2rem)', marginTop: '1rem' },
   bentoTitle: { fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: 'clamp(11px, 2.5vw, 13px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 },
-  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const },
+  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const, justifyContent: 'center' },
   ctaBase: { padding: 'clamp(12px, 2vw, 14px) clamp(24px, 4vw, 32px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(13px, 2vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
