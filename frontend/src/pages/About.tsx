@@ -26,12 +26,11 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   };
 
   return (
-    <section id="about" style={styles.section} className="about-viewport">
+    <section id="about" style={styles.section} className="about-viewport-fix">
       <div style={styles.mainContainer} className="about-main-layout">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left about-info-column">
           
-          {/* Header Group */}
           <div className="mobile-header-stack">
             <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge-fix">
               <div className="status-orb" style={{ background: theme.accent }} />
@@ -43,8 +42,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </h1>
           </div>
 
-          {/* Profile Card (Injected for Mobile) */}
-          <div className="mobile-card-frame">
+          {/* This wrapper only appears/stacks on Mobile */}
+          <div className="mobile-only-card-container">
             <div style={styles.cardWrapper} className="mobile-card-scaling">
               <ProfileCard
                 name="Chokkapu Saketh"
@@ -57,7 +56,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          {/* Mobile buttons - right after card */}
+          {/* Mobile buttons - shown right after card on small screens */}
           <div className="mobile-only-buttons">
             <button
               onClick={handleContactMe}
@@ -91,7 +90,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          {/* Desktop Only Buttons (Left aligned) */}
+          {/* Desktop original buttons (Left Aligned) */}
           <div style={styles.buttonGroup} className="desktop-only-buttons">
             <button
               onClick={handleContactMe}
@@ -169,13 +168,11 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .mobile-only-card-container { display: none; }
-        .mobile-only-buttons { display: none; }
+        .mobile-only-card-container, .mobile-only-buttons { display: none; }
 
         @media (max-width: 768px) {
-          .desktop-card-pos { display: none !important; }
-          .desktop-only-buttons { display: none !important; }
-          .about-viewport { overflow-x: hidden !important; }
+          .desktop-card-pos, .desktop-only-buttons { display: none !important; }
+          .about-viewport-fix { overflow-x: hidden !important; }
           
           .about-main-layout {
             display: flex !important;
@@ -185,8 +182,10 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             text-align: center !important;
           }
 
+          .about-info-column { margin-top: 0 !important; align-items: center !important; }
+
           .mobile-header-stack {
-            margin-top: 10px !important; /* Move Badge/Name very close to top */
+            margin-top: 50px !important; /* Move Badge/Name down from the edge */
             margin-bottom: 5px !important;
           }
 
@@ -197,16 +196,16 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important; 
             justify-content: center; 
             width: 100%; 
-            margin: -35px auto -20px auto !important; /* Close gap with Name */
+            margin: -40px auto -25px auto !important; /* Pull card UP closer to name */
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.70) !important;
+            transform: scale(0.72) !important;
             left: 0 !important;
             position: relative !important;
             width: 100% !important;
-            max-width: 320px !important; /* Prevent edge overlap */
+            max-width: 320px !important;
           }
 
           .mobile-only-buttons {
@@ -221,7 +220,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             margin: 0 auto 20px auto !important;
             text-align: center !important;
             font-size: 0.9rem !important;
-            max-width: 92% !important;
+            max-width: 95% !important;
             line-height: 1.4 !important;
           }
 
