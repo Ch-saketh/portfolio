@@ -58,6 +58,25 @@ const Contact: React.FC<ContactProps> = ({ theme }) => {
         </div>
 
         <div className="form-area">
+          {/* Mobile Header - Only visible on mobile */}
+          <div className="mobile-contact-header">
+            <h2>Let's talk.</h2>
+            <p>Chokkapu Saketh</p>
+          </div>
+
+          {/* Mobile Social Links - Only visible on mobile */}
+          <div className="mobile-social-row">
+            <a href="https://github.com/ch-saketh" target="_blank" rel="noreferrer" className="mobile-social-btn">
+              <Github size={20} />
+            </a>
+            <a href="https://www.linkedin.com/in/saketh-chokkapu-3a668a2b9" target="_blank" rel="noreferrer" className="mobile-social-btn">
+              <Linkedin size={20} />
+            </a>
+            <a href="mailto:chokkapusaketh@gmail.com" className="mobile-social-btn">
+              <Mail size={20} />
+            </a>
+          </div>
+
           <div className="toggle-bar">
             <button type="button" className={formType === 'project' ? 'active' : ''} onClick={() => setFormType('project')}>
               <Briefcase size={14} /> New Project
@@ -140,9 +159,158 @@ const Contact: React.FC<ContactProps> = ({ theme }) => {
         .deploy-btn:hover { transform: translateY(-4px); filter: brightness(1.2); }
         .animate-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 1024px) { .contact-card { grid-template-columns: 1fr; } .sidebar { display: none; } }
-        @media (max-width: 768px) { .contact-card { width: 95%; transform: scale(1); } .input-row { grid-template-columns: 1fr; gap: 16px; } }
-        @media (max-width: 480px) { .contact-card { width: 100%; border-radius: 16px; } .form-area { padding: 20px; } }
+        
+        /* TABLET */
+        @media (max-width: 1024px) { 
+          .contact-card { grid-template-columns: 1fr; } 
+          .sidebar { display: none; } 
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) { 
+          #contact {
+            height: auto !important;
+            min-height: 100dvh !important;
+            padding: 80px 16px 40px 16px !important;
+            align-items: flex-start !important;
+          }
+          
+          .contact-card { 
+            width: 100%; 
+            transform: none;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+          }
+          
+          .form-area {
+            padding: 28px 24px !important;
+          }
+          
+          /* Mobile Header */
+          .mobile-contact-header {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 24px;
+          }
+          
+          .mobile-contact-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.03em;
+          }
+          
+          .mobile-contact-header p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            margin: 0;
+          }
+          
+          /* Mobile Social Row */
+          .mobile-social-row {
+            display: flex !important;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+          }
+          
+          .mobile-social-btn {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            color: #fff;
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-social-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+          }
+          
+          .toggle-bar { 
+            width: 100% !important;
+            margin-bottom: 24px !important;
+          }
+          
+          .toggle-bar button {
+            flex: 1;
+            justify-content: center;
+            padding: 12px 16px !important;
+            font-size: 13px !important;
+          }
+          
+          .input-row { 
+            grid-template-columns: 1fr !important; 
+            gap: 16px !important; 
+          }
+          
+          .apple-field {
+            padding: 14px 0 !important;
+            font-size: 16px !important; /* Prevents zoom on iOS */
+          }
+          
+          .field-box .apple-field {
+            padding-left: 24px !important;
+          }
+          
+          textarea.apple-field {
+            min-height: 100px;
+            resize: none;
+          }
+          
+          .deploy-btn {
+            padding: 16px !important;
+            font-size: 15px !important;
+            border-radius: 14px !important;
+            margin-top: 8px;
+          }
+          
+          .dynamic-form {
+            gap: 20px !important;
+          }
+        }
+        
+        @media (max-width: 480px) { 
+          #contact {
+            padding: 70px 12px 30px 12px !important;
+          }
+          
+          .contact-card { 
+            border-radius: 20px;
+          }
+          
+          .form-area { 
+            padding: 24px 20px !important;
+          }
+          
+          .mobile-contact-header h2 {
+            font-size: 1.75rem;
+          }
+          
+          .toggle-bar button {
+            padding: 10px 12px !important;
+            font-size: 12px !important;
+            gap: 6px !important;
+          }
+          
+          .deploy-btn {
+            padding: 14px !important;
+          }
+        }
+        
+        /* Hide mobile elements on desktop */
+        .mobile-contact-header,
+        .mobile-social-row {
+          display: none;
+        }
       `}</style>
     </section>
   );
