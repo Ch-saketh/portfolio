@@ -173,23 +173,44 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .desktop-card-pos, .desktop-buttons-only { display: none !important; }
           .about-viewport { overflow-x: hidden !important; }
           
+          #about {
+            min-height: 100vh !important;
+            max-height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+
           .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
-            padding: 20px 16px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 10px 16px !important;
             width: 100% !important;
+            height: 100% !important;
             text-align: center !important;
+            gap: 0 !important;
           }
 
-          .about-info-column { margin-top: 0 !important; align-items: center !important; }
+          .about-info-column { 
+            margin-top: 0 !important; 
+            align-items: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            gap: 8px !important;
+          }
 
           .mobile-header-stack {
-            margin-top: 20px !important; /* Adjusted top placement */
-            margin-bottom: 5px !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
           }
 
-          .about-badge-fix { margin: 0 auto 5px auto !important; }
-          .about-name-fix { font-size: 2.2rem !important; margin-top: 0 !important; margin-bottom: 5px !important; }
+          .about-badge-fix { margin: 0 auto 4px auto !important; }
+          .about-name-fix { font-size: 2rem !important; margin: 0 !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
@@ -197,7 +218,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -45px auto -35px auto !important;
+            margin: -30px auto -30px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -205,7 +226,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.65) !important;
+            transform: scale(0.58) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
@@ -216,26 +237,20 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-only-buttons {
             display: flex !important;
-            gap: 14px !important;
+            gap: 12px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 5px auto 25px auto !important;
+            margin: 0 auto 10px auto !important;
             width: 100% !important;
             padding: 0 16px !important;
           }
 
           .about-description-fix {
-            margin: 0 auto 20px auto !important;
-            text-align: center !important;
-            font-size: 0.9rem !important;
-            max-width: 95% !important;
-            line-height: 1.4 !important;
+            display: none !important;
           }
 
           .about-bento-fix {
-            grid-template-columns: 1fr !important;
-            text-align: left !important;
-            width: 100% !important;
+            display: none !important;
           }
 
           #about { min-height: auto !important; }
