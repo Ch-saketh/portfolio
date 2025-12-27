@@ -175,15 +175,13 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           
           /* HERO SECTION - Fits exactly in viewport */
           #about {
-            height: 100dvh !important;
-            max-height: 100dvh !important;
             min-height: 100dvh !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 60px 0 20px 0 !important;
+            padding: 70px 0 30px 0 !important;
             margin: 0 !important;
-            overflow: hidden !important;
+            overflow-x: hidden !important;
             box-sizing: border-box !important;
           }
 
@@ -193,10 +191,9 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 0 16px !important;
+            padding: 0 !important;
             margin: 0 !important;
             width: 100% !important;
-            height: 100% !important;
             text-align: center !important;
             gap: 0 !important;
           }
@@ -208,7 +205,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 24px !important; /* Consistent gap for all children */
+            gap: 20px !important; /* Consistent gap for all children */
+            width: 100% !important;
           }
 
           .mobile-header-stack {
@@ -235,46 +233,79 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             opacity: 0.9 !important;
           }
 
-          /* Card container - tight spacing */
+          /* Card container - centered column */
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important;
             align-items: center !important;
-            width: 100% !important; 
-            max-width: 100vw !important;
-            margin: -50px auto -55px auto !important;
+            width: 90% !important; 
+            max-width: 420px !important;
+            margin: 0 auto !important;
             padding: 0 !important;
-            overflow: hidden !important;
+            overflow: visible !important;
             box-sizing: border-box !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: scale(0.52) !important;
-            transform-origin: center center !important;
+            transform: none !important;
             position: relative !important;
             display: flex !important;
             justify-content: center !important;
+            width: 100% !important;
           }
 
-          /* Override ProfileCard wrapper gap on mobile */
+          /* Override ProfileCard styles on mobile for larger card */
           .mobile-card-scaling .pc-card-wrapper {
             gap: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
           }
 
-          /* Buttons - Grouped tightly with card */
+          .mobile-card-scaling .pc-card {
+            width: 100% !important;
+            max-width: 420px !important;
+            height: auto !important;
+            max-height: none !important;
+            min-height: 480px !important;
+            aspect-ratio: 0.75 !important;
+            padding: 28px !important;
+          }
+
+          .mobile-card-scaling .pc-card-shell {
+            width: 100% !important;
+            height: 100% !important;
+          }
+
+          /* Scale profile image proportionally */
+          .mobile-card-scaling .pc-card img {
+            width: 140px !important;
+            height: 140px !important;
+            object-fit: cover !important;
+          }
+
+          /* Adjust card content padding */
+          .mobile-card-scaling .pc-card-content {
+            padding: 20px !important;
+          }
+
+          .mobile-card-scaling .pc-details {
+            padding: 16px 0 !important;
+          }
+
+          /* Buttons - Match card width for cohesive column */
           .mobile-only-buttons {
             display: flex !important;
-            gap: 10px !important;
+            gap: 12px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 0 auto !important;
-            padding: 0 24px !important;
-            width: 100% !important;
-            max-width: 300px !important;
+            margin: 20px auto 0 auto !important;
+            padding: 0 !important;
+            width: 90% !important;
+            max-width: 420px !important;
           }
 
           /* Make buttons equal visual weight */
