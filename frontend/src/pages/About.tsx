@@ -173,7 +173,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .desktop-card-pos, .desktop-buttons-only { display: none !important; }
           .about-viewport { overflow-x: hidden !important; }
           
-          /* HERO SECTION - Exactly 100vh, no scroll */
+          /* HERO SECTION - Exactly 100dvh, no scroll */
           #about {
             height: 100dvh !important;
             max-height: 100dvh !important;
@@ -181,7 +181,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 50px 0 20px 0 !important;
+            padding: 40px 0 30px 0 !important;
             margin: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -207,59 +207,54 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 1.5rem !important; /* Tight gap for grouped unit */
+            gap: 12px !important;
             width: 100% !important;
           }
 
+          /* HIDE the header stack completely on mobile */
           .mobile-header-stack {
-            margin: 0 0 -8px 0 !important;
-            padding: 0 !important;
+            display: none !important;
           }
 
-          /* Badge - smaller, lighter */
-          .about-badge-fix { 
-            margin: 0 auto 4px auto !important; 
-            line-height: 1 !important;
-            padding: 4px 10px !important;
-            font-size: 8px !important;
-            opacity: 0.8 !important;
-          }
-          
-          /* Name - Reduced prominence, tighter margin */
+          /* HIDE the name header on mobile */
           .about-name-fix { 
-            font-size: 1.4rem !important; 
-            font-weight: 600 !important;
-            margin: 0 !important; 
-            padding: 0 !important;
-            line-height: 1 !important;
-            opacity: 0.9 !important;
+            display: none !important;
           }
 
-          /* Card container - scaled down 10-15% */
+          /* Badge - Keep visible, position above card */
+          .about-badge-fix { 
+            display: inline-flex !important;
+            margin: 0 auto 8px auto !important; 
+            line-height: 1 !important;
+            padding: 6px 14px !important;
+            font-size: 10px !important;
+            opacity: 1 !important;
+          }
+
+          /* Card container - Large, fills screen width */
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important;
             align-items: center !important;
-            width: 100% !important; 
-            max-width: 100vw !important;
-            margin: -20px auto -25px auto !important;
+            width: 92% !important; 
+            max-width: 440px !important;
+            margin: 0 auto !important;
             padding: 0 !important;
-            overflow: hidden !important;
+            overflow: visible !important;
             box-sizing: border-box !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: scale(0.62) !important;
-            transform-origin: center center !important;
+            transform: none !important;
             position: relative !important;
             display: flex !important;
             justify-content: center !important;
             width: 100% !important;
           }
 
-          /* Override ProfileCard styles on mobile */
+          /* Override ProfileCard styles on mobile - Full width card */
           .mobile-card-scaling .pc-card-wrapper {
             gap: 0 !important;
             margin: 0 !important;
@@ -269,11 +264,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           }
 
           .mobile-card-scaling .pc-card {
-            width: 360px !important;
-            height: 520px !important;
-            max-height: 520px !important;
-            min-height: auto !important;
-            aspect-ratio: auto !important;
+            width: 100% !important;
+            max-width: 440px !important;
+            height: auto !important;
+            max-height: none !important;
+            min-height: 500px !important;
+            aspect-ratio: 0.72 !important;
             padding: 0 !important;
           }
 
@@ -284,30 +280,30 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           /* Scale profile image proportionally */
           .mobile-card-scaling .pc-card img {
-            width: 120px !important;
-            height: 120px !important;
+            width: 130px !important;
+            height: 130px !important;
             object-fit: cover !important;
           }
 
           /* Adjust card content padding */
           .mobile-card-scaling .pc-card-content {
-            padding: 16px !important;
+            padding: 20px !important;
           }
 
           .mobile-card-scaling .pc-details {
-            padding: 12px 0 !important;
+            padding: 14px 0 !important;
           }
 
-          /* Buttons - Tight to card, same visual width */
+          /* Buttons - Immediately below card, match card width */
           .mobile-only-buttons {
             display: flex !important;
-            gap: 10px !important;
+            gap: 12px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: -10px auto 0 auto !important;
-            padding: 0 20px !important;
-            width: 100% !important;
-            max-width: 240px !important;
+            margin: 16px auto 0 auto !important;
+            padding: 0 !important;
+            width: 92% !important;
+            max-width: 440px !important;
           }
 
           /* Make buttons equal visual weight */
