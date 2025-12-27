@@ -26,25 +26,22 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   };
 
   return (
-    <section id="about" style={styles.section} className="about-section-wrapper">
-      <div style={styles.mainContainer} className="main-container-responsive">
+    <section id="about" style={styles.section}>
+      <div style={styles.mainContainer} className="about-main-container">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
-        <div style={styles.leftColumn} className="reveal-left left-col-responsive">
-          
-          <div className="mobile-header-frame">
-            <div style={{ ...styles.badge, borderColor: theme.border }} className="mobile-badge-centered">
-              <div className="status-orb" style={{ background: theme.accent }} />
-              <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
-            </div>
-
-            <h1 style={styles.heroTitle} className="mobile-name-title">
-              Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
-            </h1>
+        <div style={styles.leftColumn} className="reveal-left about-left-col">
+          <div style={{ ...styles.badge, borderColor: theme.border }} className="mobile-badge-adjust">
+            <div className="status-orb" style={{ background: theme.accent }} />
+            <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
           </div>
 
-          {/* Profile Card Frame (Injected for Mobile) */}
+          <h1 style={styles.heroTitle} className="mobile-title-adjust">
+            Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
+          </h1>
+
+          {/* This specific div is injected for Mobile stacking order */}
           <div className="mobile-card-frame">
-            <div style={styles.cardWrapper} className="mobile-profile-card">
+            <div style={styles.cardWrapper} className="mobile-card-inner">
               <ProfileCard
                 name="Chokkapu Saketh"
                 avatarUrl={profileImage}
@@ -56,15 +53,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          {/* Description - Made compact for mobile visibility */}
-          <p style={styles.description} className="mobile-desc-compact">
+          <p style={styles.description} className="mobile-desc-adjust">
             Focused on building scalable web applications and AI-driven systems,
             with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
             <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied
             <span style={{ color: '#fff', fontWeight: 600 }}> machine learning</span> models.
           </p>
 
-          <div style={styles.bentoGrid} className="mobile-bento-grid">
+          <div style={styles.bentoGrid} className="mobile-bento-adjust">
             <div className="bento-module">
               <h4 style={{ color: theme.accent, ...styles.bentoTitle }}>AI ASSESSMENT</h4>
               <p style={styles.bentoText}>1st Prize Winner: Skill roadmaps & mentor matching.</p>
@@ -75,7 +71,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <div style={styles.buttonGroup} className="mobile-btns-centered">
+          <div style={styles.buttonGroup} className="mobile-buttons-adjust">
             <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
@@ -91,8 +87,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Original Desktop Card Position */}
-        <div style={styles.rightColumn} className="reveal-right desktop-only-card">
+        {/* RIGHT COLUMN: 3D PROFILE CARD */}
+        <div style={styles.rightColumn} className="reveal-right desktop-only-column">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
             <ProfileCard
@@ -159,70 +155,58 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .mobile-card-frame { display: none; }
 
         @media (max-width: 768px) {
-          .desktop-only-card { display: none !important; }
-          .about-section-wrapper { overflow-x: hidden !important; }
-
-          .main-container-responsive {
+          #about { padding: 0 !important; overflow-x: hidden !important; }
+          .desktop-only-column { display: none !important; }
+          .mobile-card-frame { display: block !important; width: 100%; margin: -45px 0 -30px 0 !important; z-index: 5; }
+          
+          .about-main-container {
             display: flex !important;
             flex-direction: column !important;
-            padding: 10px 16px !important; /* Reduced top padding */
+            padding: 40px 16px !important;
+            grid-template-columns: 1fr !important;
+            text-align: center !important;
+            align-items: center !important;
           }
 
-          .left-col-responsive {
+          .about-left-col {
             margin-top: 0 !important;
             align-items: center !important;
-            text-align: center !important;
+            width: 100% !important;
           }
 
-          .mobile-header-frame {
-            margin-top: 40px !important;
-          }
+          .mobile-badge-adjust { margin: 0 auto !important; }
+          .mobile-title-adjust { font-size: 2.2rem !important; margin-top: 10px !important; }
 
-          .mobile-badge-centered { margin: 0 auto !important; }
-          .mobile-name-title { font-size: 2rem !important; margin-top: 8px !important; }
-
-          /* Profile Card Shifted Up (Y-axis) and Centered (X-axis) */
-          .mobile-card-frame { 
-            display: flex !important; 
-            justify-content: center !important; 
-            width: 100% !important; 
-            margin: -40px 0 0 0 !important; /* Large negative margin to move up */
-            padding: 0 !important;
-          }
-
-          .mobile-profile-card {
+          .mobile-card-inner {
             margin: 0 auto !important;
-            transform: scale(0.75) !important; /* Scale down to ensure visibility */
-            width: 100% !important;
-            max-width: 300px !important; /* Prevents overlapping edges */
+            transform: scale(0.7) !important;
             left: 0 !important;
-            right: 0 !important;
             position: relative !important;
-          }
-
-          /* Tighten description for one-frame visibility */
-          .mobile-desc-compact {
-             margin: -10px auto 15px auto !important;
-             text-align: center !important;
-             font-size: 0.9rem !important;
-             max-width: 90% !important;
-             line-height: 1.5 !important;
-          }
-
-          .mobile-bento-grid {
-            grid-template-columns: 1fr !important;
             width: 100% !important;
-            margin-top: 5px !important;
           }
 
-          .mobile-btns-centered {
-            justify-content: center !important;
-            padding-bottom: 50px;
+          .mobile-desc-adjust {
+            margin: 0 auto 20px auto !important;
+            text-align: center !important;
+            font-size: 0.9rem !important;
+            max-width: 95% !important;
+            line-height: 1.5 !important;
+          }
+
+          .mobile-bento-adjust {
+            grid-template-columns: 1fr !important;
+            text-align: left !important;
+            width: 100% !important;
             margin-top: 10px !important;
           }
 
-          #about { min-height: auto !important; }
-          .reveal-right { opacity: 1 !important; }
+          .mobile-buttons-adjust {
+            justify-content: center !important;
+            margin-top: 20px !important;
+            padding-bottom: 40px !important;
+          }
+          
+          .reveal-right { opacity: 1 !important; transform: none !important; animation: none !important; }
         }
       `}</style>
     </section>
