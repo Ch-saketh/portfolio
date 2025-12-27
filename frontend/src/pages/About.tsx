@@ -192,19 +192,19 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           }
 
           .mobile-header-stack {
-            margin-top: 10px !important;
-            margin-bottom: -20px !important;
+            margin-top: 60px !important;
+            margin-bottom: 10px !important;
           }
 
-          .about-badge-fix { margin: 0 auto !important; }
-          .about-name-fix { font-size: 2.2rem !important; margin-top: 5px !important; margin-bottom: -15px !important; }
+          .about-badge-fix { margin: 0 auto 8px auto !important; }
+          .about-name-fix { font-size: 2.2rem !important; margin-top: 0 !important; margin-bottom: 10px !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important; 
             align-items: center !important;
             width: 100% !important; 
-            margin: -20px auto -35px auto !important;
+            margin: -15px auto -30px auto !important;
             padding: 0 !important;
           }
 
@@ -222,7 +222,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             gap: 12px !important;
             justify-content: center !important;
-            margin: 0 auto 25px auto !important;
+            margin: 10px auto 25px auto !important;
             width: 100% !important;
           }
 
