@@ -130,9 +130,9 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
 
       <AnimatePresence>
         {sel && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.overlay} onClick={() => setSel(null)}>
-            <motion.div initial={{ scale: 0.95, y: 20, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.95, y: 20, opacity: 0 }} onClick={(e) => e.stopPropagation()} style={{ ...styles.modal, border: `1px solid ${theme.border}` }}>
-              <div style={{ padding: '1.2rem 2rem', borderBottom: `1px solid ${theme.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)' }}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.overlay} className="work-modal-overlay" onClick={() => setSel(null)}>
+            <motion.div initial={{ scale: 0.95, y: 20, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.95, y: 20, opacity: 0 }} onClick={(e) => e.stopPropagation()} className="work-modal" style={{ ...styles.modal, border: `1px solid ${theme.border}` }}>
+              <div className="work-modal-header" style={{ padding: '1.2rem 2rem', borderBottom: `1px solid ${theme.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)' }}>
                 <div style={{ display: 'flex', gap: '8px' }}>
                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
@@ -141,7 +141,7 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
                 <span style={{ fontSize: '0.8rem', opacity: 0.5, fontWeight: 600 }}>{sel.title}.md</span>
                 <button onClick={() => setSel(null)} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
               </div>
-              <div style={{ padding: '3rem', overflowY: 'auto', maxHeight: '60vh' }} className="custom-scroll">
+              <div className="work-modal-content" style={{ padding: '3rem', overflowY: 'auto', maxHeight: '60vh' }}>
                 <h4 style={styles.label}>[01] PROBLEM</h4>
                 <p style={styles.text}>{sel.readme.problem}</p>
                 
@@ -155,7 +155,7 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
                     ))}
                   </ul>
                 )}
-                <div style={{ marginTop: '3rem', padding: '2rem', background: 'rgba(16, 185, 129, 0.05)', borderRadius: '20px', border: '1px solid rgba(16, 185, 129, 0.1)' }}>
+                <div className="work-modal-impact" style={{ marginTop: '3rem', padding: '2rem', background: 'rgba(16, 185, 129, 0.05)', borderRadius: '20px', border: '1px solid rgba(16, 185, 129, 0.1)' }}>
                   <h4 style={{ ...styles.label, color: '#10b981' }}>[03] IMPACT</h4>
                   <p style={{ ...styles.text, color: '#fff' }}>{sel.readme.impact || sel.achievement}</p>
                 </div>
@@ -166,28 +166,129 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
       </AnimatePresence>
       <style>{`
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* MOBILE RESPONSIVE WORK PAGE */
         @media (max-width: 768px) {
+          #work {
+            padding: 60px 0 40px 0 !important;
+          }
+          
+          #work > div:first-child {
+            padding: 0 1rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+          
+          #work h2 {
+            font-size: 1.8rem !important;
+          }
+          
           .project-card {
             grid-template-columns: 1fr !important;
-            grid-template-rows: 180px 1fr !important;
+            grid-template-rows: 200px 1fr !important;
             min-height: auto !important;
             height: auto !important;
+            flex: 0 0 calc(100vw - 2rem) !important;
+            border-radius: 20px !important;
           }
+          
           .project-content {
-            padding: 1.2rem !important;
+            padding: 1.25rem !important;
+          }
+          
+          .project-content h3 {
+            font-size: 1.3rem !important;
+            margin: 0.4rem 0 !important;
+          }
+          
+          .project-content p {
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+          }
+          
+          .project-content span {
+            font-size: 0.65rem !important;
+          }
+          
+          .project-content button {
+            padding: 0.7rem !important;
+            font-size: 0.75rem !important;
+            border-radius: 10px !important;
           }
         }
         
         @media (max-width: 480px) {
-          .project-card {
-            flex: 0 0 calc(100vw - 2rem) !important;
-            grid-template-rows: 150px 1fr !important;
-            border-radius: 18px !important;
+          #work {
+            padding: 50px 0 30px 0 !important;
           }
+          
+          #work > div:first-child {
+            padding: 0 0.75rem !important;
+            margin-bottom: 1.2rem !important;
+          }
+          
+          #work h2 {
+            font-size: 1.5rem !important;
+          }
+          
+          .project-card {
+            flex: 0 0 calc(100vw - 1.5rem) !important;
+            grid-template-rows: 160px 1fr !important;
+            border-radius: 16px !important;
+          }
+          
           .project-content {
             padding: 1rem !important;
+            gap: 0.6rem !important;
+          }
+          
+          .project-content h3 {
+            font-size: 1.15rem !important;
+          }
+          
+          .project-content p {
+            font-size: 0.8rem !important;
+          }
+          
+          .project-content button {
+            padding: 0.65rem !important;
+            font-size: 0.7rem !important;
+          }
+        }
+        
+        /* MODAL MOBILE STYLES */
+        @media (max-width: 768px) {
+          .work-modal-overlay {
+            padding: 1rem !important;
+            align-items: flex-end !important;
+          }
+          
+          .work-modal {
+            max-width: 100% !important;
+            max-height: 85vh !important;
+            border-radius: 20px 20px 0 0 !important;
+          }
+          
+          .work-modal-header {
+            padding: 1rem 1.25rem !important;
+          }
+          
+          .work-modal-content {
+            padding: 1.5rem !important;
+            max-height: 70vh !important;
+          }
+          
+          .work-modal-content h4 {
+            font-size: 0.65rem !important;
+          }
+          
+          .work-modal-content p {
+            font-size: 0.95rem !important;
+          }
+          
+          .work-modal-impact {
+            padding: 1.25rem !important;
+            margin-top: 2rem !important;
           }
         }
       `}</style>
