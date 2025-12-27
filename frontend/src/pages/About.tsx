@@ -175,13 +175,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           
           #about {
             min-height: 100vh !important;
-            max-height: 100vh !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 0 !important;
+            padding: 60px 0 20px 0 !important;
             margin: 0 !important;
-            overflow: hidden !important;
+            overflow-x: hidden !important;
           }
 
           .about-main-layout {
@@ -189,12 +188,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 0 10px !important;
+            padding: 0 16px !important;
             margin: 0 !important;
             width: 100% !important;
             height: auto !important;
             text-align: center !important;
-            gap: 0 !important;
+            gap: 5px !important;
           }
 
           .about-info-column { 
@@ -204,18 +203,18 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 0 !important;
+            gap: 5px !important;
           }
 
           .mobile-header-stack {
-            margin: 0 !important;
+            margin: 0 0 5px 0 !important;
             padding: 0 !important;
           }
 
-          .about-badge-fix { margin: 0 auto 2px auto !important; line-height: 1 !important; }
+          .about-badge-fix { margin: 0 auto 5px auto !important; line-height: 1 !important; }
           .about-name-fix { 
-            font-size: 1.8rem !important; 
-            margin: 0 !important; 
+            font-size: 2rem !important; 
+            margin: 0 0 5px 0 !important; 
             padding: 0 !important;
             line-height: 1.1 !important;
           }
@@ -226,7 +225,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -60px auto -70px auto !important;
+            margin: -20px auto -20px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -235,7 +234,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: scale(0.50) !important;
+            transform: scale(0.65) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
@@ -246,17 +245,17 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           /* Override ProfileCard wrapper gap on mobile */
           .mobile-card-scaling .pc-card-wrapper {
-            gap: 0 !important;
+            gap: 0.5rem !important;
             margin: 0 !important;
             padding: 0 !important;
           }
 
           .mobile-only-buttons {
             display: flex !important;
-            gap: 10px !important;
+            gap: 12px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 0 auto !important;
+            margin: 10px auto 20px auto !important;
             padding: 0 16px !important;
             width: 100% !important;
           }
