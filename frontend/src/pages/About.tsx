@@ -139,6 +139,33 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .status-orb { width: 8px; height: 8px; border-radius: 50%; animation: pulseOrb 2.5s infinite; }
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 1024px) {
+          .pc-details { margin-top: 10px !important; }
+          .bento-module { padding: 0.9rem; }
+        }
+
+        @media (max-width: 768px) {
+          .reveal-left { animation: revealUp 0.6s cubic-bezier(0.15, 0, 0.15, 1) forwards; }
+          .reveal-right { animation: revealUp 0.8s cubic-bezier(0.15, 0, 0.15, 1) 0.05s forwards; opacity: 1; }
+        }
+
+        @media (max-width: 640px) {
+          #about { padding: 40px 1rem !important; }
+          .pc-details { margin-top: 8px !important; }
+          .bento-module { padding: 0.8rem; margin-bottom: 0.5rem; }
+        }
+
+        /* Grid Layout Responsiveness */
+        @media (max-width: 1024px) {
+          main { grid-template-columns: 1fr 0.9fr !important; gap: 3rem !important; }
+        }
+
+        @media (max-width: 768px) {
+          main { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .reveal-right { margin-top: 2rem; }
+        }
       `}</style>
     </section>
   );
@@ -154,8 +181,8 @@ const styles = {
     background: 'transparent',
     overflow: 'hidden',
     position: 'relative' as const,
-    paddingTop: '60px',
-    paddingBottom: '80px',
+    paddingTop: 'clamp(40px, 8vw, 60px)',
+    paddingBottom: 'clamp(40px, 8vw, 80px)',
   },
   mainContainer: {
     maxWidth: '1200px',
@@ -166,18 +193,18 @@ const styles = {
     gap: '5rem',
     alignItems: 'center',
     zIndex: 10,
-    padding: '0 4rem',
+    padding: 'clamp(1rem, 3vw, 4rem)',
   },
   leftColumn: { display: 'flex', flexDirection: 'column' as const, gap: '1.4rem', justifyContent: 'center', marginTop: '-40px' },
   badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
   badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
-  heroTitle: { fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
-  description: { fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 },
-  bentoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginTop: '1rem' },
-  bentoTitle: { fontSize: '11px', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
-  bentoText: { fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 },
-  buttonGroup: { display: 'flex', gap: '1.5rem', marginTop: '1.5rem' },
-  ctaBase: { padding: '12px 28px', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
+  heroTitle: { fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
+  description: { fontSize: 'clamp(0.95rem, 2vw, 1.05rem)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 },
+  bentoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.8rem, 2vw, 1.2rem)', marginTop: '1rem' },
+  bentoTitle: { fontSize: 'clamp(9px, 1.5vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
+  bentoText: { fontSize: 'clamp(11px, 1.5vw, 12px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 },
+  buttonGroup: { display: 'flex', gap: 'clamp(1rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' },
+  ctaBase: { padding: 'clamp(10px, 1.5vw, 12px) clamp(20px, 3vw, 28px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(12px, 1.5vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
   rightColumn: { display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' as const },

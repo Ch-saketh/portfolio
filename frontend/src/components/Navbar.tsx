@@ -38,17 +38,19 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: isScrolled ? '1rem 2rem' : '1.5rem 2rem',
+          padding: isScrolled ? 'clamp(0.8rem, 2vw, 1rem) 2rem' : 'clamp(1rem, 3vw, 1.5rem) 2rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           transition: 'padding 0.4s ease',
+          gap: 'clamp(1rem, 3vw, 2.5rem)',
+          flexWrap: 'wrap',
         }}
       >
         <Link
           to="/"
           style={{
-            fontSize: '1.25rem',
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
             fontWeight: 700,
             color: theme.text,
             display: 'flex',
@@ -69,7 +71,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
           CS22
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 3vw, 2.5rem)', flexWrap: 'wrap' }}>
           {/* Universal Home link (only shows if not on Home page root) */}
           {location.pathname !== '/' && (
             <Link
@@ -127,7 +129,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
 const navLinkStyle = (active: boolean, theme: Theme) => ({
   color: active ? theme.accent : theme.textSecondary,
   textDecoration: 'none',
-  fontSize: '0.9rem',
+  fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
   fontWeight: 500,
   transition: 'color 0.2s ease',
   cursor: 'pointer',

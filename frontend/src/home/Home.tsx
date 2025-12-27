@@ -34,7 +34,7 @@ export default function Home(): React.ReactElement {
         scroll-behavior: smooth;
         background-color: ${theme.bg};
         font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 16px; 
+        font-size: clamp(14px, 2vw, 16px); 
       }
 
       body::before {
@@ -68,6 +68,25 @@ export default function Home(): React.ReactElement {
         background: rgba(255, 255, 255, 0.02) !important;
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+
+      /* MOBILE RESPONSIVE */
+      @media (max-width: 768px) {
+        html, body, #root {
+          font-size: 14px;
+        }
+        section {
+          padding: 0 1rem !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        html, body, #root {
+          font-size: 13px;
+        }
+        body::before {
+          background-size: 40px 40px;
+        }
       }
     `;
     document.head.appendChild(style);

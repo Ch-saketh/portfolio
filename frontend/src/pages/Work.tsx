@@ -83,9 +83,9 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
   );
 
   return (
-    <section id="work" style={{ padding: '100px 0', background: theme.bg, position: 'relative', zIndex: 5 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', marginBottom: '4rem' }}>
-        <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em' }}>
+    <section id="work" style={{ padding: 'clamp(50px, 8vw, 100px) 0', background: theme.bg, position: 'relative', zIndex: 5 }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
+        <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em' }}>
           My Projects <span style={{ color: theme.accent || '#3b82f6' }}>.</span>
         </h2>
       </div>
@@ -95,7 +95,7 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
           <motion.div 
             key={p.id} 
             whileHover={{ y: -5 }}
-            style={{ flex: '0 0 450px', height: '440px', background: theme.cardBg, borderRadius: '32px', border: `1px solid ${theme.border}`, display: 'grid', gridTemplateColumns: '1fr 1.2fr', overflow: 'hidden' }}
+            style={{ flex: '0 0 clamp(280px, 85vw, 450px)', height: 'clamp(300px, 80vw, 440px)', background: theme.cardBg, borderRadius: '32px', border: `1px solid ${theme.border}`, display: 'grid', gridTemplateColumns: '1fr 1.2fr', overflow: 'hidden' }}
           >
             <div style={{ position: 'relative' }}>
               <img src={p.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
@@ -106,8 +106,8 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
             </div>
             <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
               <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#10b981', textTransform: 'uppercase' }}>{p.role}</span>
-              <h3 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: '0.5rem 0' }}>{p.title}</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{p.description}</p>
+              <h3 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: 700, color: '#fff', margin: '0.5rem 0' }}>{p.title}</h3>
+              <p style={{ fontSize: 'clamp(0.75rem, 2vw, 0.85rem)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{p.description}</p>
               
               <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                 <div style={{ display: 'flex', gap: '0.8rem' }}>

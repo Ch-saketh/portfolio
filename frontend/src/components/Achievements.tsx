@@ -25,14 +25,14 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
   ];
 
   return (
-    <section id="achievements" style={{ padding: '80px 0' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
+    <section id="achievements" style={{ padding: 'clamp(50px, 8vw, 80px) 0' }}>
+      <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 800, color: '#fff', marginBottom: 'clamp(24px, 4vw, 40px)' }}>
         Achievements <span style={{ color: theme.accent }}>.</span>
       </h2>
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-        gap: '24px' 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 85vw, 320px), 1fr))', 
+        gap: 'clamp(16px, 3vw, 24px)' 
       }}>
         {data.map((item, idx) => (
           <div key={idx} className="achievement-card" style={{
@@ -54,14 +54,14 @@ const Achievements: React.FC<AchievementsProps> = ({ theme }) => {
               }} 
             />
             <div style={{
-              position: 'absolute', inset: 0, padding: '32px',
+              position: 'absolute', inset: 0, padding: 'clamp(16px, 3vw, 32px)',
               display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
               background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 70%)'
             }}>
-              <Trophy size={20} color={theme.accent} style={{ marginBottom: '12px' }} />
-              <span style={{ fontSize: '10px', fontWeight: 800, color: theme.accent, letterSpacing: '2px' }}>{item.rank}</span>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', margin: '5px 0' }}>{item.title}</h3>
-              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', margin: 0 }}>{item.desc}</p>
+              <Trophy size={20} color={theme.accent} style={{ marginBottom: 'clamp(8px, 1.5vw, 12px)' }} />
+              <span style={{ fontSize: 'clamp(8px, 1.5vw, 10px)', fontWeight: 800, color: theme.accent, letterSpacing: '2px' }}>{item.rank}</span>
+              <h3 style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)', fontWeight: 700, color: '#fff', margin: 'clamp(3px, 1vw, 5px) 0' }}>{item.title}</h3>
+              <p style={{ fontSize: 'clamp(0.8rem, 1.8vw, 0.9rem)', color: 'rgba(255,255,255,0.6)', margin: 0 }}>{item.desc}</p>
             </div>
           </div>
         ))}

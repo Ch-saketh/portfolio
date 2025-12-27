@@ -788,15 +788,15 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
   return (
     <section id="skills" style={{ 
-      padding: '80px 2rem', 
+      padding: 'clamp(40px, 8vw, 80px) 2rem', 
       backgroundColor: theme.bg, 
       minHeight: '100vh', 
       position: 'relative' 
     }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(1.5rem, 5vw, 3rem)' }}>
           <h1 style={{ 
-            fontSize: '3rem', 
+            fontSize: 'clamp(1.8rem, 5vw, 3rem)', 
             fontWeight: 800, 
             color: theme.text,
             marginBottom: '1rem'
@@ -805,7 +805,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           </h1>
           <p style={{ 
             color: theme.textSecondary,
-            fontSize: '1.1rem',
+            fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
             maxWidth: '600px',
             margin: '0 auto'
           }}>

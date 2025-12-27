@@ -18,7 +18,24 @@
   }
 }
 
-/* Custom Apple-style scrollbar to add UI richness */
+/* MOBILE RESPONSIVE STYLES */
+@media (max-width: 1024px) {
+  html, body {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html, body {
+    font-size: 13px;
+  }
+}/* Custom Apple-style scrollbar to add UI richness */
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -14,15 +14,15 @@ const Gallery: React.FC<GalleryProps> = ({ theme }) => {
   ];
 
   return (
-    <section id="gallery" style={{ padding: '80px 0' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '40px' }}>
+    <section id="gallery" style={{ padding: 'clamp(50px, 8vw, 80px) 0' }}>
+      <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 800, color: '#fff', marginBottom: 'clamp(24px, 4vw, 40px)' }}>
         Visual Log <span style={{ color: theme.accent }}>.</span>
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(280px, 85vw, 400px), 1fr))', gap: 'clamp(16px, 3vw, 24px)' }}>
         {images.map((img, idx) => (
           <div key={idx} className="gallery-item" style={{
             position: 'relative', borderRadius: '32px', overflow: 'hidden',
-            height: '450px', border: `1px solid ${theme.border}`, background: 'rgba(255,255,255,0.02)'
+            height: 'clamp(300px, 80vw, 450px)', border: `1px solid ${theme.border}`, background: 'rgba(255,255,255,0.02)'
           }}>
             <img src={img.url} style={{ 
               width: '100%', height: '100%', 
@@ -31,14 +31,14 @@ const Gallery: React.FC<GalleryProps> = ({ theme }) => {
               opacity: 0.8 
             }} />
             <div style={{
-              position: 'absolute', inset: 0, padding: '32px',
+              position: 'absolute', inset: 0, padding: 'clamp(16px, 3vw, 32px)',
               background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%)',
               display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'
             }}>
-              <span style={{ fontSize: '10px', fontWeight: 800, color: theme.accent, letterSpacing: '1.5px', marginBottom: '8px' }}>
+              <span style={{ fontSize: 'clamp(8px, 1.5vw, 10px)', fontWeight: 800, color: theme.accent, letterSpacing: '1.5px', marginBottom: 'clamp(4px, 1vw, 8px)' }}>
                 {img.category.toUpperCase()}
               </span>
-              <p style={{ fontSize: '1.4rem', fontWeight: 600, color: '#fff', margin: 0 }}>{img.title}</p>
+              <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', fontWeight: 600, color: '#fff', margin: 0 }}>{img.title}</p>
             </div>
           </div>
         ))}

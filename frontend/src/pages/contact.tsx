@@ -103,44 +103,46 @@ const Contact: React.FC<ContactProps> = ({ theme }) => {
 
       <style>{`
         .contact-card {
-          display: grid; grid-template-columns: 0.8fr 1.2fr; width: 1050px;
+          display: grid; grid-template-columns: 0.8fr 1.2fr; width: clamp(280px, 90vw, 1050px);
           background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(60px) saturate(210%);
-          border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: clamp(16px, 3vw, 32px); border: 1px solid rgba(255, 255, 255, 0.08);
           overflow: hidden; z-index: 10; transform: scale(0.95);
         }
-        .sidebar { padding: 60px 45px; background: rgba(255, 255, 255, 0.02); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        .title { font-size: 3.8rem; font-weight: 700; color: #fff; letter-spacing: -0.06em; margin: 0; }
-        .subtitle { color: rgba(255, 255, 255, 0.4); margin-top: 15px; }
-        .section-label { font-size: 10px; font-weight: 800; color: ${theme.accent}; letter-spacing: 0.2em; margin-bottom: 20px; display: block; }
-        .social-links { display: flex; flex-direction: column; gap: 12px; }
-        .glass-btn { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: rgba(255, 255, 255, 0.04); border-radius: 14px; color: #fff; text-decoration: none; font-size: 14px; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.04); }
+        .sidebar { padding: clamp(30px, 5vw, 60px) clamp(24px, 4vw, 45px); background: rgba(255, 255, 255, 0.02); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(255, 255, 255, 0.05); }
+        .title { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; color: #fff; letter-spacing: -0.06em; margin: 0; }
+        .subtitle { color: rgba(255, 255, 255, 0.4); margin-top: clamp(10px, 2vw, 15px); }
+        .section-label { font-size: clamp(8px, 1.5vw, 10px); font-weight: 800; color: ${theme.accent}; letter-spacing: 0.2em; margin-bottom: clamp(12px, 2vw, 20px); display: block; }
+        .social-links { display: flex; flex-direction: column; gap: clamp(8px, 2vw, 12px); }
+        .glass-btn { display: flex; align-items: center; gap: clamp(8px, 2vw, 12px); padding: clamp(10px, 2vw, 14px) clamp(14px, 3vw, 20px); background: rgba(255, 255, 255, 0.04); border-radius: clamp(10px, 2vw, 14px); color: #fff; text-decoration: none; font-size: clamp(12px, 2vw, 14px); transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.04); }
         .glass-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(5px); border-color: ${theme.accent}50; }
-        .form-area { padding: 60px; }
-        .toggle-bar { display: flex; gap: 8px; background: rgba(255, 255, 255, 0.04); padding: 4px; border-radius: 14px; margin-bottom: 40px; width: fit-content; }
-        .toggle-bar button { padding: 10px 22px; border-radius: 11px; border: none; background: transparent; color: rgba(255, 255, 255, 0.4); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .form-area { padding: clamp(30px, 5vw, 60px); }
+        .toggle-bar { display: flex; gap: 8px; background: rgba(255, 255, 255, 0.04); padding: 4px; border-radius: clamp(10px, 2vw, 14px); margin-bottom: clamp(24px, 4vw, 40px); width: fit-content; }
+        .toggle-bar button { padding: clamp(8px, 1.5vw, 10px) clamp(16px, 3vw, 22px); border-radius: clamp(8px, 1.5vw, 11px); border: none; background: transparent; color: rgba(255, 255, 255, 0.4); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; font-size: clamp(12px, 1.5vw, 14px); }
         .toggle-bar button.active { background: #fff; color: #000; }
-        .dynamic-form { display: flex; flex-direction: column; gap: 30px; }
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .dynamic-form { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 30px); }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 3vw, 20px); }
         .field-box { position: relative; width: 100%; display: flex; align-items: center; }
-        .icon-sub { position: absolute; left: 0; color: ${theme.accent}; opacity: 0.7; }
+        .icon-sub { position: absolute; left: 0; color: ${theme.accent}; opacity: 0.7; font-size: clamp(12px, 2vw, 14px); }
         
         /* THE FIX FOR WHITE BACKGROUND */
         .apple-field { 
-          width: 100%; padding: 12px 0; background: transparent !important; 
+          width: 100%; padding: clamp(10px, 2vw, 12px) 0; background: transparent !important; 
           border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-          color: white !important; font-size: 1.1rem; outline: none; transition: 0.3s;
+          color: white !important; font-size: clamp(0.95rem, 2vw, 1.1rem); outline: none; transition: 0.3s;
         }
         .apple-field:focus { border-bottom-color: ${theme.accent}; }
         .apple-field::placeholder { color: rgba(255, 255, 255, 0.2); }
         .apple-field:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px #0c0c0c inset !important; -webkit-text-fill-color: white !important; transition: background-color 5000s ease-in-out 0s; }
         
-        .field-box .apple-field { padding-left: 25px; }
+        .field-box .apple-field { padding-left: clamp(18px, 3vw, 25px); }
         select.apple-field option { background: #0a0a0a; color: #fff; }
-        .deploy-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px; border-radius: 16px; border: none; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 15px 35px ${theme.accent}30; }
+        .deploy-btn { display: flex; align-items: center; justify-content: center; gap: clamp(8px, 2vw, 12px); padding: clamp(12px, 2vw, 18px); border-radius: clamp(12px, 2vw, 16px); border: none; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 15px 35px ${theme.accent}30; font-size: clamp(12px, 1.5vw, 14px); }
         .deploy-btn:hover { transform: translateY(-4px); filter: brightness(1.2); }
         .animate-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 900px) { .contact-card { grid-template-columns: 1fr; width: 95%; transform: scale(1); } .sidebar { display: none; } }
+        @media (max-width: 1024px) { .contact-card { grid-template-columns: 1fr; } .sidebar { display: none; } }
+        @media (max-width: 768px) { .contact-card { width: 95%; transform: scale(1); } .input-row { grid-template-columns: 1fr; gap: 16px; } }
+        @media (max-width: 480px) { .contact-card { width: 100%; border-radius: 16px; } .form-area { padding: 20px; } }
       `}</style>
     </section>
   );
