@@ -20,7 +20,6 @@ interface AboutProps {
 const About: React.FC<AboutProps> = ({ theme }) => {
   const [showResume, setShowResume] = useState(false);
 
-  // Email logic for the main CTA buttons
   const handleContactMe = () => {
     window.location.href = "mailto:chokkapusaketh@gmail.com?subject=Collaboration Inquiry";
   };
@@ -31,7 +30,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left about-info-column">
           
-          {/* Header Group: Name & Badge */}
           <div className="mobile-header-stack">
             <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge-fix">
               <div className="status-orb" style={{ background: theme.accent }} />
@@ -43,8 +41,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </h1>
           </div>
 
-          {/* Profile Card: Injected here for mobile to be "near name" */}
-          <div className="mobile-card-container">
+          {/* Profile Card (Injected for Mobile, hidden on Desktop) */}
+          <div className="mobile-only-card-container">
             <div style={styles.cardWrapper} className="mobile-card-scaling">
               <ProfileCard
                 name="Chokkapu Saketh"
@@ -57,8 +55,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          {/* Buttons: Directly below card on mobile */}
-          <div className="mobile-buttons-stack">
+          {/* Mobile buttons - Shown right after card on Mobile only */}
+          <div className="mobile-only-buttons">
             <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
@@ -91,7 +89,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          {/* Desktop buttons: Left-aligned and untouched */}
+          {/* Desktop buttons - Left aligned like your original */}
           <div style={styles.buttonGroup} className="desktop-buttons-only">
             <button
               onClick={handleContactMe}
@@ -108,7 +106,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Original Desktop Card Position */}
+        {/* RIGHT COLUMN: Desktop Position card (Hidden on Mobile) */}
         <div style={styles.rightColumn} className="reveal-right desktop-card-pos">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
@@ -169,7 +167,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .mobile-only-card-container, .mobile-buttons-stack { display: none; }
+        .mobile-only-card-container, .mobile-only-buttons { display: none; }
 
         @media (max-width: 768px) {
           .desktop-card-pos, .desktop-buttons-only { display: none !important; }
@@ -178,13 +176,15 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
-            padding: 10px 16px !important;
+            padding: 20px 16px !important;
             width: 100% !important;
             text-align: center !important;
           }
 
+          .about-info-column { margin-top: 0 !important; align-items: center !important; }
+
           .mobile-header-stack {
-            margin-top: 30px !important; /* Moves Name/Badge down slightly */
+            margin-top: 20px !important; /* Adjusted top placement */
             margin-bottom: 5px !important;
           }
 
@@ -195,31 +195,31 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important; 
             justify-content: center; 
             width: 100%; 
-            margin: -40px auto -15px auto !important; /* Pull Card UP towards name */
+            margin: -30px auto -20px auto !important; /* Pulls Card UP near Name */
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.68) !important;
+            transform: scale(0.72) !important;
             left: 0 !important;
             position: relative !important;
             width: 100% !important;
             max-width: 320px !important;
           }
 
-          .mobile-buttons-stack {
+          .mobile-only-buttons {
             display: flex !important;
-            gap: 10px !important;
+            gap: 12px !important;
             justify-content: center !important;
-            margin: 0 auto 15px auto !important;
+            margin: 0 auto 20px auto !important;
             width: 100% !important;
           }
 
           .about-description-fix {
-            margin: 0 auto 15px auto !important;
+            margin: 0 auto 20px auto !important;
             text-align: center !important;
-            font-size: 0.88rem !important;
-            max-width: 90% !important;
+            font-size: 0.9rem !important;
+            max-width: 95% !important;
             line-height: 1.4 !important;
           }
 
@@ -269,7 +269,7 @@ const styles = {
   bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'clamp(0.6rem, 2vw, 1.2rem)', marginTop: '1rem' },
   bentoTitle: { fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: 'clamp(11px, 2.5vw, 13px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 },
-  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const },
+  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const, justifyContent: 'flex-start' },
   ctaBase: { padding: 'clamp(12px, 2vw, 14px) clamp(24px, 4vw, 32px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(13px, 2vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
