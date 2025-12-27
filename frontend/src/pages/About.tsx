@@ -175,12 +175,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           
           #about {
             min-height: 100vh !important;
+            min-height: 100dvh !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 60px 0 20px 0 !important;
+            padding: 70px 0 30px 0 !important;
             margin: 0 !important;
             overflow-x: hidden !important;
+            box-sizing: border-box !important;
           }
 
           .about-main-layout {
@@ -193,7 +195,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             width: 100% !important;
             height: auto !important;
             text-align: center !important;
-            gap: 5px !important;
+            gap: 0 !important;
           }
 
           .about-info-column { 
@@ -203,18 +205,25 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 5px !important;
+            gap: 0 !important;
           }
 
           .mobile-header-stack {
-            margin: 0 0 5px 0 !important;
+            margin: 0 0 8px 0 !important;
             padding: 0 !important;
+            position: relative !important;
           }
 
-          .about-badge-fix { margin: 0 auto 5px auto !important; line-height: 1 !important; }
+          .about-badge-fix { 
+            margin: 0 auto 8px auto !important; 
+            line-height: 1 !important;
+            padding: 5px 14px !important;
+            font-size: 9px !important;
+          }
+          
           .about-name-fix { 
-            font-size: 2rem !important; 
-            margin: 0 0 5px 0 !important; 
+            font-size: 1.9rem !important; 
+            margin: 0 !important; 
             padding: 0 !important;
             line-height: 1.1 !important;
           }
@@ -225,7 +234,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -20px auto -20px auto !important;
+            margin: -35px auto -40px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -234,7 +243,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: scale(0.65) !important;
+            transform: scale(0.58) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
@@ -245,9 +254,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           /* Override ProfileCard wrapper gap on mobile */
           .mobile-card-scaling .pc-card-wrapper {
-            gap: 0.5rem !important;
+            gap: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
+          }
+
+          /* Hide redundant name inside card on mobile */
+          .mobile-card-scaling .pc-details {
+            display: none !important;
           }
 
           .mobile-only-buttons {
@@ -255,9 +269,30 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             gap: 12px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 10px auto 20px auto !important;
-            padding: 0 16px !important;
+            margin: 0 auto !important;
+            padding: 0 20px !important;
             width: 100% !important;
+            max-width: 320px !important;
+          }
+
+          /* Make buttons equal visual weight */
+          .mobile-only-buttons button {
+            flex: 1 !important;
+            padding: 14px 20px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            border-radius: 12px !important;
+            min-height: 48px !important;
+          }
+
+          .mobile-only-buttons button:first-child {
+            background: #3b82f6 !important;
+            border: none !important;
+          }
+
+          .mobile-only-buttons button:last-child {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
           }
 
           .about-description-fix {
@@ -268,7 +303,6 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: none !important;
           }
 
-          #about { min-height: auto !important; }
           .reveal-right { opacity: 1 !important; transform: none !important; animation: none !important; }
         }
       `}</style>
