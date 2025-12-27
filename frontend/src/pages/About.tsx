@@ -192,24 +192,25 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           }
 
           .mobile-header-stack {
-            margin-top: 20px !important;
+            margin-top: 15px !important;
+            margin-bottom: -15px !important;
           }
 
           .about-badge-fix { margin: 0 auto !important; }
-          .about-name-fix { font-size: 2.2rem !important; margin-top: 10px !important; margin-bottom: 0 !important; }
+          .about-name-fix { font-size: 2.2rem !important; margin-top: 8px !important; margin-bottom: -10px !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important; 
             align-items: center !important;
             width: 100% !important; 
-            margin: -30px auto -20px auto !important;
+            margin: -40px auto -35px auto !important;
             padding: 0 !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.72) !important;
+            transform: scale(0.70) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
