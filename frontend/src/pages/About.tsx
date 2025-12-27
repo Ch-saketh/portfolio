@@ -27,43 +27,46 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
   return (
     <section id="about" style={styles.section}>
-      <div style={styles.mainContainer} className="main-container-responsive">
+      <div style={styles.mainContainer} className="about-container-mobile">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
-        <div style={styles.leftColumn} className="reveal-left left-col-responsive">
+        <div style={styles.leftColumn} className="reveal-left about-content-wrapper">
           
-          <div className="mobile-top-frame">
-            <div style={{ ...styles.badge, borderColor: theme.border }} className="badge-responsive">
+          {/* 1. Header Frame (Badge + Name) */}
+          <div className="mobile-header-frame">
+            <div style={{ ...styles.badge, borderColor: theme.border }} className="mobile-badge-centered">
               <div className="status-orb" style={{ background: theme.accent }} />
               <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
             </div>
 
-            <h1 style={styles.heroTitle} className="hero-title-responsive">
+            <h1 style={styles.heroTitle} className="mobile-hero-title">
               Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
             </h1>
           </div>
 
-          {/* This wrapper only shows the card here on Mobile */}
-          <div className="mobile-card-frame">
-             <div style={styles.cardWrapper} className="card-wrapper-responsive">
-                <ProfileCard
-                  name="Chokkapu Saketh"
-                  avatarUrl={profileImage}
-                  handle="ch-saketh"
-                  link="mailto:chokkapusaketh@gmail.com"
-                  enableTilt={true}
-                  behindGlowEnabled={false}
-                />
-              </div>
+          {/* 2. Profile Card (Centered for Mobile) */}
+          <div className="mobile-card-centered">
+            <div style={styles.cardWrapper} className="mobile-card-wrapper">
+              <ProfileCard
+                name="Chokkapu Saketh"
+                avatarUrl={profileImage}
+                handle="ch-saketh"
+                link="mailto:chokkapusaketh@gmail.com"
+                enableTilt={true}
+                behindGlowEnabled={false}
+              />
+            </div>
           </div>
 
-          <p style={styles.description} className="desc-responsive">
+          {/* 3. Description */}
+          <p style={styles.description} className="mobile-text-centered">
             Focused on building scalable web applications and AI-driven systems,
             with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
             <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied
             <span style={{ color: '#fff', fontWeight: 600 }}> machine learning</span> models.
           </p>
 
-          <div style={styles.bentoGrid} className="bento-responsive">
+          {/* 4. Bento Grid */}
+          <div style={styles.bentoGrid} className="mobile-bento-stack">
             <div className="bento-module">
               <h4 style={{ color: theme.accent, ...styles.bentoTitle }}>AI ASSESSMENT</h4>
               <p style={styles.bentoText}>1st Prize Winner: Skill roadmaps & mentor matching.</p>
@@ -74,7 +77,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <div style={styles.buttonGroup} className="buttons-responsive">
+          {/* 5. Buttons */}
+          <div style={styles.buttonGroup} className="mobile-buttons-centered">
             <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
@@ -91,7 +95,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         </div>
 
         {/* RIGHT COLUMN: 3D PROFILE CARD (Desktop Only Position) */}
-        <div style={styles.rightColumn} className="reveal-right right-col-desktop">
+        <div style={styles.rightColumn} className="reveal-right desktop-only-card">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
             <ProfileCard
@@ -117,11 +121,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
                 <button onClick={() => setShowResume(false)} style={styles.closeBtn}>✕</button>
               </div>
             </div>
-            <iframe
-              src={`${resumeFile}#toolbar=0`}
-              title="Resume Viewer"
-              style={styles.iframe}
-            />
+            <iframe src={`${resumeFile}#toolbar=0`} title="Resume Viewer" style={styles.iframe} />
           </div>
         </div>
       )}
@@ -155,58 +155,58 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-        /* Hide the mobile-specific card container on desktop */
-        .mobile-card-frame { display: none; }
+        .mobile-card-centered { display: none; }
 
         @media (max-width: 768px) {
-          .right-col-desktop { display: none !important; } /* Hide the right side card */
-          .mobile-card-frame { display: block !important; margin: 20px 0; width: 100%; } /* Show card in middle of left column */
+          .desktop-only-card { display: none !important; }
+          .mobile-card-centered { display: flex !important; justify-content: center; width: 100%; margin: 20px 0; }
           
-          .main-container-responsive {
+          .about-container-mobile {
             display: block !important;
-            padding: 40px 16px !important;
+            padding: 20px 16px !important;
           }
 
-          .left-col-responsive {
+          .about-content-wrapper {
             margin-top: 0 !important;
             align-items: center !important;
             text-align: center !important;
           }
 
-          .card-wrapper-responsive {
-            margin: 0 auto !important;
-            transform: scale(0.9) !important;
-            display: flex !important;
-            justify-content: center !important;
-            width: 100% !important;
+          .mobile-header-frame {
+            margin-top: 40px !important; /* Moves Chokkapu Saketh and Badge down */
           }
 
-          .badge-responsive { margin: 0 auto !important; }
+          .mobile-badge-centered { margin: 0 auto !important; }
           
-          .hero-title-responsive {
+          .mobile-hero-title {
             font-size: 2.2rem !important;
             text-align: center !important;
+            margin-top: 15px !important;
           }
 
-          .desc-responsive {
+          .mobile-card-wrapper {
+            margin: 0 auto !important;
+            transform: scale(0.85) !important;
+            left: 0 !important; /* Fixes right-side alignment */
+          }
+
+          .mobile-text-centered {
              margin: 20px auto !important;
              text-align: center !important;
           }
 
-          .bento-responsive {
+          .mobile-bento-stack {
             grid-template-columns: 1fr !important;
             text-align: left !important;
           }
 
-          .buttons-responsive {
+          .mobile-buttons-centered {
             justify-content: center !important;
-            padding-bottom: 40px;
+            padding-bottom: 60px;
           }
 
-          #about {
-            min-height: auto !important;
-            overflow-y: visible !important;
-          }
+          #about { min-height: auto !important; overflow-y: visible !important; }
+          .reveal-right { opacity: 1 !important; }
         }
       `}</style>
     </section>
