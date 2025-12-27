@@ -173,18 +173,21 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .desktop-card-pos, .desktop-buttons-only { display: none !important; }
           .about-viewport { overflow-x: hidden !important; }
           
+          /* HERO SECTION - Fits exactly in viewport */
           #about {
-            min-height: 100vh !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
             min-height: 100dvh !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 70px 0 30px 0 !important;
+            padding: 60px 0 20px 0 !important;
             margin: 0 !important;
-            overflow-x: hidden !important;
+            overflow: hidden !important;
             box-sizing: border-box !important;
           }
 
+          /* MAIN FLEXBOX CONTAINER - Controls all vertical spacing */
           .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
@@ -193,7 +196,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             padding: 0 16px !important;
             margin: 0 !important;
             width: 100% !important;
-            height: auto !important;
+            height: 100% !important;
             text-align: center !important;
             gap: 0 !important;
           }
@@ -205,36 +208,41 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 0 !important;
+            gap: 24px !important; /* Consistent gap for all children */
           }
 
           .mobile-header-stack {
-            margin: 0 0 8px 0 !important;
+            margin: 0 !important;
             padding: 0 !important;
-            position: relative !important;
           }
 
+          /* Badge - smaller, lighter */
           .about-badge-fix { 
-            margin: 0 auto 8px auto !important; 
+            margin: 0 auto 6px auto !important; 
             line-height: 1 !important;
-            padding: 5px 14px !important;
-            font-size: 9px !important;
+            padding: 4px 12px !important;
+            font-size: 8px !important;
+            opacity: 0.8 !important;
           }
           
+          /* Name - Reduced prominence since it's also in card */
           .about-name-fix { 
-            font-size: 1.9rem !important; 
+            font-size: 1.5rem !important; 
+            font-weight: 600 !important;
             margin: 0 !important; 
             padding: 0 !important;
             line-height: 1.1 !important;
+            opacity: 0.9 !important;
           }
 
+          /* Card container - tight spacing */
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important;
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -35px auto -40px auto !important;
+            margin: -50px auto -55px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -243,13 +251,11 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: scale(0.58) !important;
+            transform: scale(0.52) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
             justify-content: center !important;
-            left: 0 !important;
-            right: 0 !important;
           }
 
           /* Override ProfileCard wrapper gap on mobile */
@@ -259,20 +265,16 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             padding: 0 !important;
           }
 
-          /* Hide redundant name inside card on mobile */
-          .mobile-card-scaling .pc-details {
-            display: none !important;
-          }
-
+          /* Buttons - Grouped tightly with card */
           .mobile-only-buttons {
             display: flex !important;
-            gap: 12px !important;
+            gap: 10px !important;
             justify-content: center !important;
             align-items: center !important;
             margin: 0 auto !important;
-            padding: 0 20px !important;
+            padding: 0 24px !important;
             width: 100% !important;
-            max-width: 320px !important;
+            max-width: 300px !important;
           }
 
           /* Make buttons equal visual weight */
