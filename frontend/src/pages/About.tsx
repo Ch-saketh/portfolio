@@ -20,6 +20,7 @@ interface AboutProps {
 const About: React.FC<AboutProps> = ({ theme }) => {
   const [showResume, setShowResume] = useState(false);
 
+  // Email logic for the main CTA buttons
   const handleContactMe = () => {
     window.location.href = "mailto:chokkapusaketh@gmail.com?subject=Collaboration Inquiry";
   };
@@ -27,7 +28,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   return (
     <section id="about" style={styles.section}>
       <div style={styles.mainContainer} className="about-main-container">
-        {/* IDENTITY & PROJECTS */}
+        {/* LEFT COLUMN: IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left about-left-col">
           <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge">
             <div className="status-orb" style={{ background: theme.accent }} />
@@ -72,7 +73,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* 3D PROFILE CARD */}
+        {/* RIGHT COLUMN: 3D PROFILE CARD */}
         <div style={styles.rightColumn} className="reveal-right about-right-col">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper} className="about-card-wrapper">
@@ -99,7 +100,11 @@ const About: React.FC<AboutProps> = ({ theme }) => {
                 <button onClick={() => setShowResume(false)} style={styles.closeBtn}>✕</button>
               </div>
             </div>
-            <iframe src={`${resumeFile}#toolbar=0`} title="Resume Viewer" style={styles.iframe} />
+            <iframe
+              src={`${resumeFile}#toolbar=0`}
+              title="Resume Viewer"
+              style={styles.iframe}
+            />
           </div>
         </div>
       )}
@@ -109,6 +114,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Centering and Raising the Name */
         .pc-details {
           margin-top: 14px !important; 
           text-align: center !important;
@@ -118,6 +124,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           align-items: center !important;
         }
 
+        /* Glass footer containment */
         .pc-user-info { 
           width: calc(100% - 40px) !important; 
           left: 20px !important; 
@@ -166,8 +173,8 @@ const styles = {
     background: 'transparent',
     overflow: 'hidden',
     position: 'relative' as const,
-    paddingTop: '40px', // Reduced to allow upward shift
-    paddingBottom: '100px', // Added breathing room at bottom
+    paddingTop: '40px',
+    paddingBottom: '100px',
   },
   mainContainer: {
     maxWidth: '1200px',
@@ -185,7 +192,7 @@ const styles = {
     flexDirection: 'column' as const, 
     gap: '1.4rem', 
     justifyContent: 'center', 
-    marginTop: '-80px' // Increased negative margin to pull text up
+    marginTop: '-80px' 
   },
   badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
   badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
@@ -203,7 +210,7 @@ const styles = {
     width: '360px',
     maxWidth: '100%',
     transform: 'scale(0.85)',
-    marginTop: '-100px' // Increased negative margin to pull card up
+    marginTop: '-70px' // Moved slightly down from -100px
   },
   cardGlow: { position: 'absolute' as const, width: '100%', height: '100%', filter: 'blur(100px)', opacity: 0.15, zIndex: -1 },
 
