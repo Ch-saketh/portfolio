@@ -56,6 +56,22 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
+          {/* Mobile buttons - right after card */}
+          <div className="mobile-only-buttons">
+            <button
+              onClick={handleContactMe}
+              style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
+            >
+              Contact Me
+            </button>
+            <button
+              onClick={() => setShowResume(true)}
+              style={{ ...styles.ctaBase, ...styles.ctaSecondary, borderColor: theme.border, cursor: 'pointer' }}
+            >
+              View Resume
+            </button>
+          </div>
+
           <p style={styles.description} className="about-description-fix">
             Focused on building scalable web applications and AI-driven systems,
             with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
@@ -156,6 +172,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
         .mobile-only-card-container { display: none; }
+        .mobile-only-buttons { display: none; }
 
         @media (max-width: 768px) {
           .desktop-card-pos { display: none !important; }
@@ -164,7 +181,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
-            padding: 30px 16px !important;
+            padding: 20px 16px !important;
             width: 100% !important;
             text-align: center !important;
           }
@@ -175,28 +192,42 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           }
 
           .mobile-header-stack {
-            margin-top: 40px !important; /* Move name down for frame 1 */
+            margin-top: 20px !important;
           }
 
           .about-badge-fix { margin: 0 auto !important; }
-          .about-name-fix { font-size: 2.2rem !important; margin-top: 10px !important; }
+          .about-name-fix { font-size: 2.2rem !important; margin-top: 10px !important; margin-bottom: 0 !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important; 
             align-items: center !important;
             width: 100% !important; 
-            margin: -20px auto 0 auto !important;
+            margin: -30px auto -20px auto !important;
             padding: 0 !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.78) !important;
+            transform: scale(0.72) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
             justify-content: center !important;
+          }
+
+          /* Mobile buttons - show right after card */
+          .mobile-only-buttons {
+            display: flex !important;
+            gap: 12px !important;
+            justify-content: center !important;
+            margin: 0 auto 25px auto !important;
+            width: 100% !important;
+          }
+
+          /* Hide desktop buttons on mobile */
+          .about-buttons-fix {
+            display: none !important;
           }
 
           .about-description-fix {
@@ -211,12 +242,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             grid-template-columns: 1fr !important;
             text-align: left !important;
             width: 100% !important;
-          }
-
-          .about-buttons-fix {
-            justify-content: center !important; /* Centered on mobile */
-            margin-top: 20px !important;
-            padding-bottom: 50px !important;
+            margin-bottom: 30px !important;
           }
 
           #about { min-height: auto !important; }
