@@ -633,6 +633,146 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
     );
   };
 
+  // Mobile Skills Card Component
+  const MobileSkillsView = () => {
+    const currentCategory = skillsData[activeCategory as keyof typeof skillsData];
+    
+    return (
+      <div className="mobile-skills-view">
+        {/* Category Pills */}
+        <div className="mobile-category-pills">
+          {Object.entries(skillsData).map(([key, data]) => (
+            <button
+              key={key}
+              onClick={() => {
+                setActiveCategory(key);
+                setSelectedSkill(null);
+                setShowInfo(false);
+              }}
+              className={`category-pill ${activeCategory === key ? 'active' : ''}`}
+              style={{
+                background: activeCategory === key 
+                  ? `linear-gradient(135deg, ${categoryColors[key]}, ${categoryColors[key]}90)` 
+                  : 'rgba(255,255,255,0.05)',
+                color: activeCategory === key ? '#fff' : 'rgba(255,255,255,0.6)',
+                border: activeCategory === key ? 'none' : '1px solid rgba(255,255,255,0.1)',
+              }}
+            >
+              <img 
+                src={categoryIcons[key]} 
+                alt="" 
+                style={{ 
+                  width: '16px', 
+                  height: '16px',
+                  filter: activeCategory === key ? 'brightness(10)' : 'none',
+                  opacity: activeCategory === key ? 1 : 0.7
+                }} 
+              />
+              <span>{data.title}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Skills Grid */}
+        <div className="mobile-skills-grid">
+          {currentCategory.skills.map((skill, index) => {
+            const iconUrl = techIcons[skill.name];
+            const detail = techDetails[skill.name];
+            const isSelected = selectedSkill === skill.name;
+            const needsLightBg = darkLogos.has(skill.name);
+            
+            return (
+              <div
+                key={skill.name}
+                className={`mobile-skill-card ${isSelected ? 'selected' : ''}`}
+                onClick={() => {
+                  setSelectedSkill(isSelected ? null : skill.name);
+                  setShowInfo(!isSelected);
+                }}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                  borderColor: isSelected ? skill.color : 'rgba(255,255,255,0.1)',
+                }}
+              >
+                <div className="skill-card-header">
+                  <div 
+                    className="skill-icon-wrapper"
+                    style={{
+                      background: needsLightBg 
+                        ? 'linear-gradient(135deg, #fff, #f0f0f0)' 
+                        : `linear-gradient(135deg, ${skill.color}20, ${skill.color}10)`,
+                      boxShadow: isSelected ? `0 0 20px ${skill.color}40` : 'none'
+                    }}
+                  >
+                    {iconUrl && (
+                      <img src={iconUrl} alt={skill.name} className="skill-icon" />
+                    )}
+                  </div>
+                  <div className="skill-info">
+                    <h4 style={{ color: isSelected ? skill.color : '#fff' }}>{skill.name}</h4>
+                    {detail?.experience && (
+                      <span className="skill-exp">{detail.experience}</span>
+                    )}
+                  </div>
+                  <div className="expand-icon" style={{ color: skill.color }}>
+                    {isSelected ? '−' : '+'}
+                  </div>
+                </div>
+                
+                {/* Expanded Content */}
+                {isSelected && detail && (
+                  <div className="skill-card-expanded">
+                    <p className="skill-description">{detail.description}</p>
+                    <div className="skill-use-cases">
+                      {detail.useCases.slice(0, 3).map((useCase, i) => (
+                        <span 
+                          key={i} 
+                          className="use-case-tag"
+                          style={{ 
+                            background: `${skill.color}15`,
+                            color: skill.color,
+                            borderColor: `${skill.color}30`
+                          }}
+                        >
+                          {useCase}
+                        </span>
+                      ))}
+                    </div>
+                    <button 
+                      className="learn-more-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(detail.url, '_blank');
+                      }}
+                      style={{ background: skill.color }}
+                    >
+                      Learn More →
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Category Summary */}
+        <div className="mobile-category-summary" style={{ borderColor: categoryColors[activeCategory] }}>
+          <div className="summary-stat">
+            <span className="stat-number" style={{ color: categoryColors[activeCategory] }}>
+              {currentCategory.skills.length}
+            </span>
+            <span className="stat-label">Technologies</span>
+          </div>
+          <div className="summary-divider" style={{ background: categoryColors[activeCategory] }} />
+          <div className="summary-text">
+            <span style={{ color: categoryColors[activeCategory] }}>{currentCategory.title}</span>
+            <span>Tap any skill to explore</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderGraph = () => {
     return (
       <svg 
@@ -813,7 +953,7 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           </p>
         </div>
         
-        <div className="skills-layout" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 'clamp(1rem, 3vw, 2rem)' }}>
+        <div className="skills-layout desktop-skills" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 'clamp(1rem, 3vw, 2rem)' }}>
           <div className="categories-panel" style={{ 
             background: theme.cardBg, 
             borderRadius: '20px', 
@@ -886,6 +1026,9 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
             <InformationPanel />
           </div>
         </div>
+
+        {/* Mobile Skills View - Only visible on mobile */}
+        <MobileSkillsView />
       </div>
       
       <style>{`
@@ -896,8 +1039,241 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           stroke-width: 3px;
         }
 
+        /* Hide mobile view on desktop */
+        .mobile-skills-view {
+          display: none;
+        }
+
         /* MOBILE RESPONSIVE SKILLS */
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
+          /* Hide desktop view */
+          .desktop-skills {
+            display: none !important;
+          }
+
+          /* Show mobile view */
+          .mobile-skills-view {
+            display: block !important;
+          }
+
+          /* Category Pills */
+          .mobile-category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+          }
+
+          .category-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+
+          .category-pill.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          }
+
+          /* Skills Grid */
+          .mobile-skills-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+
+          .mobile-skill-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideUp 0.4s ease forwards;
+            opacity: 0;
+          }
+
+          .mobile-skill-card.selected {
+            background: rgba(255,255,255,0.06);
+            border-width: 2px;
+          }
+
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .skill-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+          }
+
+          .skill-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+          }
+
+          .skill-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+          }
+
+          .skill-info {
+            flex: 1;
+          }
+
+          .skill-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            transition: color 0.3s ease;
+          }
+
+          .skill-exp {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+          }
+
+          .expand-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 300;
+            opacity: 0.7;
+          }
+
+          /* Expanded Content */
+          .skill-card-expanded {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 0.3s ease;
+          }
+
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+
+          .skill-description {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+            margin: 0 0 14px 0;
+          }
+
+          .skill-use-cases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+          }
+
+          .use-case-tag {
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid;
+            font-weight: 500;
+          }
+
+          .learn-more-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+
+          .learn-more-btn:active {
+            transform: scale(0.98);
+          }
+
+          /* Category Summary */
+          .mobile-category-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 1.5rem;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid;
+            border-radius: 14px;
+          }
+
+          .summary-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+          }
+
+          .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+          }
+
+          .stat-label {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .summary-divider {
+            width: 2px;
+            height: 40px;
+            opacity: 0.3;
+            border-radius: 1px;
+          }
+
+          .summary-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+
+          .summary-text span:first-child {
+            font-weight: 600;
+            font-size: 0.95rem;
+          }
+
+          .summary-text span:last-child {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+          }
+        }
+
+        @media (max-width: 900px) and (min-width: 769px) {
           .skills-layout {
             grid-template-columns: 1fr !important;
             gap: 1.5rem !important;
@@ -920,18 +1296,6 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           }
           .graph-container {
             height: clamp(350px, 60vh, 500px) !important;
-          }
-        }
-
-        @media (max-width: 600px) {
-          .categories-panel button {
-            min-width: 100px !important;
-            padding: 10px 12px !important;
-            font-size: 0.8rem !important;
-          }
-          .graph-container {
-            height: clamp(300px, 55vh, 450px) !important;
-            border-radius: 16px !important;
           }
         }
 
