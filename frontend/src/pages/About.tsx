@@ -183,18 +183,20 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-only-card-container { 
             display: flex !important; 
-            justify-content: center; 
-            width: 100%; 
-            margin: -35px 0 -15px 0 !important; /* Closes the gap with name */
+            justify-content: center !important; 
+            align-items: center !important;
+            width: 100% !important; 
+            margin: -20px auto 0 auto !important;
+            padding: 0 !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.75) !important;
-            left: 0 !important;
+            transform: scale(0.78) !important;
+            transform-origin: center center !important;
             position: relative !important;
-            width: 100% !important;
-            max-width: 320px !important; /* Prevents edge overlap */
+            display: flex !important;
+            justify-content: center !important;
           }
 
           .about-description-fix {
