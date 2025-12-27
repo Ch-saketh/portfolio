@@ -193,26 +193,35 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-only-card-container { 
             display: flex !important; 
-            justify-content: center; 
-            width: 100%; 
-            margin: -30px auto -20px auto !important; /* Pulls Card UP near Name */
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important; 
+            max-width: 100vw !important;
+            margin: -25px auto -25px auto !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.72) !important;
-            left: 0 !important;
+            transform: scale(0.65) !important;
+            transform-origin: center center !important;
             position: relative !important;
-            width: 100% !important;
-            max-width: 320px !important;
+            display: flex !important;
+            justify-content: center !important;
+            left: 0 !important;
+            right: 0 !important;
           }
 
           .mobile-only-buttons {
             display: flex !important;
-            gap: 12px !important;
+            gap: 14px !important;
             justify-content: center !important;
-            margin: 0 auto 20px auto !important;
+            align-items: center !important;
+            margin: 5px auto 25px auto !important;
             width: 100% !important;
+            padding: 0 16px !important;
           }
 
           .about-description-fix {
