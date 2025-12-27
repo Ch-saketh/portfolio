@@ -173,19 +173,21 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           .desktop-card-pos, .desktop-buttons-only { display: none !important; }
           .about-viewport { overflow-x: hidden !important; }
           
-          /* HERO SECTION - Fits exactly in viewport */
+          /* HERO SECTION - Exactly 100vh, no scroll */
           #about {
+            height: 100dvh !important;
+            max-height: 100dvh !important;
             min-height: 100dvh !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 70px 0 30px 0 !important;
+            padding: 50px 0 20px 0 !important;
             margin: 0 !important;
-            overflow-x: hidden !important;
+            overflow: hidden !important;
             box-sizing: border-box !important;
           }
 
-          /* MAIN FLEXBOX CONTAINER - Controls all vertical spacing */
+          /* MAIN FLEXBOX CONTAINER - Single centered unit */
           .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
@@ -205,58 +207,59 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 20px !important; /* Consistent gap for all children */
+            gap: 1.5rem !important; /* Tight gap for grouped unit */
             width: 100% !important;
           }
 
           .mobile-header-stack {
-            margin: 0 !important;
+            margin: 0 0 -8px 0 !important;
             padding: 0 !important;
           }
 
           /* Badge - smaller, lighter */
           .about-badge-fix { 
-            margin: 0 auto 6px auto !important; 
+            margin: 0 auto 4px auto !important; 
             line-height: 1 !important;
-            padding: 4px 12px !important;
+            padding: 4px 10px !important;
             font-size: 8px !important;
             opacity: 0.8 !important;
           }
           
-          /* Name - Reduced prominence since it's also in card */
+          /* Name - Reduced prominence, tighter margin */
           .about-name-fix { 
-            font-size: 1.5rem !important; 
+            font-size: 1.4rem !important; 
             font-weight: 600 !important;
             margin: 0 !important; 
             padding: 0 !important;
-            line-height: 1.1 !important;
+            line-height: 1 !important;
             opacity: 0.9 !important;
           }
 
-          /* Card container - centered column */
+          /* Card container - scaled down 10-15% */
           .mobile-only-card-container { 
             display: flex !important; 
             justify-content: center !important;
             align-items: center !important;
-            width: 90% !important; 
-            max-width: 420px !important;
-            margin: 0 auto !important;
+            width: 100% !important; 
+            max-width: 100vw !important;
+            margin: -20px auto -25px auto !important;
             padding: 0 !important;
-            overflow: visible !important;
+            overflow: hidden !important;
             box-sizing: border-box !important;
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
             padding: 0 !important;
-            transform: none !important;
+            transform: scale(0.62) !important;
+            transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
             justify-content: center !important;
             width: 100% !important;
           }
 
-          /* Override ProfileCard styles on mobile for larger card */
+          /* Override ProfileCard styles on mobile */
           .mobile-card-scaling .pc-card-wrapper {
             gap: 0 !important;
             margin: 0 !important;
@@ -266,13 +269,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           }
 
           .mobile-card-scaling .pc-card {
-            width: 100% !important;
-            max-width: 420px !important;
-            height: auto !important;
-            max-height: none !important;
-            min-height: 480px !important;
-            aspect-ratio: 0.75 !important;
-            padding: 28px !important;
+            width: 360px !important;
+            height: 520px !important;
+            max-height: 520px !important;
+            min-height: auto !important;
+            aspect-ratio: auto !important;
+            padding: 0 !important;
           }
 
           .mobile-card-scaling .pc-card-shell {
@@ -282,30 +284,30 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           /* Scale profile image proportionally */
           .mobile-card-scaling .pc-card img {
-            width: 140px !important;
-            height: 140px !important;
+            width: 120px !important;
+            height: 120px !important;
             object-fit: cover !important;
           }
 
           /* Adjust card content padding */
           .mobile-card-scaling .pc-card-content {
-            padding: 20px !important;
+            padding: 16px !important;
           }
 
           .mobile-card-scaling .pc-details {
-            padding: 16px 0 !important;
+            padding: 12px 0 !important;
           }
 
-          /* Buttons - Match card width for cohesive column */
+          /* Buttons - Tight to card, same visual width */
           .mobile-only-buttons {
             display: flex !important;
-            gap: 12px !important;
+            gap: 10px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 20px auto 0 auto !important;
-            padding: 0 !important;
-            width: 90% !important;
-            max-width: 420px !important;
+            margin: -10px auto 0 auto !important;
+            padding: 0 20px !important;
+            width: 100% !important;
+            max-width: 240px !important;
           }
 
           /* Make buttons equal visual weight */
