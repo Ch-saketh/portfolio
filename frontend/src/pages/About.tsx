@@ -26,22 +26,25 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   };
 
   return (
-    <section id="about" style={styles.section}>
-      <div style={styles.mainContainer} className="about-main-container">
+    <section id="about" style={styles.section} className="about-section-viewport">
+      <div style={styles.mainContainer} className="about-main-layout">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
-        <div style={styles.leftColumn} className="reveal-left about-left-col">
-          <div style={{ ...styles.badge, borderColor: theme.border }} className="mobile-badge-adjust">
-            <div className="status-orb" style={{ background: theme.accent }} />
-            <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
+        <div style={styles.leftColumn} className="reveal-left about-info-column">
+          
+          <div className="mobile-header-stack">
+            <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge-fix">
+              <div className="status-orb" style={{ background: theme.accent }} />
+              <span style={styles.badgeText}>AI & FULL-STACK ENGINEER</span>
+            </div>
+
+            <h1 style={styles.heroTitle} className="about-name-fix">
+              Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
+            </h1>
           </div>
 
-          <h1 style={styles.heroTitle} className="mobile-title-adjust">
-            Chokkapu Saketh <span style={{ color: theme.accent }}>.</span>
-          </h1>
-
-          {/* This specific div is injected for Mobile stacking order */}
-          <div className="mobile-card-frame">
-            <div style={styles.cardWrapper} className="mobile-card-inner">
+          {/* This wrapper only appears/stacks on Mobile */}
+          <div className="mobile-only-card-container">
+            <div style={styles.cardWrapper} className="mobile-card-scaling">
               <ProfileCard
                 name="Chokkapu Saketh"
                 avatarUrl={profileImage}
@@ -53,14 +56,14 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <p style={styles.description} className="mobile-desc-adjust">
+          <p style={styles.description} className="about-description-fix">
             Focused on building scalable web applications and AI-driven systems,
             with experience in <span style={{ color: '#fff', fontWeight: 600 }}>React</span>,
             <span style={{ color: '#fff', fontWeight: 600 }}> Node.js</span>, and applied
             <span style={{ color: '#fff', fontWeight: 600 }}> machine learning</span> models.
           </p>
 
-          <div style={styles.bentoGrid} className="mobile-bento-adjust">
+          <div style={styles.bentoGrid} className="about-bento-fix">
             <div className="bento-module">
               <h4 style={{ color: theme.accent, ...styles.bentoTitle }}>AI ASSESSMENT</h4>
               <p style={styles.bentoText}>1st Prize Winner: Skill roadmaps & mentor matching.</p>
@@ -71,7 +74,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <div style={styles.buttonGroup} className="mobile-buttons-adjust">
+          <div style={styles.buttonGroup} className="about-buttons-fix">
             <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
@@ -87,8 +90,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: 3D PROFILE CARD */}
-        <div style={styles.rightColumn} className="reveal-right desktop-only-column">
+        {/* RIGHT COLUMN: 3D PROFILE CARD (Desktop Original) */}
+        <div style={styles.rightColumn} className="reveal-right desktop-card-pos">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
             <ProfileCard
@@ -152,60 +155,69 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         @keyframes pulseOrb { 0% { box-shadow: 0 0 0 0px ${theme.accent}60; } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0px transparent; } }
         .bento-module { padding: 1.1rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .mobile-card-frame { display: none; }
+        .mobile-only-card-container { display: none; }
 
         @media (max-width: 768px) {
-          #about { padding: 0 !important; overflow-x: hidden !important; }
-          .desktop-only-column { display: none !important; }
-          .mobile-card-frame { display: block !important; width: 100%; margin: -45px 0 -30px 0 !important; z-index: 5; }
+          .desktop-card-pos { display: none !important; }
+          .about-section-viewport { overflow-x: hidden !important; }
           
-          .about-main-container {
+          .about-main-layout {
             display: flex !important;
             flex-direction: column !important;
-            padding: 40px 16px !important;
-            grid-template-columns: 1fr !important;
+            padding: 30px 16px !important;
+            width: 100% !important;
             text-align: center !important;
-            align-items: center !important;
           }
 
-          .about-left-col {
+          .about-info-column {
             margin-top: 0 !important;
             align-items: center !important;
-            width: 100% !important;
           }
 
-          .mobile-badge-adjust { margin: 0 auto !important; }
-          .mobile-title-adjust { font-size: 2.2rem !important; margin-top: 10px !important; }
+          .mobile-header-stack {
+            margin-top: 40px !important; /* Move name down for frame 1 */
+          }
 
-          .mobile-card-inner {
+          .about-badge-fix { margin: 0 auto !important; }
+          .about-name-fix { font-size: 2.2rem !important; margin-top: 10px !important; }
+
+          .mobile-only-card-container { 
+            display: flex !important; 
+            justify-content: center; 
+            width: 100%; 
+            margin: -35px 0 -15px 0 !important; /* Closes the gap with name */
+          }
+
+          .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.7) !important;
+            transform: scale(0.75) !important;
             left: 0 !important;
             position: relative !important;
             width: 100% !important;
+            max-width: 320px !important; /* Prevents edge overlap */
           }
 
-          .mobile-desc-adjust {
+          .about-description-fix {
             margin: 0 auto 20px auto !important;
             text-align: center !important;
             font-size: 0.9rem !important;
-            max-width: 95% !important;
+            max-width: 90% !important;
             line-height: 1.5 !important;
           }
 
-          .mobile-bento-adjust {
+          .about-bento-fix {
             grid-template-columns: 1fr !important;
             text-align: left !important;
             width: 100% !important;
-            margin-top: 10px !important;
           }
 
-          .mobile-buttons-adjust {
-            justify-content: center !important;
+          .about-buttons-fix {
+            justify-content: center !important; /* Centered on mobile */
             margin-top: 20px !important;
-            padding-bottom: 40px !important;
+            padding-bottom: 50px !important;
           }
-          
+
+          #about { min-height: auto !important; }
           .reveal-right { opacity: 1 !important; transform: none !important; animation: none !important; }
         }
       `}</style>
@@ -245,7 +257,7 @@ const styles = {
   bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'clamp(0.6rem, 2vw, 1.2rem)', marginTop: '1rem' },
   bentoTitle: { fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: 'clamp(11px, 2.5vw, 13px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 },
-  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const, justifyContent: 'center' },
+  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const },
   ctaBase: { padding: 'clamp(12px, 2vw, 14px) clamp(24px, 4vw, 32px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(13px, 2vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
