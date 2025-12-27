@@ -180,6 +180,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             justify-content: center !important;
             padding: 0 !important;
+            margin: 0 !important;
             overflow: hidden !important;
           }
 
@@ -188,29 +189,31 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 10px 16px !important;
+            padding: 0 10px !important;
+            margin: 0 !important;
             width: 100% !important;
-            height: 100% !important;
+            height: auto !important;
             text-align: center !important;
             gap: 0 !important;
           }
 
           .about-info-column { 
-            margin-top: 0 !important; 
+            margin: 0 !important; 
+            padding: 0 !important;
             align-items: center !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 8px !important;
+            gap: 0 !important;
           }
 
           .mobile-header-stack {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
           }
 
-          .about-badge-fix { margin: 0 auto 4px auto !important; }
-          .about-name-fix { font-size: 2rem !important; margin: 0 !important; }
+          .about-badge-fix { margin: 0 auto 2px auto !important; }
+          .about-name-fix { font-size: 1.8rem !important; margin: 0 0 -5px 0 !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
@@ -218,7 +221,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -30px auto -30px auto !important;
+            margin: -40px auto -50px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -226,7 +229,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.58) !important;
+            transform: scale(0.52) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
@@ -237,10 +240,10 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-only-buttons {
             display: flex !important;
-            gap: 12px !important;
+            gap: 10px !important;
             justify-content: center !important;
             align-items: center !important;
-            margin: 0 auto 10px auto !important;
+            margin: 0 auto !important;
             width: 100% !important;
             padding: 0 16px !important;
           }
