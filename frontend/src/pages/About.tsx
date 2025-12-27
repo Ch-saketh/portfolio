@@ -26,11 +26,12 @@ const About: React.FC<AboutProps> = ({ theme }) => {
   };
 
   return (
-    <section id="about" style={styles.section} className="about-section-viewport">
+    <section id="about" style={styles.section} className="about-viewport">
       <div style={styles.mainContainer} className="about-main-layout">
         {/* LEFT COLUMN: IDENTITY & PROJECTS */}
         <div style={styles.leftColumn} className="reveal-left about-info-column">
           
+          {/* Header Group */}
           <div className="mobile-header-stack">
             <div style={{ ...styles.badge, borderColor: theme.border }} className="about-badge-fix">
               <div className="status-orb" style={{ background: theme.accent }} />
@@ -42,8 +43,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </h1>
           </div>
 
-          {/* This wrapper only appears/stacks on Mobile */}
-          <div className="mobile-only-card-container">
+          {/* Profile Card (Injected for Mobile) */}
+          <div className="mobile-card-frame">
             <div style={styles.cardWrapper} className="mobile-card-scaling">
               <ProfileCard
                 name="Chokkapu Saketh"
@@ -90,7 +91,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             </div>
           </div>
 
-          <div style={styles.buttonGroup} className="about-buttons-fix">
+          {/* Desktop Only Buttons (Left aligned) */}
+          <div style={styles.buttonGroup} className="desktop-only-buttons">
             <button
               onClick={handleContactMe}
               style={{ ...styles.ctaBase, ...styles.ctaPrimary, background: theme.accent, border: 'none', cursor: 'pointer' }}
@@ -106,7 +108,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: 3D PROFILE CARD (Desktop Original) */}
+        {/* RIGHT COLUMN: 3D PROFILE CARD (Desktop side) */}
         <div style={styles.rightColumn} className="reveal-right desktop-card-pos">
           <div style={{ ...styles.cardGlow, background: theme.accent }} />
           <div style={styles.cardWrapper}>
@@ -133,11 +135,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
                 <button onClick={() => setShowResume(false)} style={styles.closeBtn}>✕</button>
               </div>
             </div>
-            <iframe
-              src={`${resumeFile}#toolbar=0`}
-              title="Resume Viewer"
-              style={styles.iframe}
-            />
+            <iframe src={`${resumeFile}#toolbar=0`} title="Resume Viewer" style={styles.iframe} />
           </div>
         </div>
       )}
@@ -176,7 +174,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
         @media (max-width: 768px) {
           .desktop-card-pos { display: none !important; }
-          .about-section-viewport { overflow-x: hidden !important; }
+          .desktop-only-buttons { display: none !important; }
+          .about-viewport { overflow-x: hidden !important; }
           
           .about-main-layout {
             display: flex !important;
@@ -186,64 +185,50 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             text-align: center !important;
           }
 
-          .about-info-column {
-            margin-top: 0 !important;
-            align-items: center !important;
-          }
-
           .mobile-header-stack {
-            margin-top: 60px !important;
-            margin-bottom: 10px !important;
+            margin-top: 10px !important; /* Move Badge/Name very close to top */
+            margin-bottom: 5px !important;
           }
 
-          .about-badge-fix { margin: 0 auto 8px auto !important; }
-          .about-name-fix { font-size: 2.2rem !important; margin-top: 0 !important; margin-bottom: 10px !important; }
+          .about-badge-fix { margin: 0 auto 5px auto !important; }
+          .about-name-fix { font-size: 2.2rem !important; margin-top: 0 !important; margin-bottom: 5px !important; }
 
           .mobile-only-card-container { 
             display: flex !important; 
-            justify-content: center !important; 
-            align-items: center !important;
-            width: 100% !important; 
-            margin: -15px auto -30px auto !important;
-            padding: 0 !important;
+            justify-content: center; 
+            width: 100%; 
+            margin: -35px auto -20px auto !important; /* Close gap with Name */
           }
 
           .mobile-card-scaling {
             margin: 0 auto !important;
             transform: scale(0.70) !important;
-            transform-origin: center center !important;
+            left: 0 !important;
             position: relative !important;
-            display: flex !important;
-            justify-content: center !important;
+            width: 100% !important;
+            max-width: 320px !important; /* Prevent edge overlap */
           }
 
-          /* Mobile buttons - show right after card */
           .mobile-only-buttons {
             display: flex !important;
             gap: 12px !important;
             justify-content: center !important;
-            margin: 10px auto 25px auto !important;
+            margin: 0 auto 20px auto !important;
             width: 100% !important;
-          }
-
-          /* Hide desktop buttons on mobile */
-          .about-buttons-fix {
-            display: none !important;
           }
 
           .about-description-fix {
             margin: 0 auto 20px auto !important;
             text-align: center !important;
             font-size: 0.9rem !important;
-            max-width: 90% !important;
-            line-height: 1.5 !important;
+            max-width: 92% !important;
+            line-height: 1.4 !important;
           }
 
           .about-bento-fix {
             grid-template-columns: 1fr !important;
             text-align: left !important;
             width: 100% !important;
-            margin-bottom: 30px !important;
           }
 
           #about { min-height: auto !important; }
