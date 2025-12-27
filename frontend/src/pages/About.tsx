@@ -212,8 +212,13 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             padding: 0 !important;
           }
 
-          .about-badge-fix { margin: 0 auto 2px auto !important; }
-          .about-name-fix { font-size: 1.8rem !important; margin: 0 0 -5px 0 !important; }
+          .about-badge-fix { margin: 0 auto 2px auto !important; line-height: 1 !important; }
+          .about-name-fix { 
+            font-size: 1.8rem !important; 
+            margin: 0 !important; 
+            padding: 0 !important;
+            line-height: 1.1 !important;
+          }
 
           .mobile-only-card-container { 
             display: flex !important; 
@@ -221,7 +226,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -40px auto -50px auto !important;
+            margin: -60px auto -70px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
@@ -229,7 +234,8 @@ const About: React.FC<AboutProps> = ({ theme }) => {
 
           .mobile-card-scaling {
             margin: 0 auto !important;
-            transform: scale(0.52) !important;
+            padding: 0 !important;
+            transform: scale(0.50) !important;
             transform-origin: center center !important;
             position: relative !important;
             display: flex !important;
@@ -238,14 +244,21 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             right: 0 !important;
           }
 
+          /* Override ProfileCard wrapper gap on mobile */
+          .mobile-card-scaling .pc-card-wrapper {
+            gap: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
           .mobile-only-buttons {
             display: flex !important;
             gap: 10px !important;
             justify-content: center !important;
             align-items: center !important;
             margin: 0 auto !important;
-            width: 100% !important;
             padding: 0 16px !important;
+            width: 100% !important;
           }
 
           .about-description-fix {
