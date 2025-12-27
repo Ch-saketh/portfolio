@@ -147,14 +147,20 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         }
 
         @media (max-width: 768px) {
-          .reveal-left { animation: revealUp 0.6s cubic-bezier(0.15, 0, 0.15, 1) forwards; }
+          #about { padding: 60px 20px !important; min-height: auto !important; }
+          .reveal-left { animation: revealUp 0.6s cubic-bezier(0.15, 0, 0.15, 1) forwards; text-align: center; align-items: center; }
           .reveal-right { animation: revealUp 0.8s cubic-bezier(0.15, 0, 0.15, 1) 0.05s forwards; opacity: 1; }
+          .bento-module { padding: 1rem; }
+          .bento-module h4 { font-size: 11px !important; }
+          .bento-module p { font-size: 13px !important; line-height: 1.6 !important; }
         }
 
         @media (max-width: 640px) {
-          #about { padding: 40px 1rem !important; }
+          #about { padding: 50px 16px !important; }
           .pc-details { margin-top: 8px !important; }
-          .bento-module { padding: 0.8rem; margin-bottom: 0.5rem; }
+          .bento-module { padding: 1rem; margin-bottom: 0.5rem; }
+          .bento-module h4 { font-size: 10px !important; }
+          .bento-module p { font-size: 12px !important; }
         }
 
         /* Grid Layout Responsiveness */
@@ -163,8 +169,26 @@ const About: React.FC<AboutProps> = ({ theme }) => {
         }
 
         @media (max-width: 768px) {
-          main { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .reveal-right { margin-top: 2rem; }
+          main { 
+            grid-template-columns: 1fr !important; 
+            gap: 2.5rem !important; 
+            text-align: center !important;
+          }
+          main > div:first-child {
+            align-items: center !important;
+            text-align: center !important;
+          }
+          main > div:first-child p {
+            text-align: center !important;
+            max-width: 100% !important;
+          }
+          .reveal-right { margin-top: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+          #about { padding: 40px 12px !important; }
+          main { gap: 2rem !important; }
+          .bento-module { padding: 0.9rem; }
         }
       `}</style>
     </section>
@@ -190,21 +214,21 @@ const styles = {
     margin: '0 auto',
     display: 'grid',
     gridTemplateColumns: '1.2fr 0.8fr',
-    gap: '5rem',
+    gap: 'clamp(2rem, 5vw, 5rem)',
     alignItems: 'center',
     zIndex: 10,
-    padding: 'clamp(1rem, 3vw, 4rem)',
+    padding: 'clamp(1rem, 4vw, 4rem)',
   },
   leftColumn: { display: 'flex', flexDirection: 'column' as const, gap: '1.4rem', justifyContent: 'center', marginTop: '-40px' },
   badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', width: 'fit-content' },
-  badgeText: { fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
-  heroTitle: { fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
-  description: { fontSize: 'clamp(0.95rem, 2vw, 1.05rem)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, maxWidth: '520px', margin: 0 },
-  bentoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.8rem, 2vw, 1.2rem)', marginTop: '1rem' },
-  bentoTitle: { fontSize: 'clamp(9px, 1.5vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
-  bentoText: { fontSize: 'clamp(11px, 1.5vw, 12px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 },
-  buttonGroup: { display: 'flex', gap: 'clamp(1rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const },
-  ctaBase: { padding: 'clamp(10px, 1.5vw, 12px) clamp(20px, 3vw, 28px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(12px, 1.5vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
+  badgeText: { fontSize: 'clamp(9px, 2vw, 10px)', fontWeight: 600, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.12em' },
+  heroTitle: { fontSize: 'clamp(1.8rem, 6vw, 3.8rem)', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em' },
+  description: { fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '520px', margin: 0 },
+  bentoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'clamp(0.6rem, 2vw, 1.2rem)', marginTop: '1rem' },
+  bentoTitle: { fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
+  bentoText: { fontSize: 'clamp(11px, 2.5vw, 13px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 },
+  buttonGroup: { display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const, justifyContent: 'center' },
+  ctaBase: { padding: 'clamp(12px, 2vw, 14px) clamp(24px, 4vw, 32px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(13px, 2vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
   rightColumn: { display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' as const },

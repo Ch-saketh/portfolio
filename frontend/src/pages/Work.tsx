@@ -90,12 +90,13 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
         </h2>
       </div>
 
-      <div ref={scrollRef} style={{ display: 'flex', gap: '2rem', overflowX: 'auto', padding: '0 2rem 50px' }} className="hide-scrollbar">
+      <div ref={scrollRef} style={{ display: 'flex', gap: 'clamp(1rem, 3vw, 2rem)', overflowX: 'auto', padding: '0 clamp(1rem, 3vw, 2rem) 50px' }} className="hide-scrollbar">
         {projects.map((p) => (
           <motion.div 
             key={p.id} 
             whileHover={{ y: -5 }}
-            style={{ flex: '0 0 clamp(280px, 85vw, 450px)', height: 'clamp(300px, 80vw, 440px)', background: theme.cardBg, borderRadius: '32px', border: `1px solid ${theme.border}`, display: 'grid', gridTemplateColumns: '1fr 1.2fr', overflow: 'hidden' }}
+            className="project-card"
+            style={{ flex: '0 0 clamp(300px, 90vw, 450px)', height: 'auto', minHeight: 'clamp(380px, 85vw, 440px)', background: theme.cardBg, borderRadius: 'clamp(20px, 4vw, 32px)', border: `1px solid ${theme.border}`, display: 'grid', gridTemplateColumns: '1fr 1.2fr', overflow: 'hidden' }}
           >
             <div style={{ position: 'relative' }}>
               <img src={p.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
@@ -104,10 +105,10 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
                  <div style={{ position: 'absolute', top: '20px', left: '20px', background: '#10b981', color: '#fff', fontSize: '0.6rem', fontWeight: 900, padding: '5px 12px', borderRadius: '100px', letterSpacing: '0.1em' }}>LIVE PRODUCTION</div>
               )}
             </div>
-            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#10b981', textTransform: 'uppercase' }}>{p.role}</span>
-              <h3 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: 700, color: '#fff', margin: '0.5rem 0' }}>{p.title}</h3>
-              <p style={{ fontSize: 'clamp(0.75rem, 2vw, 0.85rem)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{p.description}</p>
+            <div className="project-content" style={{ padding: 'clamp(1.2rem, 3vw, 2rem)', display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: 'clamp(0.6rem, 1.5vw, 0.7rem)', fontWeight: 800, color: '#10b981', textTransform: 'uppercase' }}>{p.role}</span>
+              <h3 style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.6rem)', fontWeight: 700, color: '#fff', margin: '0.5rem 0' }}>{p.title}</h3>
+              <p style={{ fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>{p.description}</p>
               
               <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                 <div style={{ display: 'flex', gap: '0.8rem' }}>
@@ -163,7 +164,33 @@ const Work: React.FC<{ theme: any }> = ({ theme }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <style>{`.hide-scrollbar::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* MOBILE RESPONSIVE WORK PAGE */
+        @media (max-width: 768px) {
+          .project-card {
+            grid-template-columns: 1fr !important;
+            grid-template-rows: 180px 1fr !important;
+            min-height: auto !important;
+            height: auto !important;
+          }
+          .project-content {
+            padding: 1.2rem !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .project-card {
+            flex: 0 0 calc(100vw - 2rem) !important;
+            grid-template-rows: 150px 1fr !important;
+            border-radius: 18px !important;
+          }
+          .project-content {
+            padding: 1rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

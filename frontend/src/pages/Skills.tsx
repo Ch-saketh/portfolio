@@ -813,11 +813,11 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           </p>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
-          <div style={{ 
+        <div className="skills-layout" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 'clamp(1rem, 3vw, 2rem)' }}>
+          <div className="categories-panel" style={{ 
             background: theme.cardBg, 
             borderRadius: '20px', 
-            padding: '2rem', 
+            padding: 'clamp(1rem, 3vw, 2rem)', 
             border: `1px solid ${theme.border}`,
             height: 'fit-content'
           }}>
@@ -873,13 +873,14 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
             ))}
           </div>
           
-          <div style={{ 
+          <div className="graph-container" style={{ 
             background: theme.cardBg, 
             borderRadius: '20px', 
             border: `1px solid ${theme.border}`, 
             position: 'relative', 
-            height: '700px', 
-            overflow: 'hidden' 
+            height: 'clamp(400px, 70vh, 700px)', 
+            overflow: 'hidden',
+            minHeight: '400px'
           }}>
             {renderGraph()}
             <InformationPanel />
@@ -894,6 +895,46 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
           filter: brightness(1.3); 
           stroke-width: 3px;
         }
+
+        /* MOBILE RESPONSIVE SKILLS */
+        @media (max-width: 900px) {
+          .skills-layout {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+          .categories-panel {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            padding: 1rem !important;
+          }
+          .categories-panel h3 {
+            width: 100% !important;
+            margin-bottom: 0.5rem !important;
+          }
+          .categories-panel button {
+            flex: 1 1 auto !important;
+            min-width: 120px !important;
+            padding: 12px 14px !important;
+            font-size: 0.85rem !important;
+          }
+          .graph-container {
+            height: clamp(350px, 60vh, 500px) !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .categories-panel button {
+            min-width: 100px !important;
+            padding: 10px 12px !important;
+            font-size: 0.8rem !important;
+          }
+          .graph-container {
+            height: clamp(300px, 55vh, 450px) !important;
+            border-radius: 16px !important;
+          }
+        }
+
         @keyframes fadeInPanel { 
           from { 
             opacity: 0; 
