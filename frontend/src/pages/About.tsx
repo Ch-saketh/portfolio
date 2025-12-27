@@ -203,7 +203,7 @@ const styles = {
   bentoGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.8rem, 2vw, 1.2rem)', marginTop: '1rem' },
   bentoTitle: { fontSize: 'clamp(9px, 1.5vw, 11px)', fontWeight: 700, margin: '0 0 6px 0', textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
   bentoText: { fontSize: 'clamp(11px, 1.5vw, 12px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 },
-  buttonGroup: { display: 'flex', gap: 'clamp(1rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' },
+  buttonGroup: { display: 'flex', gap: 'clamp(1rem, 2vw, 1.5rem)', marginTop: '1.5rem', flexWrap: 'wrap' as const },
   ctaBase: { padding: 'clamp(10px, 1.5vw, 12px) clamp(20px, 3vw, 28px)', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: 'clamp(12px, 1.5vw, 14px)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' },
   ctaPrimary: { color: '#ffffff' },
   ctaSecondary: { color: '#ffffff', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' },
