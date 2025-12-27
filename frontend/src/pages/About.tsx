@@ -197,7 +197,7 @@ const About: React.FC<AboutProps> = ({ theme }) => {
             align-items: center !important;
             width: 100% !important; 
             max-width: 100vw !important;
-            margin: -25px auto -25px auto !important;
+            margin: -45px auto -35px auto !important;
             padding: 0 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
