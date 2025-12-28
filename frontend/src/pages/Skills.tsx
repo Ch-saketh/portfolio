@@ -928,48 +928,116 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
 
   return (
     <section id="skills" style={{ 
-      padding: 'clamp(40px, 8vw, 80px) 2rem', 
+      padding: 'clamp(60px, 10vw, 120px) 2rem', 
       backgroundColor: theme.bg, 
       minHeight: '100vh', 
       position: 'relative' 
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: 'clamp(1.5rem, 5vw, 3rem)' }}>
+      {/* Background Gradient Effects */}
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        left: '10%',
+        width: '500px',
+        height: '500px',
+        background: `radial-gradient(circle, ${theme.accent}15 0%, transparent 70%)`,
+        filter: 'blur(80px)',
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '10%',
+        right: '10%',
+        width: '400px',
+        height: '400px',
+        background: `radial-gradient(circle, #10b98120 0%, transparent 70%)`,
+        filter: 'blur(60px)',
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
+
+      <div style={{ maxWidth: '1600px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        {/* Header Section */}
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
+          <span style={{
+            display: 'inline-block',
+            padding: '8px 16px',
+            background: `${theme.accent}15`,
+            border: `1px solid ${theme.accent}30`,
+            borderRadius: '100px',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            color: theme.accent,
+            textTransform: 'uppercase',
+            letterSpacing: '2px',
+            marginBottom: '1rem'
+          }}>
+            Skills & Expertise
+          </span>
           <h1 style={{ 
-            fontSize: 'clamp(1.8rem, 5vw, 3rem)', 
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)', 
             fontWeight: 800, 
             color: theme.text,
-            marginBottom: '1rem'
+            marginBottom: '1rem',
+            letterSpacing: '-0.03em'
           }}>
             Technical Stack
           </h1>
           <p style={{ 
             color: theme.textSecondary,
-            fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+            fontSize: 'clamp(1rem, 2vw, 1.15rem)',
             maxWidth: '600px',
-            margin: '0 auto'
+            margin: '0 auto',
+            lineHeight: 1.6
           }}>
-            Interactive visualization of my technology expertise
+            Interactive visualization of my technology expertise across multiple domains
           </p>
         </div>
         
-        <div className="skills-layout desktop-skills" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 'clamp(1rem, 3vw, 2rem)' }}>
+        {/* Desktop Layout - Improved */}
+        <div className="skills-layout desktop-skills" style={{ 
+          display: 'grid', 
+          gridTemplateColumns: '280px 1fr', 
+          gap: '2rem',
+          alignItems: 'start'
+        }}>
+          {/* Categories Sidebar - Enhanced */}
           <div className="categories-panel" style={{ 
-            background: theme.cardBg, 
-            borderRadius: '20px', 
-            padding: 'clamp(1rem, 3vw, 2rem)', 
+            background: `linear-gradient(135deg, ${theme.cardBg} 0%, rgba(255,255,255,0.02) 100%)`,
+            borderRadius: '24px', 
+            padding: '1.5rem', 
             border: `1px solid ${theme.border}`,
-            height: 'fit-content'
+            position: 'sticky',
+            top: '100px',
+            backdropFilter: 'blur(10px)'
           }}>
-            <h3 style={{ 
-              color: theme.accent, 
-              fontSize: '0.9rem', 
-              marginBottom: '1.5rem', 
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '1.5rem',
+              paddingBottom: '1rem',
+              borderBottom: `1px solid ${theme.border}`
             }}>
-              CATEGORIES
-            </h3>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                background: theme.accent,
+                borderRadius: '50%',
+                animation: 'pulse 2s infinite'
+              }} />
+              <h3 style={{ 
+                color: theme.accent, 
+                fontSize: '0.8rem', 
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                margin: 0,
+                fontWeight: 700
+              }}>
+                Categories
+              </h3>
+            </div>
             
             {Object.entries(skillsData).map(([key, data]) => (
               <button 
@@ -982,46 +1050,156 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
                 style={{ 
                   width: '100%', 
                   padding: '14px 16px', 
-                  background: activeCategory === key ? `${theme.accent}20` : 'transparent', 
-                  color: activeCategory === key ? theme.accent : 'rgba(255,255,255,0.7)', 
-                  border: 'none', 
+                  background: activeCategory === key 
+                    ? `linear-gradient(135deg, ${theme.accent}25 0%, ${theme.accent}10 100%)` 
+                    : 'transparent', 
+                  color: activeCategory === key ? theme.accent : 'rgba(255,255,255,0.6)', 
+                  border: activeCategory === key ? `1px solid ${theme.accent}40` : '1px solid transparent',
                   textAlign: 'left', 
                   cursor: 'pointer', 
-                  borderRadius: '12px', 
-                  fontSize: '0.95rem', 
+                  borderRadius: '14px', 
+                  fontSize: '0.9rem', 
                   fontWeight: 600,
-                  marginBottom: '10px',
-                  transition: 'all 0.3s ease',
+                  marginBottom: '8px',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  borderLeft: activeCategory === key ? `4px solid ${theme.accent}` : '4px solid transparent'
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeCategory !== key) {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                    e.currentTarget.style.color = '#fff';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeCategory !== key) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.6)';
+                  }
                 }}
               >
-                <span>{data.title}</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <img 
+                    src={categoryIcons[key]} 
+                    alt="" 
+                    style={{ 
+                      width: '20px', 
+                      height: '20px',
+                      opacity: activeCategory === key ? 1 : 0.6,
+                      transition: 'opacity 0.3s'
+                    }} 
+                  />
+                  {data.title}
+                </span>
                 <span style={{ 
-                  fontSize: '0.8rem', 
-                  background: 'rgba(255,255,255,0.1)', 
+                  fontSize: '0.75rem', 
+                  background: activeCategory === key ? theme.accent : 'rgba(255,255,255,0.1)', 
+                  color: activeCategory === key ? '#fff' : 'rgba(255,255,255,0.6)',
                   padding: '4px 10px', 
-                  borderRadius: '12px',
-                  minWidth: '28px',
-                  textAlign: 'center'
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  minWidth: '24px',
+                  textAlign: 'center',
+                  transition: 'all 0.3s'
                 }}>
                   {data.skills.length}
                 </span>
               </button>
             ))}
+
+            {/* Stats Summary */}
+            <div style={{
+              marginTop: '1.5rem',
+              paddingTop: '1.5rem',
+              borderTop: `1px solid ${theme.border}`,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1rem'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: theme.accent }}>
+                  {Object.values(skillsData).reduce((acc, cat) => acc + cat.skills.length, 0)}
+                </div>
+                <div style={{ fontSize: '0.65rem', color: theme.textSecondary, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Total Skills
+                </div>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#10b981' }}>
+                  {Object.keys(skillsData).length}
+                </div>
+                <div style={{ fontSize: '0.65rem', color: theme.textSecondary, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Categories
+                </div>
+              </div>
+            </div>
           </div>
           
+          {/* Graph Container - Enhanced */}
           <div className="graph-container" style={{ 
-            background: theme.cardBg, 
-            borderRadius: '20px', 
+            background: `linear-gradient(145deg, ${theme.cardBg} 0%, rgba(0,0,0,0.4) 100%)`,
+            borderRadius: '24px', 
             border: `1px solid ${theme.border}`, 
             position: 'relative', 
-            height: 'clamp(400px, 70vh, 700px)', 
+            height: '700px',
+            minHeight: '600px',
             overflow: 'hidden',
-            minHeight: '400px'
+            boxShadow: `0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)`
           }}>
+            {/* Graph Header */}
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              left: '24px',
+              zIndex: 10,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <div style={{
+                padding: '8px 14px',
+                background: 'rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  background: categoryColors[activeCategory] || theme.accent,
+                  borderRadius: '50%',
+                  boxShadow: `0 0 10px ${categoryColors[activeCategory] || theme.accent}`
+                }} />
+                <span style={{ fontSize: '0.8rem', color: '#fff', fontWeight: 600 }}>
+                  {skillsData[activeCategory as keyof typeof skillsData]?.title || 'All Skills'}
+                </span>
+              </div>
+            </div>
+
+            {/* Hint Text */}
+            <div style={{
+              position: 'absolute',
+              bottom: '20px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 10,
+              padding: '8px 16px',
+              background: 'rgba(0,0,0,0.4)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '8px',
+              border: '1px solid rgba(255,255,255,0.08)'
+            }}>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
+                Click on any node to explore details
+              </span>
+            </div>
+
             {renderGraph()}
             <InformationPanel />
           </div>
@@ -1032,6 +1210,11 @@ const Skills: React.FC<SkillsProps> = ({ theme }) => {
       </div>
       
       <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
         .graph-node-group { cursor: pointer; }
         .graph-node-group:hover .node-circle { 
           transform: scale(1.15); 
